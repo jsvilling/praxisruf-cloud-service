@@ -1,3 +1,4 @@
 rootProject.name = 'praxis-cloud-service'
 include 'praxis-cloud-app'
+include 'praxis-cloud-web'
 
