@@ -13,6 +13,9 @@ repositories {
 }
 
 dependencies {
+    // Internal Modules
+    implementation project(':praxis-cloud-web')
+
     // Spring
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
