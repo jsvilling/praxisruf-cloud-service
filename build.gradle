@@ -1,0 +1,30 @@
+plugins {
+    id 'org.springframework.boot' version '2.4.3'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+}
+
+group = 'ch.fhnw.ip5.praxis.intercom'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Internal Modules
+    implementation project('praxis-intercom-cloud-app')
+    implementation project('praxis-intercom-cloud-web')
+
+    // Spring
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+    // Testing
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
+}
+
+test {
+    useJUnitPlatform()
+}
