@@ -1,4 +1,4 @@
-rootProject.name = 'praxis-cloud-service'
-include 'praxis-cloud-app'
-include 'praxis-cloud-web'
+rootProject.name = 'praxis-intercom-cloud-service'
+include 'praxis-intercom-cloud-app'
+include 'praxis-intercom-cloud-web'
 

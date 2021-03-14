@@ -4,7 +4,7 @@ plugins {
     id 'java'
 }
 
-group = 'ch.fhnw.ip5'
+group = 'ch.fhnw.ip5.praxis.intercom'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 

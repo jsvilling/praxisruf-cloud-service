@@ -4,7 +4,7 @@ plugins {
     id 'java'
 }
 
-group = 'ch.fhnw.ip5'
+group = 'ch.fhnw.ip5.praxis.intercom'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
@@ -14,8 +14,8 @@ repositories {
 
 dependencies {
     // Internal Modules
-    implementation project('praxis-cloud-app')
-    implementation project('praxis-cloud-web')
+    implementation project('praxis-intercom-cloud-app')
+    implementation project('praxis-intercom-cloud-web')
 
     // Spring
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
