@@ -13,16 +13,8 @@ repositories {
 }
 
 dependencies {
-    // Internal Modules
-    implementation project(':praxis-intercom-cloud-notification')
+    // Internal
     implementation project(':praxis-intercom-cloud-web')
-
-    // Spring
-    implementation 'org.springframework.boot:spring-boot-starter-webflux'
-
-    // Testing
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'io.projectreactor:reactor-test'
 }
 
 test {
