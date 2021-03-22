@@ -1,4 +1,4 @@
-package ch.fhnw.ip5.praxiscloudservice.cloud.notification;
+package ch.fhnw.ip5.praxiscloudservice.cloud.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +18,7 @@ public class NotificationController {
     }
 
     @PostMapping("/send")
-    public void sendNotification(@RequestBody String message) {
+    public void sendNotification(@RequestBody String message) throws Exception {
         notificationService.send(message);
     }
 }
