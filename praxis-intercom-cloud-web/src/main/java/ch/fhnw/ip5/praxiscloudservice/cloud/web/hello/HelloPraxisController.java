@@ -1,4 +1,4 @@
-package ch.fhnw.ip5.praxiscloudservice.cloud.web;
+package ch.fhnw.ip5.praxiscloudservice.cloud.web.hello;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

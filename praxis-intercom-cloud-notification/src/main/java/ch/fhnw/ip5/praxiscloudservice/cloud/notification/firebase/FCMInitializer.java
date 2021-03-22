@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.io.FileInputStream;
 
+/**
+ * This Service initializes the connection to FireBaseMessaging.
+ */
 @Service
 public class FCMInitializer {
 

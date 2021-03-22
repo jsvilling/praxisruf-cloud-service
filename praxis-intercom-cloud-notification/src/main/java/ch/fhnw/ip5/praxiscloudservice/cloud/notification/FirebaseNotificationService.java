@@ -1,6 +1,6 @@
 package ch.fhnw.ip5.praxiscloudservice.cloud.notification;
 
-import ch.fhnw.ip5.praxiscloudservice.cloud.web.NotificationService;
+import ch.fhnw.ip5.praxiscloudservice.cloud.web.notification.NotificationService;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
@@ -8,6 +8,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+/**
+ * This service implements the NotificationService interface and is used to send Messages to client devices.
+ *
+ * This implementation is specific to FirebaseCloudMessaging and uses the Firebase AdminAdmin API to send messages.
+ *
+ * It is expected that the connection to fire Firebase Messaging Service has already initialized when this service
+ * is used to send a message. This initialisation should happen with FCMInitializer.
+ */
 @Service
 public class FirebaseNotificationService implements NotificationService {
 
@@ -17,8 +25,17 @@ public class FirebaseNotificationService implements NotificationService {
 
     private final Logger log = LoggerFactory.getLogger(FirebaseNotificationService.class);
 
+    /**
+     * Sends a Firebase Message with the given message String as data.
+     *
+     * In the POC phase all messages are sent to the pre-configured "test" topic.
+     *
+     * @param message
+     * @throws Exception
+     */
     @Override
     public void send(String message) throws Exception {
+
 
         final Notification notification = Notification.builder()
                 .setTitle("This is a test title")

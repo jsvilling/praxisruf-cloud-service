@@ -1,4 +1,4 @@
-package ch.fhnw.ip5.praxiscloudservice.cloud.web;
+package ch.fhnw.ip5.praxiscloudservice.cloud.web.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
