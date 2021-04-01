@@ -7,7 +7,6 @@ package ch.fhnw.ip5.praxiscloudservice.cloud.web.notification;
  */
 public interface NotificationService {
 
-
-    void send(String message) throws Exception;
+    void send(String token) throws Exception;
 
 }

@@ -20,8 +20,8 @@ import org.springframework.stereotype.Service;
 public class FirebaseNotificationService implements NotificationService {
 
     // TODO: Get actual client token or topic
-    private static final String TOPIC = "test";
     private static final String KEY = "Test Key";
+    private static final String DATA = "Test Data";
 
     private final Logger log = LoggerFactory.getLogger(FirebaseNotificationService.class);
 
@@ -30,21 +30,21 @@ public class FirebaseNotificationService implements NotificationService {
      *
      * In the POC phase all messages are sent to the pre-configured "test" topic.
      *
-     * @param message
+     * @param token
      * @throws Exception
      */
     @Override
-    public void send(String message) throws Exception {
+    public void send(String token) throws Exception {
 
 
         final Notification notification = Notification.builder()
-                .setTitle("This is a test title")
-                .setBody("This is a reasonableBody")
+                .setTitle("Title")
+                .setBody("Body with a text that can be a tiny bit longer. ")
                 .build();
 
         final Message firebaseMessage = Message.builder()
-                .putData(KEY, message)
-                .setTopic(TOPIC)
+                .putData(KEY, DATA)
+                .setToken(token)
                 .setNotification(notification)
                 .build();
 
