@@ -38,8 +38,8 @@ public class FirebaseNotificationService implements NotificationService {
 
 
         final Notification notification = Notification.builder()
-                .setTitle("Title")
-                .setBody("Body with a text that can be a tiny bit longer. ")
+                .setTitle("Notification Title")
+                .setBody("This notification was sent from the cloud service using Firebase Messaging")
                 .build();
 
         final Message firebaseMessage = Message.builder()

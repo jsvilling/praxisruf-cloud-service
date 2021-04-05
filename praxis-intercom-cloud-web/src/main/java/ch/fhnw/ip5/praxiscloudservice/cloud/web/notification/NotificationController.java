@@ -22,7 +22,7 @@ public class NotificationController {
     }
 
     @PostMapping("/send")
-    @CrossOrigin("http://localhost:5000")
+    @CrossOrigin
     public void sendNotification(@RequestBody String token) throws Exception {
         notificationService.send(token);
     }
