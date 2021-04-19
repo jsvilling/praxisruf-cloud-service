@@ -11,4 +11,4 @@ phases:
 artifacts:
   files:
     - build/libs/praxis-intercom-cloud-app-0.0.1-SNAPSHOT.jar
-  discard-paths: yesregistration und what not
+  discard-paths: yes
