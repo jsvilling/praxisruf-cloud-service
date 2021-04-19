@@ -16,9 +16,11 @@ dependencies {
     // Spring
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
-    // Swagger
-    implementation 'io.springfox:springfox-boot-starter:3.0.0'
-    implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+    // Firebase
+    implementation 'com.google.firebase:firebase-admin:7.1.1'
+
+    // Internal
+    implementation project(':praxis-intercom-cloud-web')
 
     // Testing
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

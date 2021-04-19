@@ -1,11 +1,11 @@
-package ch.fhnw.ip5.praxiscloudservice.cloud;
+package ch.fhnw.ip5.praxiscloudservice.cloud.web.hello;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/praxis/hello")
+@RequestMapping("/hello")
 public class HelloPraxisController {
 
     private static final String HELLO_PRAXIS = "Hello Praxis";
