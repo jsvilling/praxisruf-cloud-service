@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class FirebaseNotificationService implements NotificationService {
 
-    // TODO: Get actual client token or topic
     private static final String KEY = "Test Key";
     private static final String DATA = "Test Data";
 
@@ -35,7 +34,6 @@ public class FirebaseNotificationService implements NotificationService {
      */
     @Override
     public void send(String token) throws Exception {
-
 
         final Notification notification = Notification.builder()
                 .setTitle("Notification Title")
