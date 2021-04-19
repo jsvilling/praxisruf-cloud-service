@@ -16,4 +16,3 @@ out/
 
 ### VS Code ###
 .vscode/
-/praxis-intercom-cloud-notification/src/main/resources/*.json
