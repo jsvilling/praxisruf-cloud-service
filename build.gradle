@@ -37,6 +37,14 @@ test {
     useJUnitPlatform()
 }
 
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
+
 defaultTasks 'praxis-intercom-cloud-web:clean',
         'praxis-intercom-cloud-web:build',
         'praxis-intercom-cloud-notification:clean',
