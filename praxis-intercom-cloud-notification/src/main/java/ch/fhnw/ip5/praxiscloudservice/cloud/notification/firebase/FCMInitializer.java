@@ -6,9 +6,11 @@ import com.google.firebase.FirebaseOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
 import javax.annotation.PostConstruct;
 import java.io.FileInputStream;
+import java.io.InputStream;
 
 /**
  * This Service initializes the connection to FireBaseMessaging.
@@ -16,7 +18,7 @@ import java.io.FileInputStream;
 @Service
 public class FCMInitializer {
 
-    private final String fireBaseConfigPath = "/home/joshua/FHNW/dev/IP5/IP5-praxis-cloud-service/praxis-intercom-cloud-notification/src/main/resources/ip5-praxis-intercom-firebase-adminsdk-6yqtg-e7785a21bd.json";
+    private final String fireBaseConfigPath = "classpath:firebase_config.json";
 
     private final Logger log = LoggerFactory.getLogger(FCMInitializer.class);
 
@@ -29,9 +31,8 @@ public class FCMInitializer {
         log.info("Firebase Connection initialized");
     }
 
-
     private GoogleCredentials getCredentialStream() throws Exception {
-        final FileInputStream credentialsInputStream = new FileInputStream(fireBaseConfigPath);
+        final InputStream credentialsInputStream = getClass().getClassLoader().getResourceAsStream(fireBaseConfigPath);;
         return GoogleCredentials.fromStream(credentialsInputStream);
     }
 
