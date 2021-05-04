@@ -31,9 +31,8 @@ public class FCMInitializer {
         log.info("Firebase Connection initialized");
     }
 
-
     private GoogleCredentials getCredentialStream() throws Exception {
-        final InputStream credentialsInputStream = new FileInputStream(ResourceUtils.getFile(fireBaseConfigPath));
+        final InputStream credentialsInputStream = getClass().getClassLoader().getResourceAsStream(fireBaseConfigPath);;
         return GoogleCredentials.fromStream(credentialsInputStream);
     }
 
