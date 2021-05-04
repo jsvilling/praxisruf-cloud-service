@@ -16,6 +16,7 @@ dependencies {
     // Internal Modules
     implementation runtimeOnly(project(':praxis-intercom-cloud-web'))
     implementation runtimeOnly(project(':praxis-intercom-cloud-notification'))
+    implementation runtimeOnly(project(':praxis-intercom-cloud-configuration'))
 
     // Spring
     implementation 'org.springframework.boot:spring-boot-starter-web'
