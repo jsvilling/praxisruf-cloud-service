@@ -9,4 +9,6 @@ public interface NotificationService {
 
     void send(String token) throws Exception;
 
+    void sendAll() throws Exception;
+
 }

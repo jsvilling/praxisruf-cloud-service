@@ -26,4 +26,10 @@ public class NotificationController {
     public void sendNotification(@RequestBody String token) throws Exception {
         notificationService.send(token);
     }
+
+    @PostMapping("/send")
+    public void sendNotification() throws Exception {
+        notificationService.sendAll();
+    }
+
 }

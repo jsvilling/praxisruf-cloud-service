@@ -8,6 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * This service implements the NotificationService interface and is used to send Messages to client devices.
  *
@@ -50,4 +53,17 @@ public class FirebaseNotificationService implements NotificationService {
 
         log.info("Success: Message {} was sent.", response);
     }
+
+    @Override
+    public void sendAll() throws Exception {
+        for (String fcmToken : getAllKnownFcmTokens()) {
+            send(fcmToken);
+        }
+    }
+
+    private Set<String> getAllKnownFcmTokens() {
+        // TODO: Call Configuration rest endpoint to get configuration list
+        return new HashSet<>();
+    }
+
 }
