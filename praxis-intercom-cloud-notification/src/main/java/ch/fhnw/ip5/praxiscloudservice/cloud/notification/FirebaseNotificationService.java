@@ -7,9 +7,7 @@ import com.google.firebase.messaging.Notification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import java.util.HashSet;
-import java.util.Set;
+import org.springframework.web.reactive.function.client.WebClient;
 
 /**
  * This service implements the NotificationService interface and is used to send Messages to client devices.
@@ -26,6 +24,12 @@ public class FirebaseNotificationService implements NotificationService {
     private static final String DATA = "Test Data";
 
     private final Logger log = LoggerFactory.getLogger(FirebaseNotificationService.class);
+
+    private final WebClient webClient;
+
+    public FirebaseNotificationService(WebClient.Builder webClientBuilder) {
+        this.webClient = webClientBuilder.baseUrl("http://example.org").build();
+    }
 
     /**
      * Sends a Firebase Message with the given message String as data.
@@ -61,9 +65,13 @@ public class FirebaseNotificationService implements NotificationService {
         }
     }
 
-    private Set<String> getAllKnownFcmTokens() {
-        // TODO: Call Configuration rest endpoint to get configuration list
-        return new HashSet<>();
+    public String[] getAllKnownFcmTokens() {
+        return this.webClient.get()
+                .uri("/configuration/registration/tokens")
+                .retrieve()
+                .bodyToMono(String[].class)
+                .block();
+        // This makes using the reactive webclient rather pointless.
+        // We should think about how we want to handle rest clients in general.
     }
-
 }

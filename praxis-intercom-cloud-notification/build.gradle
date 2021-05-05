@@ -15,6 +15,7 @@ repositories {
 dependencies {
     // Spring
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
     // Firebase
     implementation 'com.google.firebase:firebase-admin:7.1.1'

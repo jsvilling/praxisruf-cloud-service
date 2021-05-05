@@ -16,6 +16,9 @@ dependencies {
     // Spring
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
+    // Firebase
+    implementation 'com.google.firebase:firebase-admin:7.1.1'
+
     // Internal
     implementation project(':praxis-intercom-cloud-web')
 
