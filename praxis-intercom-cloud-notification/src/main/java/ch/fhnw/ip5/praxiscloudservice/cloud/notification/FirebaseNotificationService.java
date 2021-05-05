@@ -36,7 +36,7 @@ public class FirebaseNotificationService implements NotificationService {
      *
      * In the POC phase all messages are sent to the pre-configured "test" topic.
      *
-     * @param token
+     * @param token - fcm token of the target client
      * @throws Exception
      */
     @Override
@@ -58,6 +58,13 @@ public class FirebaseNotificationService implements NotificationService {
         log.info("Success: Message {} was sent.", response);
     }
 
+    /**
+     * Finds all registered clients and sends a test notification to each client.
+     *
+     * Sending the notification is done via FirebaseNotificationService#send.
+     *
+     * @throws Exception
+     */
     @Override
     public void sendAll() throws Exception {
         for (String fcmToken : getAllKnownFcmTokens()) {
@@ -65,6 +72,10 @@ public class FirebaseNotificationService implements NotificationService {
         }
     }
 
+    /**
+     * Makes a call to the configuration endpoint to find all registered fcm tokens.
+     * @return String[] - All registered tokens.
+     */
     public String[] getAllKnownFcmTokens() {
         return this.webClient.get()
                 .uri("/configuration/registration/tokens")
