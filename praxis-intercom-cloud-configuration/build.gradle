@@ -15,6 +15,10 @@ repositories {
 dependencies {
     // Spring
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // Persistence
+    implementation("org.postgresql:postgresql")
 
     // Firebase
     implementation 'com.google.firebase:firebase-admin:7.1.1'

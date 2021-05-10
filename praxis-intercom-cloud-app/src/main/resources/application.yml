@@ -2,3 +2,15 @@ server:
   servlet:
     context-path: "/praxis-intercom"
   port: 5000
+
+spring:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    platform: postgres
+    username: admin
+    password: secret
