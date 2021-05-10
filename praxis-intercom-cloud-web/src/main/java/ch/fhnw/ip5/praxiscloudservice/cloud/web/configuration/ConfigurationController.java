@@ -24,4 +24,9 @@ public class ConfigurationController {
         return configurationService.getAllKnownTokens();
     }
 
+    @DeleteMapping("/registration")
+    public void unregister(String clientId) {
+
+    }
+
 }

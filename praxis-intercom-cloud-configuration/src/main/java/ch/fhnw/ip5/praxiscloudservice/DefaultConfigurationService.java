@@ -22,6 +22,11 @@ public class DefaultConfigurationService implements ConfigurationService {
     }
 
     @Override
+    public void unregister(String clientId) {
+        registrationRepository.deleteById(clientId);
+    }
+
+    @Override
     public Set<String> getAllKnownTokens() {
         return registrationRepository.findAll()
                 .stream()

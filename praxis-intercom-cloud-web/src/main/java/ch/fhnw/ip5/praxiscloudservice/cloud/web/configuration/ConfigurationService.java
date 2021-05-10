@@ -11,6 +11,8 @@ public interface ConfigurationService {
 
     void register(String clientId, String fcmToken);
 
+    void unregister(String clientId);
+
     Set<String> getAllKnownTokens();
 
 }
