@@ -23,7 +23,7 @@ public class DefaultConfigurationService implements ConfigurationService {
 
     @Override
     public Set<String> getAllKnownTokens() {
-        return registrationRepository.getAll()
+        return registrationRepository.findAll()
                 .stream()
                 .map(Registration::getFcmToken)
                 .collect(Collectors.toSet());

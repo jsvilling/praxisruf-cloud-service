@@ -1,9 +1,20 @@
 package ch.fhnw.ip5.praxiscloudservice;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Registration {
 
-    private final String clientId;
-    private final String fcmToken;
+    @Id
+    private String clientId;
+    private String fcmToken;
+
+    /**
+     * This no args constructor is required for JPA.
+     * This should never be used explicitly.
+     */
+    protected Registration() { }
 
     public Registration(String clientId, String fcmToken) {
         this.clientId = clientId;

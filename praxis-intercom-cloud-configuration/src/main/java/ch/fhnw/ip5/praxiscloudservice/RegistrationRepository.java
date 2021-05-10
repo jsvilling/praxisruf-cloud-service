@@ -1,10 +1,12 @@
 package ch.fhnw.ip5.praxiscloudservice;
 
-import java.util.Set;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RegistrationRepository {
+import java.util.List;
 
-    Set<Registration> getAll();
+public interface RegistrationRepository extends JpaRepository<Registration, String> {
+
+    List<Registration> findAll();
 
     Registration save(Registration registration);
 
