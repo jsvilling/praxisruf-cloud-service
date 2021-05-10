@@ -12,5 +12,3 @@ spring:
       ddl-auto: update
   datasource:
     platform: postgres
-    username: admin
-    password: secret
