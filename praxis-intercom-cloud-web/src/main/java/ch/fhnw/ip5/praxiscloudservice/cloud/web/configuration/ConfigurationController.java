@@ -26,7 +26,7 @@ public class ConfigurationController {
 
     @DeleteMapping("/registration")
     public void unregister(String clientId) {
-
+        configurationService.unregister(clientId);
     }
 
 }
