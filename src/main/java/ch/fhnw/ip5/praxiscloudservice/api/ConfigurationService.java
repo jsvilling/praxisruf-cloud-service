@@ -20,4 +20,6 @@ public interface ConfigurationService {
 
     Set<Pair<String, UUID>> findAvailableClientConfigurations(UUID userId);
 
+    void createClientConfiguration(UUID userId, UUID clientId, String name);
+
 }

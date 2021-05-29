@@ -21,6 +21,7 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
 
     static {
         ERROR_CODE_HTTP_STATUS_MAP.put(ErrorCode.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
+        ERROR_CODE_HTTP_STATUS_MAP.put(ErrorCode.CLIENT_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(PraxisIntercomException.class)

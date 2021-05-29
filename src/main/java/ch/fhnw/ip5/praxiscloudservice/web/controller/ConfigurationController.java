@@ -21,13 +21,17 @@ public class ConfigurationController {
     }
 
     /**
-     *
-     * @param userId
+     * @param userId - TODO: Move to http header.
      * @return Set of key value pairs where each entry consists of (clientName, clientId)
      */
-    @GetMapping("/clients")
+    @GetMapping("/client-configuration")
     public Set<Pair<String, UUID>> getAvailableClients(UUID userId) {
         return configurationService.findAvailableClientConfigurations(userId);
+    }
+
+    @PostMapping("/client-configuration")
+    public void createClientConfiguration(UUID userId, UUID clientId, String name) {
+        configurationService.createClientConfiguration(userId, clientId, name);
     }
 
     @PostMapping("/registration")
