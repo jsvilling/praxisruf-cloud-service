@@ -13,16 +13,16 @@ repositories {
 }
 
 dependencies {
-    // Internal Modules
-    implementation project('praxis-intercom-cloud-web')
-    implementation project('praxis-intercom-cloud-notification')
-    implementation project('praxis-intercom-cloud-app')
+    // Spring
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // Persistence
+    implementation("org.postgresql:postgresql")
 
     // Firebase
     implementation 'com.google.firebase:firebase-admin:7.1.1'
-
-    // Spring
-    implementation 'org.springframework.boot:spring-boot-starter-web'
 
     // Swagger
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
@@ -38,16 +38,5 @@ test {
 }
 
 bootJar {
-    enabled = false
-}
-
-jar {
     enabled = true
 }
-
-defaultTasks 'praxis-intercom-cloud-web:clean',
-        'praxis-intercom-cloud-web:build',
-        'praxis-intercom-cloud-notification:clean',
-        'praxis-intercom-cloud-notification:build',
-        'praxis-intercom-cloud-app:clean',
-        'praxis-intercom-cloud-app:build'

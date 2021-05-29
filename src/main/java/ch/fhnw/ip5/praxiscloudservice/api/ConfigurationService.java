@@ -1,0 +1,18 @@
+package ch.fhnw.ip5.praxiscloudservice.api;
+
+import java.util.Set;
+
+/**
+ * This interface specifies contracts retrieving the configuration of client devices.
+ *
+ * @author J. Villing
+ */
+public interface ConfigurationService {
+
+    void register(String clientId, String fcmToken);
+
+    void unregister(String clientId);
+
+    Set<String> getAllKnownTokens();
+
+}
