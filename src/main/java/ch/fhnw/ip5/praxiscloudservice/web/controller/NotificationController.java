@@ -1,6 +1,7 @@
 package ch.fhnw.ip5.praxiscloudservice.web.controller;
 
 import ch.fhnw.ip5.praxiscloudservice.api.NotificationService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,14 +14,10 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/notifications")
+@AllArgsConstructor
 public class NotificationController {
 
     private final NotificationService notificationService;
-
-    @Autowired
-    public NotificationController(NotificationService notificationService) {
-        this.notificationService = notificationService;
-    }
 
     @PostMapping("/send")
     @CrossOrigin
