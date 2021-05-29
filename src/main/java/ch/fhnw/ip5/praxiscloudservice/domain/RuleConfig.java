@@ -11,6 +11,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.util.UUID;
 
+/**
+ * A RuleConfig contains the parameterized values that can be used to evaluate a Notification Rule in the Rules engine.
+ *
+ * The {@link RuleType} of a RuleConfig determines what content must be stored in the value field of a RuleConfig.
+ * There is no enforcement of those rules on the persistence layer.
+ *
+ */
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // for JPA

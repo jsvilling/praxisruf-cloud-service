@@ -11,6 +11,10 @@ import javax.persistence.OneToMany;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * The ClientConfiguration contains all information needed to determine which Notifications should be sent
+ * to a specific client.
+ */
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // for JPA

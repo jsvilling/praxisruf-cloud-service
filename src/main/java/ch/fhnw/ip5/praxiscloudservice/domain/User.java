@@ -6,6 +6,12 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.UUID;
 
+/**
+ * Represents a user.
+ *
+ * Note: This is only a thin placeholder.
+ *
+ */
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // for JPA
