@@ -1,9 +1,6 @@
 package ch.fhnw.ip5.praxiscloudservice.domain;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -13,10 +10,13 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // for JPA
 @Getter
-public class Registration {
+public class Client {
 
     @Id
-    private UUID clientId;
+    private UUID id;
 
-    private String fcmToken;
+    private String name;
+
+    private UUID userId;
+
 }
