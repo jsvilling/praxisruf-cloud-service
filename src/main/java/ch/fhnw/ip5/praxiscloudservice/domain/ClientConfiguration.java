@@ -5,9 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.Set;
 import java.util.UUID;
 
@@ -26,7 +24,9 @@ public class ClientConfiguration {
 
     private String name;
 
-    private UUID clientId;
+    @OneToOne
+    @JoinColumn(name = "clientId")
+    private Client client;
 
     @OneToMany(mappedBy = "clientConfiguration")
     private Set<RuleConfig> rules;

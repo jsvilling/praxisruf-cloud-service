@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import java.util.UUID;
 
 /**
@@ -20,10 +21,13 @@ import java.util.UUID;
 public class Client {
 
     @Id
-    private UUID id;
+    private UUID clientId;
 
     private String name;
 
     private UUID userId;
+
+    @OneToOne(mappedBy = "client")
+    private ClientConfiguration clientConfiguration;
 
 }

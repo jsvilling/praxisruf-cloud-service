@@ -1,5 +1,7 @@
 package ch.fhnw.ip5.praxiscloudservice.api;
 
+import org.springframework.data.util.Pair;
+
 import java.util.Set;
 import java.util.UUID;
 
@@ -15,5 +17,7 @@ public interface ConfigurationService {
     void unregister(UUID clientId);
 
     Set<String> getAllKnownTokens();
+
+    Set<Pair<String, UUID>> findAvailableClientConfigurations(UUID userId);
 
 }
