@@ -4,6 +4,7 @@ import ch.fhnw.ip5.praxiscloudservice.api.ConfigurationService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/configuration")
@@ -16,7 +17,7 @@ public class ConfigurationController {
     }
 
     @PostMapping("/registration")
-    public void register(String clientId, String fcmToken) {
+    public void register(UUID clientId, String fcmToken) {
         configurationService.register(clientId, fcmToken);
     }
 
@@ -26,7 +27,7 @@ public class ConfigurationController {
     }
 
     @DeleteMapping("/registration")
-    public void unregister(String clientId) {
+    public void unregister(UUID clientId) {
         configurationService.unregister(clientId);
     }
 

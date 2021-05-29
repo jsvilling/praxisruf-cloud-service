@@ -2,12 +2,13 @@ package ch.fhnw.ip5.praxiscloudservice.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.UUID;
 
 @Entity
 public class Registration {
 
     @Id
-    private String clientId;
+    private UUID clientId;
     private String fcmToken;
 
     /**
@@ -16,12 +17,12 @@ public class Registration {
      */
     protected Registration() { }
 
-    public Registration(String clientId, String fcmToken) {
+    public Registration(UUID clientId, String fcmToken) {
         this.clientId = clientId;
         this.fcmToken = fcmToken;
     }
 
-    public String getClientId() {
+    public UUID getClientId() {
         return clientId;
     }
 

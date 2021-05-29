@@ -1,6 +1,7 @@
 package ch.fhnw.ip5.praxiscloudservice.api;
 
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * This interface specifies contracts retrieving the configuration of client devices.
@@ -9,9 +10,9 @@ import java.util.Set;
  */
 public interface ConfigurationService {
 
-    void register(String clientId, String fcmToken);
+    void register(UUID clientId, String fcmToken);
 
-    void unregister(String clientId);
+    void unregister(UUID clientId);
 
     Set<String> getAllKnownTokens();
 
