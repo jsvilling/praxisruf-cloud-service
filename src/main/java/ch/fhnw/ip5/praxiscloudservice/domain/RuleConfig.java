@@ -18,13 +18,13 @@ import java.util.UUID;
 public class RuleConfig {
 
     @Id
-    private UUID id;
+    private UUID ruleConfigId;
 
     private RuleType type;
 
     private String value;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "clientConfigurationId")
     private ClientConfiguration clientConfiguration;
 }

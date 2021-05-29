@@ -18,7 +18,7 @@ import java.util.UUID;
 public class ClientConfiguration {
 
     @Id
-    private UUID id;
+    private UUID clientConfigurationId;
 
     private String name;
 
