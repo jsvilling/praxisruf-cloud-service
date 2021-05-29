@@ -6,8 +6,10 @@ import com.google.firebase.FirebaseOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
 import javax.annotation.PostConstruct;
+import java.io.FileInputStream;
 import java.io.InputStream;
 
 /**
@@ -16,7 +18,7 @@ import java.io.InputStream;
 @Service
 public class FCMInitializer {
 
-    private static final String FIREBASE_CONFIG_PATH = "classpath:firebase_config.json";
+    private static final String FIREBASE_CONFIG_PATH = "/home/joshua/FHNW/dev/IP5/IP5-praxis-cloud-service/praxis-intercom-cloud-notification/src/main/resources/firebase_config.json";
     private final Logger log = LoggerFactory.getLogger(FCMInitializer.class);
 
     @PostConstruct
@@ -29,7 +31,8 @@ public class FCMInitializer {
     }
 
     private GoogleCredentials getCredentialStream() throws Exception {
-        final InputStream credentialsInputStream = getClass().getClassLoader().getResourceAsStream(FIREBASE_CONFIG_PATH);;
+        //final InputStream credentialsInputStream = getClass().getClassLoader().getResourceAsStream(FIREBASE_CONFIG_PATH);
+        final InputStream credentialsInputStream = new FileInputStream(ResourceUtils.getFile(FIREBASE_CONFIG_PATH));
         return GoogleCredentials.fromStream(credentialsInputStream);
     }
 
