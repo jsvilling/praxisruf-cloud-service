@@ -29,5 +29,5 @@ public class ClientConfiguration {
     private Client client;
 
     @OneToMany(mappedBy = "clientConfiguration")
-    private Set<RuleConfig> rules;
+    private Set<RuleParameters> rules;
 }

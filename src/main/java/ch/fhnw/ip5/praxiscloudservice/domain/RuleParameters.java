@@ -19,7 +19,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // for JPA
 @Getter
-public class RuleConfig {
+public class RuleParameters {
 
     @Id
     private UUID ruleConfigId;
