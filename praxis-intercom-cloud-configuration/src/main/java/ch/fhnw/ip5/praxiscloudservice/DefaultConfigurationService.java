@@ -1,12 +1,12 @@
 package ch.fhnw.ip5.praxiscloudservice;
 
 import ch.fhnw.ip5.praxiscloudservice.cloud.web.configuration.ConfigurationService;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Component
+@Service
 public class DefaultConfigurationService implements ConfigurationService {
 
     private final RegistrationRepository registrationRepository;
