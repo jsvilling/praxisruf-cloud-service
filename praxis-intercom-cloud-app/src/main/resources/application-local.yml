@@ -1,5 +1,5 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/intercom_configuration_db_local?currentSchema=public
+    url: jdbc:postgresql://localhost:5433/intercom_configuration_db_local
     username: admin
     password: secret
