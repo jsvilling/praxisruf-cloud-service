@@ -12,6 +12,4 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     Optional<User> findByName(String name);
 
-    void deleteByName();
-
 }
