@@ -1,11 +1,9 @@
 package ch.fhnw.ip5.praxiscloudservice.web.controller;
 
 import ch.fhnw.ip5.praxiscloudservice.api.NotificationService;
+import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 /**
  * Controller for sending notifications.
@@ -20,6 +18,11 @@ import java.util.UUID;
 public class NotificationController {
 
     private final NotificationService notificationService;
+
+    @PostMapping("/send")
+    public void sendNotification(@RequestBody PraxisNotification notification) {
+
+    }
 
     @PostMapping("/send")
     @CrossOrigin

@@ -9,4 +9,9 @@ public class PraxisIntercomException extends RuntimeException {
 
     private final ErrorCode errorCode;
 
+    public PraxisIntercomException(ErrorCode errorCode, Throwable cause) {
+        super(cause);
+        this.errorCode = errorCode;
+    }
+
 }

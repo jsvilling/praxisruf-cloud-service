@@ -1,13 +1,21 @@
 package ch.fhnw.ip5.praxiscloudservice.service;
 
 import ch.fhnw.ip5.praxiscloudservice.api.NotificationService;
+import ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode;
+import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
+import ch.fhnw.ip5.praxiscloudservice.domain.NotificationType;
+import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
+import ch.fhnw.ip5.praxiscloudservice.persistence.NotificationTypeRepository;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.Arrays;
 
 /**
  * This service implements the NotificationService interface and is used to send Messages to client devices.
@@ -26,9 +34,45 @@ public class FirebaseNotificationService implements NotificationService {
     private final Logger log = LoggerFactory.getLogger(FirebaseNotificationService.class);
 
     private final WebClient webClient;
+    private final NotificationTypeRepository notificationTypeRepository;
 
-    public FirebaseNotificationService(WebClient.Builder webClientBuilder) {
+    public FirebaseNotificationService(WebClient.Builder webClientBuilder, NotificationTypeRepository notificationTypeRepository) {
         this.webClient = webClientBuilder.baseUrl("http://example.org").build();
+        this.notificationTypeRepository = notificationTypeRepository;
+    }
+
+    /**
+     * Sends a Firebase Message for each client that has an applicable rule
+     *
+     * @param notification
+     */
+    @Override
+    public void send(PraxisNotification notification) {
+
+        final NotificationType notificationType = notificationTypeRepository.findById(notification.getNotificationTypeId())
+                .orElseThrow(() -> new PraxisIntercomException(ErrorCode.INVALID_NOTIFICATION_TYPE));
+
+        final Notification firebaseNotification = Notification.builder()
+                .setTitle(notificationType.getTitle())
+                .setBody(notificationType.getBody())
+                .build();
+
+        Arrays.stream(getAllRelevantFcmTokens(notification))
+                .map(n -> {
+                    return Notification.builder()
+                            .setTitle(notificationType.getTitle())
+                            .setBody(notificationType.getBody())
+                            .build();
+                }).map(n -> {
+                    return Message.builder()
+                            .setToken("")
+                            .setNotification(firebaseNotification)
+                            .build();
+        }).forEach(m -> {
+            // TODO: Do not break if only one is invalid
+            final String response = send(m);
+            log.info("Success: Message {} was sent.", response);
+        });
     }
 
     /**
@@ -40,7 +84,7 @@ public class FirebaseNotificationService implements NotificationService {
      * package ch.fhnw.ip5.praxiscloudservice.cloud@throws Exception
      */
     @Override
-    public void send(String token) throws Exception {
+    public void send(String token) {
 
         final Notification notification = Notification.builder()
                 .setTitle("Notification Title")
@@ -53,9 +97,17 @@ public class FirebaseNotificationService implements NotificationService {
                 .setNotification(notification)
                 .build();
 
-        final String response = FirebaseMessaging.getInstance().send(firebaseMessage);
+        final String response = send(firebaseMessage);
 
         log.info("Success: Message {} was sent.", response);
+    }
+
+    private String send(Message firebaseMessage) {
+        try {
+            return FirebaseMessaging.getInstance().send(firebaseMessage);
+        } catch (FirebaseMessagingException e) {
+            throw new PraxisIntercomException(ErrorCode.FCM_ERROR);
+        }
     }
 
     /**
@@ -66,7 +118,7 @@ public class FirebaseNotificationService implements NotificationService {
      * @throws Exception
      */
     @Override
-    public void sendAll() throws Exception {
+    public void sendAll() {
         for (String fcmToken : getAllKnownFcmTokens()) {
             send(fcmToken);
         }
@@ -82,7 +134,13 @@ public class FirebaseNotificationService implements NotificationService {
                 .retrieve()
                 .bodyToMono(String[].class)
                 .block();
-        // This makes using the reactive webclient rather pointless.
-        // We should think about how we want to handle rest clients in general.
+    }
+
+    public String[] getAllRelevantFcmTokens(PraxisNotification notification) {
+        return this.webClient.get()
+                .uri("/configuration/registration/tokens")
+                .retrieve()
+                .bodyToMono(String[].class)
+                .block();
     }
 }

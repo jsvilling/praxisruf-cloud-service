@@ -1,5 +1,7 @@
 package ch.fhnw.ip5.praxiscloudservice.api;
 
+import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
+
 /**
  * This interface specifies contracts for sending messages to client devices.
  *
@@ -7,8 +9,10 @@ package ch.fhnw.ip5.praxiscloudservice.api;
  */
 public interface NotificationService {
 
-    void send(String token) throws Exception;
+    void send(PraxisNotification notification);
 
-    void sendAll() throws Exception;
+    void send(String token);
+
+    void sendAll();
 
 }

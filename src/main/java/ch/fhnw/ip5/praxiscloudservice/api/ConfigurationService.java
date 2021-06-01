@@ -1,5 +1,6 @@
 package ch.fhnw.ip5.praxiscloudservice.api;
 
+import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
 import org.springframework.data.util.Pair;
 
 import java.util.Set;
@@ -17,6 +18,8 @@ public interface ConfigurationService {
     void unregister(UUID clientId);
 
     Set<String> getAllKnownTokens();
+
+    Set<String> findAllRelevantTokens(PraxisNotification notification);
 
     Set<Pair<String, UUID>> findAvailableClientConfigurations(UUID userId);
 

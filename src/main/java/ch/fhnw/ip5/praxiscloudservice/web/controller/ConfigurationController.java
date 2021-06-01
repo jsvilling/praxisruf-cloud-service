@@ -1,6 +1,7 @@
 package ch.fhnw.ip5.praxiscloudservice.web.controller;
 
 import ch.fhnw.ip5.praxiscloudservice.api.ConfigurationService;
+import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
 import lombok.AllArgsConstructor;
 import org.springframework.data.util.Pair;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,12 @@ import java.util.UUID;
 public class ConfigurationController {
 
     private final ConfigurationService configurationService;
+
+    @GetMapping("/registration/relevant-tokens/")
+    public Set<String> getAllRelevantTokens(@RequestBody PraxisNotification notification) {
+        return configurationService.getAllKnownTokens();
+    }
+
 
     @GetMapping("/registration/tokens")
     public Set<String> getAllKnownTokens() {
