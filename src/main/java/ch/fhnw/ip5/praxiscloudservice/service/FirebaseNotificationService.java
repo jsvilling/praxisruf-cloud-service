@@ -6,8 +6,7 @@ import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
 import ch.fhnw.ip5.praxiscloudservice.domain.NotificationType;
 import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
 import ch.fhnw.ip5.praxiscloudservice.persistence.NotificationTypeRepository;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingException;
+import ch.fhnw.ip5.praxiscloudservice.service.firebase.FcmIntegrationService;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 import org.slf4j.Logger;
@@ -35,10 +34,12 @@ public class FirebaseNotificationService implements NotificationService {
 
     private final WebClient webClient;
     private final NotificationTypeRepository notificationTypeRepository;
+    private final FcmIntegrationService fcmIntegrationService;
 
-    public FirebaseNotificationService(WebClient.Builder webClientBuilder, NotificationTypeRepository notificationTypeRepository) {
+    public FirebaseNotificationService(WebClient.Builder webClientBuilder, NotificationTypeRepository notificationTypeRepository, FcmIntegrationService fcmIntegrationService) {
         this.webClient = webClientBuilder.baseUrl("http://example.org").build();
         this.notificationTypeRepository = notificationTypeRepository;
+        this.fcmIntegrationService = fcmIntegrationService;
     }
 
     /**
@@ -69,9 +70,7 @@ public class FirebaseNotificationService implements NotificationService {
                             .setNotification(firebaseNotification)
                             .build();
         }).forEach(m -> {
-            // TODO: Do not break if only one is invalid
-            final String response = send(m);
-            log.info("Success: Message {} was sent.", response);
+            fcmIntegrationService.send(m);
         });
     }
 
@@ -97,18 +96,9 @@ public class FirebaseNotificationService implements NotificationService {
                 .setNotification(notification)
                 .build();
 
-        final String response = send(firebaseMessage);
-
-        log.info("Success: Message {} was sent.", response);
+        fcmIntegrationService.send(firebaseMessage);
     }
 
-    private String send(Message firebaseMessage) {
-        try {
-            return FirebaseMessaging.getInstance().send(firebaseMessage);
-        } catch (FirebaseMessagingException e) {
-            throw new PraxisIntercomException(ErrorCode.FCM_ERROR);
-        }
-    }
 
     /**
      * Finds all registered clients and sends a test notification to each client.
