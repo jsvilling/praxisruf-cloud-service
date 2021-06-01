@@ -13,13 +13,18 @@ repositories {
 }
 
 dependencies {
-    // Internal Modules
-    implementation runtimeOnly(project(':praxis-intercom-cloud-web'))
-    implementation runtimeOnly(project(':praxis-intercom-cloud-notification'))
-    implementation runtimeOnly(project(':praxis-intercom-cloud-configuration'))
-
     // Spring
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // Persistence
+    implementation("org.postgresql:postgresql")
+
+    // Firebase
+    implementation 'com.google.firebase:firebase-admin:7.1.1'
+
+    // Internal
+    implementation project(':praxis-intercom-cloud-web')
 
     // Testing
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -28,4 +33,12 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
 }

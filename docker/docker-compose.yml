@@ -1,0 +1,15 @@
+version: '3'
+services:
+  praxis-intercom-db-local:
+    image: postgres
+    container_name: intercom_configuration_db_local
+    ports:
+      - "5433:5432"
+    env_file:
+      - database.env
+    volumes:
+      - praxis-intercom-db-data:/var/lib/postgresql/data/
+
+volumes:
+  praxis-intercom-db-data:
+

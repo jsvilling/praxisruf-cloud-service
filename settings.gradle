@@ -2,4 +2,5 @@ rootProject.name = 'praxis-intercom-cloud-service'
 include 'praxis-intercom-cloud-app'
 include 'praxis-intercom-cloud-web'
 include 'praxis-intercom-cloud-notification'
+include 'praxis-intercom-cloud-configuration'
 
