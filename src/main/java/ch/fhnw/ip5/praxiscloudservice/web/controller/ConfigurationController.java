@@ -30,18 +30,18 @@ public class ConfigurationController {
      * @param userId - TODO: Move to http header.
      * @return Set of key value pairs where each entry consists of (clientName, clientId)
      */
-    @GetMapping("/client-configuration")
-    public Set<Pair<String, UUID>> getAvailableClients(UUID userId) {
-        return configurationService.findAvailableClientConfigurations(userId);
+    @GetMapping("/clients/{userId}")
+    public Set<Pair<String, UUID>> getAvailableClients(@PathVariable("userId") UUID userId) {
+        return configurationService.findAvailableClients(userId);
     }
 
-    @PostMapping("/client-configuration")
-    public void createClientConfiguration(UUID userId, UUID clientId, String name) {
+    @PostMapping("/clients")
+    public void createClientConfiguration(@RequestParam(value="userId") UUID userId, @RequestParam(value="clientId") UUID clientId, @RequestParam(value="name") String name) {
         configurationService.createClientConfiguration(userId, clientId, name);
     }
 
     @PostMapping("/registration")
-    public void register(UUID clientId, String fcmToken) {
+    public void register(@RequestParam(value="clientId") UUID clientId, @RequestParam(value ="fcmToken")  String fcmToken) {
         configurationService.register(clientId, fcmToken);
     }
 

@@ -4,16 +4,20 @@ import ch.fhnw.ip5.praxiscloudservice.api.ConfigurationService;
 import ch.fhnw.ip5.praxiscloudservice.api.RulesEngine;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
-import ch.fhnw.ip5.praxiscloudservice.domain.*;
+import ch.fhnw.ip5.praxiscloudservice.domain.Client;
+import ch.fhnw.ip5.praxiscloudservice.domain.ClientConfiguration;
+import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
+import ch.fhnw.ip5.praxiscloudservice.domain.Registration;
 import ch.fhnw.ip5.praxiscloudservice.persistence.ClientConfigurationRepository;
 import ch.fhnw.ip5.praxiscloudservice.persistence.ClientRepository;
 import ch.fhnw.ip5.praxiscloudservice.persistence.RegistrationRepository;
-import ch.fhnw.ip5.praxiscloudservice.persistence.RuleParametersRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,7 +60,7 @@ public class DefaultConfigurationService implements ConfigurationService {
     }
 
     @Override
-    public Set<Pair<String, UUID>> findAvailableClientConfigurations(UUID userId) {
+    public Set<Pair<String, UUID>> findAvailableClients(UUID userId) {
         return clientRepository.findAllByUserId(userId)
                 .stream()
                 .map(c -> Pair.of(c.getName(), c.getClientId()))

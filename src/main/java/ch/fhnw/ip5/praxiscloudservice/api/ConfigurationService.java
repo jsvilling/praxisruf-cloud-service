@@ -21,7 +21,7 @@ public interface ConfigurationService {
 
     Set<String> findAllRelevantTokens(PraxisNotification notification);
 
-    Set<Pair<String, UUID>> findAvailableClientConfigurations(UUID userId);
+    Set<Pair<String, UUID>> findAvailableClients(UUID userId);
 
     void createClientConfiguration(UUID userId, UUID clientId, String name);
 
