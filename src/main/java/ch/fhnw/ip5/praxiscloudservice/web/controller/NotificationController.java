@@ -21,7 +21,7 @@ public class NotificationController {
 
     @PostMapping("/send")
     public void sendNotification(@RequestBody PraxisNotification notification) {
-
+        notificationService.send(notification);
     }
 
     @PostMapping("/sendTest")
