@@ -9,8 +9,7 @@ import ch.fhnw.ip5.praxiscloudservice.persistence.NotificationTypeRepository;
 import ch.fhnw.ip5.praxiscloudservice.service.firebase.FcmIntegrationService;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -25,19 +24,18 @@ import java.util.Arrays;
  * is used to send a message. This initialisation should happen with FCMInitializer.
  */
 @Service
+@Slf4j
 public class FirebaseNotificationService implements NotificationService {
 
     private static final String KEY = "Test Key";
     private static final String DATA = "Test Data";
-
-    private final Logger log = LoggerFactory.getLogger(FirebaseNotificationService.class);
 
     private final WebClient webClient;
     private final NotificationTypeRepository notificationTypeRepository;
     private final FcmIntegrationService fcmIntegrationService;
 
     public FirebaseNotificationService(WebClient.Builder webClientBuilder, NotificationTypeRepository notificationTypeRepository, FcmIntegrationService fcmIntegrationService) {
-        this.webClient = webClientBuilder.baseUrl("http://example.org").build();
+        this.webClient = webClientBuilder.build();
         this.notificationTypeRepository = notificationTypeRepository;
         this.fcmIntegrationService = fcmIntegrationService;
     }
@@ -69,9 +67,7 @@ public class FirebaseNotificationService implements NotificationService {
                             .setToken("")
                             .setNotification(firebaseNotification)
                             .build();
-        }).forEach(m -> {
-            fcmIntegrationService.send(m);
-        });
+        }).forEach(fcmIntegrationService::send);
     }
 
     /**
@@ -120,15 +116,16 @@ public class FirebaseNotificationService implements NotificationService {
      */
     public String[] getAllKnownFcmTokens() {
         return this.webClient.get()
-                .uri("/configuration/registration/tokens")
+                .uri("/registration/tokens/")
                 .retrieve()
                 .bodyToMono(String[].class)
                 .block();
     }
 
     public String[] getAllRelevantFcmTokens(PraxisNotification notification) {
-        return this.webClient.get()
-                .uri("/configuration/registration/tokens")
+        return this.webClient.post()
+                .uri("/registration/relevant-tokens/")
+                .bodyValue(notification)
                 .retrieve()
                 .bodyToMono(String[].class)
                 .block();

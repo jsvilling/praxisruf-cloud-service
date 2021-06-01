@@ -16,11 +16,10 @@ public class ConfigurationController {
 
     private final ConfigurationService configurationService;
 
-    @GetMapping("/registration/relevant-tokens/")
+    @PostMapping("/registration/relevant-tokens/")
     public Set<String> getAllRelevantTokens(@RequestBody PraxisNotification notification) {
-        return configurationService.getAllKnownTokens();
+        return configurationService.findAllRelevantTokens(notification);
     }
-
 
     @GetMapping("/registration/tokens")
     public Set<String> getAllKnownTokens() {
