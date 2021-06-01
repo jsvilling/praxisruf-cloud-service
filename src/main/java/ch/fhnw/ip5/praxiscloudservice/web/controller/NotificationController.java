@@ -24,7 +24,7 @@ public class NotificationController {
 
     }
 
-    @PostMapping("/send")
+    @PostMapping("/sendTest")
     @CrossOrigin
     public void sendNotification(@RequestBody String token) throws Exception {
         notificationService.send(token);

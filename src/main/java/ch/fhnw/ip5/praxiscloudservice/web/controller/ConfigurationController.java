@@ -16,7 +16,7 @@ public class ConfigurationController {
 
     private final ConfigurationService configurationService;
 
-    @PostMapping("/registration/relevant-tokens/")
+    @PostMapping("/registration/tokens/")
     public Set<String> getAllRelevantTokens(@RequestBody PraxisNotification notification) {
         return configurationService.findAllRelevantTokens(notification);
     }

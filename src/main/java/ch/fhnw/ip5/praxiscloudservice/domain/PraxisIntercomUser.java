@@ -16,7 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // for JPA
 @Getter
-public class User {
+public class PraxisIntercomUser {
 
     @Id
     private UUID id;
