@@ -1,6 +1,7 @@
 package ch.fhnw.ip5.praxiscloudservice.web.controller;
 
 import ch.fhnw.ip5.praxiscloudservice.api.UserService;
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +13,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/auth")
 @AllArgsConstructor
+@Api(tags = "Authentication")
 public class AuthController {
 
     private final UserService userService;

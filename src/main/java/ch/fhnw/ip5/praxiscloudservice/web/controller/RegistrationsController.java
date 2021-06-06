@@ -2,6 +2,7 @@ package ch.fhnw.ip5.praxiscloudservice.web.controller;
 
 import ch.fhnw.ip5.praxiscloudservice.api.ConfigurationService;
 import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +12,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/registrations")
 @AllArgsConstructor
+@Api(tags = "Registration")
 public class RegistrationsController {
 
     private final ConfigurationService configurationService;
