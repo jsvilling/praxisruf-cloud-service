@@ -1,11 +1,14 @@
 package ch.fhnw.ip5.praxiscloudservice.domain;
 
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import java.util.UUID;
+
+import static org.hibernate.annotations.CascadeType.ALL;
 
 /**
  * A Client represents a single client device.
@@ -29,6 +32,7 @@ public class Client {
     private UUID userId;
 
     @OneToOne(mappedBy = "client")
+    @Cascade(ALL)
     private ClientConfiguration clientConfiguration;
 
 }

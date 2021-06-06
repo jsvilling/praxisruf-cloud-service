@@ -1,10 +1,13 @@
 package ch.fhnw.ip5.praxiscloudservice.domain;
 
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.Set;
 import java.util.UUID;
+
+import static org.hibernate.annotations.CascadeType.ALL;
 
 /**
  * The ClientConfiguration contains all information needed to determine which Notifications should be sent
@@ -27,5 +30,6 @@ public class ClientConfiguration {
     private Client client;
 
     @OneToMany(mappedBy = "clientConfiguration")
+    @Cascade(ALL)
     private Set<RuleParameters> rules;
 }

@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -67,17 +68,22 @@ public class DefaultConfigurationService implements ConfigurationService {
     }
 
     @Override
+    @Transactional
     public void createClientConfiguration(ClientConfigurationDto configurationDto) {
         final UUID clientId = configurationDto.getClientId();
         final Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new PraxisIntercomException(ErrorCode.CLIENT_NOT_FOUND));
 
         final ClientConfiguration configuration = ClientConfiguration.builder()
+                .clientConfigurationId(UUID.randomUUID())
                 .name(configurationDto.getName())
+                .client(client)
                 .rules(toRuleParameters(configurationDto.getRuleParameters()))
                 .build();
 
         client.setClientConfiguration(configuration);
+
+        clientRepository.saveAndFlush(client);
     }
 
     private Set<RuleParameters> toRuleParameters(List<RuleParametersDto> dtos) {
