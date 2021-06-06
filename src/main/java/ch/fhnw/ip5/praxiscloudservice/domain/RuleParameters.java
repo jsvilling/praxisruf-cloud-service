@@ -20,7 +20,8 @@ import java.util.UUID;
 public class RuleParameters {
 
     @Id
-    private UUID ruleConfigId;
+    @GeneratedValue
+    private UUID ruleParametersId;
 
     @Enumerated(EnumType.STRING)
     private RuleType type;

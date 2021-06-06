@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import java.util.UUID;
@@ -18,13 +19,15 @@ import static org.hibernate.annotations.CascadeType.ALL;
  *
  */
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // for JPA
+@AllArgsConstructor
+@Builder
 @Getter
 @Setter
 public class Client {
 
     @Id
+    @GeneratedValue
     private UUID clientId;
 
     private String name;

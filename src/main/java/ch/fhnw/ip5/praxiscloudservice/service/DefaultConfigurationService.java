@@ -75,7 +75,6 @@ public class DefaultConfigurationService implements ConfigurationService {
                 .orElseThrow(() -> new PraxisIntercomException(ErrorCode.CLIENT_NOT_FOUND));
 
         final ClientConfiguration configuration = ClientConfiguration.builder()
-                .clientConfigurationId(UUID.randomUUID())
                 .name(configurationDto.getName())
                 .client(client)
                 .rules(toRuleParameters(configurationDto.getRuleParameters()))
@@ -89,7 +88,6 @@ public class DefaultConfigurationService implements ConfigurationService {
     private Set<RuleParameters> toRuleParameters(List<RuleParametersDto> dtos) {
         return dtos.stream().map(dto ->
                 RuleParameters.builder()
-                .ruleConfigId(UUID.randomUUID())
                 .type(dto.getRuleType())
                 .value(dto.getValue())
                 .build())
@@ -99,10 +97,16 @@ public class DefaultConfigurationService implements ConfigurationService {
 
     @Override
     public UUID createClient(UUID userId, String clientName) {
-        final UUID clientId = UUID.randomUUID();
-        final Client client = new Client(clientId, clientName, userId, null);
-        clientRepository.saveAndFlush(client);
-        return clientId;
+        final Client client = Client.builder()
+                .userId(userId)
+                .name(clientName)
+                .build();
+
+        return clientRepository.saveAndFlush(client).getClientId();
+
+
+
+
     }
 
 }

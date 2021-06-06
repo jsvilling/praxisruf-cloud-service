@@ -21,6 +21,7 @@ import static org.hibernate.annotations.CascadeType.ALL;
 public class ClientConfiguration {
 
     @Id
+    @GeneratedValue
     private UUID clientConfigurationId;
 
     private String name;
