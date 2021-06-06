@@ -1,4 +1,4 @@
-package ch.fhnw.ip5.praxiscloudservice.service.rules;
+package ch.fhnw.ip5.praxiscloudservice.service.rulesengine.evaluators;
 
 import ch.fhnw.ip5.praxiscloudservice.api.RuleEvaluator;
 import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.UUID;
 
 @Component
-public class BySenderRuleEvaluator implements RuleEvaluator {
+public class SenderRuleEvaluator implements RuleEvaluator {
 
     @Override
     public RuleType getRelevantType() {

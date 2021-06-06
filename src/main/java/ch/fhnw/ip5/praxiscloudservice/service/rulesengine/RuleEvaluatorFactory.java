@@ -1,4 +1,4 @@
-package ch.fhnw.ip5.praxiscloudservice.service.rules;
+package ch.fhnw.ip5.praxiscloudservice.service.rulesengine;
 
 import ch.fhnw.ip5.praxiscloudservice.api.RuleEvaluator;
 import ch.fhnw.ip5.praxiscloudservice.domain.RuleType;
