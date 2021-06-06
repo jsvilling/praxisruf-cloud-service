@@ -1,6 +1,7 @@
 package ch.fhnw.ip5.praxiscloudservice.web.controller;
 
 import ch.fhnw.ip5.praxiscloudservice.api.ConfigurationService;
+import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientConfigurationDto;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
@@ -19,22 +20,24 @@ public class ClientsController {
     private final ConfigurationService configurationService;
 
     /**
-     * @param userId - TODO: Move to auth http header.
+     * @param userId
      * @return Set of key value pairs where each entry consists of (clientName, clientId)
      */
     @GetMapping
     @Operation(description = "Find all available clients for a given user")
-    public Set<Pair<String, UUID>> getAvailableClients(@RequestParam("userId") UUID userId) {
+    public Set<Pair<String, UUID>> getAvailableClients(@RequestHeader("userId") UUID userId) {
         return configurationService.findAvailableClients(userId);
+    }
+
+    @PostMapping
+    public UUID createClient(@RequestHeader("userId") UUID userId, @RequestParam(value="clientName") String clientName) {
+        return configurationService.createClient(userId, clientName);
     }
 
     @PostMapping("/configuration")
     @Operation(description = "Create a new client configuration")
-    public void createClientConfiguration(
-            @RequestParam(value="userId") UUID userId,
-            @RequestParam(value="clientId") UUID clientId,
-            @RequestParam(value="name") String name) {
-        configurationService.createClientConfiguration(userId, clientId, name);
+    public void createClientConfiguration(@RequestBody ClientConfigurationDto configurationDto) {
+        configurationService.createClientConfiguration(configurationDto);
     }
 
 }

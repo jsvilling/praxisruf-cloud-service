@@ -2,12 +2,11 @@ package ch.fhnw.ip5.praxiscloudservice.service;
 
 import ch.fhnw.ip5.praxiscloudservice.api.ConfigurationService;
 import ch.fhnw.ip5.praxiscloudservice.api.RulesEngine;
+import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientConfigurationDto;
+import ch.fhnw.ip5.praxiscloudservice.api.dto.RuleParametersDto;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
-import ch.fhnw.ip5.praxiscloudservice.domain.Client;
-import ch.fhnw.ip5.praxiscloudservice.domain.ClientConfiguration;
-import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
-import ch.fhnw.ip5.praxiscloudservice.domain.Registration;
+import ch.fhnw.ip5.praxiscloudservice.domain.*;
 import ch.fhnw.ip5.praxiscloudservice.persistence.ClientConfigurationRepository;
 import ch.fhnw.ip5.praxiscloudservice.persistence.ClientRepository;
 import ch.fhnw.ip5.praxiscloudservice.persistence.RegistrationRepository;
@@ -15,7 +14,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -68,18 +67,36 @@ public class DefaultConfigurationService implements ConfigurationService {
     }
 
     @Override
-    public void createClientConfiguration(UUID userId, UUID clientId, String name) {
+    public void createClientConfiguration(ClientConfigurationDto configurationDto) {
+        final UUID clientId = configurationDto.getClientId();
         final Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new PraxisIntercomException(ErrorCode.CLIENT_NOT_FOUND));
 
-        final ClientConfiguration clientConfiguration = new ClientConfiguration(
-                UUID.randomUUID(),
-                name,
-                client,
-                Collections.emptySet()
-        );
+        final ClientConfiguration configuration = ClientConfiguration.builder()
+                .name(configurationDto.getName())
+                .rules(toRuleParameters(configurationDto.getRuleParameters()))
+                .build();
 
-        clientConfigurationRepository.saveAndFlush(clientConfiguration);
+        client.setClientConfiguration(configuration);
+    }
+
+    private Set<RuleParameters> toRuleParameters(List<RuleParametersDto> dtos) {
+        return dtos.stream().map(dto ->
+                RuleParameters.builder()
+                .ruleConfigId(UUID.randomUUID())
+                .type(dto.getRuleType())
+                .value(dto.getValue())
+                .build())
+                .collect(Collectors.toSet());
+    }
+
+
+    @Override
+    public UUID createClient(UUID userId, String clientName) {
+        final UUID clientId = UUID.randomUUID();
+        final Client client = new Client(clientId, clientName, userId, null);
+        clientRepository.saveAndFlush(client);
+        return clientId;
     }
 
 }

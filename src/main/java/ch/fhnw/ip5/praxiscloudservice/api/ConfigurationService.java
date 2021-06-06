@@ -1,5 +1,6 @@
 package ch.fhnw.ip5.praxiscloudservice.api;
 
+import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientConfigurationDto;
 import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
 import org.springframework.data.util.Pair;
 
@@ -23,6 +24,8 @@ public interface ConfigurationService {
 
     Set<Pair<String, UUID>> findAvailableClients(UUID userId);
 
-    void createClientConfiguration(UUID userId, UUID clientId, String name);
+    void createClientConfiguration(ClientConfigurationDto configuratinoDto);
+
+    UUID createClient(UUID userId, String clientName);
 
 }
