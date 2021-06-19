@@ -81,19 +81,17 @@ public class DefaultConfigurationService implements ConfigurationService {
                 .build();
 
         client.setClientConfiguration(configuration);
-
         clientRepository.saveAndFlush(client);
     }
 
     private Set<RuleParameters> toRuleParameters(List<RuleParametersDto> dtos) {
         return dtos.stream().map(dto ->
                 RuleParameters.builder()
-                .type(dto.getRuleType())
-                .value(dto.getValue())
-                .build())
+                        .type(dto.getRuleType())
+                        .value(dto.getValue())
+                        .build())
                 .collect(Collectors.toSet());
     }
-
 
     @Override
     public UUID createClient(UUID userId, String clientName) {
@@ -101,12 +99,7 @@ public class DefaultConfigurationService implements ConfigurationService {
                 .userId(userId)
                 .name(clientName)
                 .build();
-
         return clientRepository.saveAndFlush(client).getClientId();
-
-
-
-
     }
 
 }

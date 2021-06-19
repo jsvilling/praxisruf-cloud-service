@@ -4,7 +4,6 @@ import ch.fhnw.ip5.praxiscloudservice.api.RuleEvaluator;
 import ch.fhnw.ip5.praxiscloudservice.api.RulesEngine;
 import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
 import ch.fhnw.ip5.praxiscloudservice.domain.RuleParameters;
-import ch.fhnw.ip5.praxiscloudservice.persistence.RuleParametersRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +14,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class DefaultRulesEngine implements RulesEngine {
 
-    private final RuleParametersRepository ruleParametersRepository;
     private final RuleEvaluatorFactory ruleEvaluatorFactory;
 
     @Override
