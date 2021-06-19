@@ -10,10 +10,8 @@ import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 
 import javax.annotation.PostConstruct;
-import java.io.FileInputStream;
 import java.io.InputStream;
 
 /**
@@ -35,8 +33,8 @@ public class FcmIntegrationService {
     }
 
     private GoogleCredentials getCredentialStream() throws Exception {
-//        final InputStream credentialsInputStream = getClass().getClassLoader().getResourceAsStream(FIREBASE_CONFIG_PATH);
-        final InputStream credentialsInputStream = new FileInputStream(ResourceUtils.getFile(FIREBASE_CONFIG_PATH));
+        final InputStream credentialsInputStream = getClass().getClassLoader().getResourceAsStream(FIREBASE_CONFIG_PATH);
+//        final InputStream credentialsInputStream = new FileInputStream(ResourceUtils.getFile(FIREBASE_CONFIG_PATH));
         return GoogleCredentials.fromStream(credentialsInputStream);
     }
 
