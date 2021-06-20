@@ -10,5 +10,5 @@ phases:
       - gradle build
 artifacts:
   files:
-    - praxis-intercom-cloud-app/build/libs/praxis-intercom-cloud-app-0.0.1-SNAPSHOT.jar
+    - build/libs/praxis-intercom-cloud-service-0.0.1-SNAPSHOT.jar
   discard-paths: yes
