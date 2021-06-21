@@ -126,6 +126,7 @@ public class DefaultConfigurationService implements ConfigurationService {
     private List<NotificationTypeDto> toNotificationTypeDtos(Collection<NotificationType> notificationTypes) {
         return notificationTypes.stream()
                 .map(type -> NotificationTypeDto.builder()
+                                .notificationTypeId(type.getId())
                                 .body(type.getBody())
                                 .type(type.getType())
                                 .title(type.getTitle())
