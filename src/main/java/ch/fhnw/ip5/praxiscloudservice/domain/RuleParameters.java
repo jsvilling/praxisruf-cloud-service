@@ -27,8 +27,4 @@ public class RuleParameters {
     private RuleType type;
 
     private String value;
-
-    @ManyToOne
-    @JoinColumn(name = "clientConfigurationId")
-    private ClientConfiguration clientConfiguration;
 }
