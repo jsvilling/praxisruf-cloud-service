@@ -11,6 +11,7 @@ import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
 import ch.fhnw.ip5.praxiscloudservice.domain.*;
 import ch.fhnw.ip5.praxiscloudservice.persistence.ClientConfigurationRepository;
 import ch.fhnw.ip5.praxiscloudservice.persistence.ClientRepository;
+import ch.fhnw.ip5.praxiscloudservice.persistence.NotificationTypeRepository;
 import ch.fhnw.ip5.praxiscloudservice.persistence.RegistrationRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ public class DefaultConfigurationService implements ConfigurationService {
     private final RegistrationRepository registrationRepository;
     private final ClientRepository clientRepository;
     private final ClientConfigurationRepository clientConfigurationRepository;
+    private final NotificationTypeRepository notificationTypeRepository;
     private final RulesEngine rulesEngine;
 
     @Override
@@ -118,8 +120,7 @@ public class DefaultConfigurationService implements ConfigurationService {
 
     @Override
     public List<NotificationTypeDto> findNotificationTypesForClient(UUID clientId) {
-        final Client client = clientRepository.findById(clientId).orElseThrow(() -> new PraxisIntercomException(ErrorCode.CLIENT_NOT_FOUND));
-        return toNotificationTypeDtos(client.getClientConfiguration().getNotificationTypes());
+        return toNotificationTypeDtos(notificationTypeRepository.findAll());
     }
 
     private List<NotificationTypeDto> toNotificationTypeDtos(Collection<NotificationType> notificationTypes) {
