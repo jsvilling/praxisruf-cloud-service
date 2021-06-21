@@ -33,4 +33,8 @@ public class ClientConfiguration {
     @OneToMany(mappedBy = "clientConfiguration")
     @Cascade(ALL)
     private Set<RuleParameters> rules;
+
+    @OneToMany(mappedBy = "clientConfiguration")
+    @Cascade(ALL)
+    private Set<NotificationType> notificationTypes;
 }
