@@ -2,11 +2,11 @@ package ch.fhnw.ip5.praxiscloudservice.web.controller;
 
 import ch.fhnw.ip5.praxiscloudservice.api.ConfigurationService;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientConfigurationDto;
+import ch.fhnw.ip5.praxiscloudservice.api.dto.MinimalClientDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.NotificationTypeDto;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
-import org.springframework.data.util.Pair;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,7 +27,7 @@ public class ClientsController {
      */
     @GetMapping
     @Operation(description = "Find all available clients for a given user")
-    public Set<Pair<String, UUID>> getAvailableClients(@RequestHeader("userId") UUID userId) {
+    public Set<MinimalClientDto> getAvailableClients(@RequestHeader("userId") UUID userId) {
         return configurationService.findAvailableClients(userId);
     }
 

@@ -3,6 +3,7 @@ package ch.fhnw.ip5.praxiscloudservice.service;
 import ch.fhnw.ip5.praxiscloudservice.api.ConfigurationService;
 import ch.fhnw.ip5.praxiscloudservice.api.RulesEngine;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientConfigurationDto;
+import ch.fhnw.ip5.praxiscloudservice.api.dto.MinimalClientDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.NotificationTypeDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.RuleParametersDto;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode;
@@ -12,7 +13,6 @@ import ch.fhnw.ip5.praxiscloudservice.persistence.ClientConfigurationRepository;
 import ch.fhnw.ip5.praxiscloudservice.persistence.ClientRepository;
 import ch.fhnw.ip5.praxiscloudservice.persistence.RegistrationRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -62,10 +62,10 @@ public class DefaultConfigurationService implements ConfigurationService {
     }
 
     @Override
-    public Set<Pair<String, UUID>> findAvailableClients(UUID userId) {
+    public Set<MinimalClientDto> findAvailableClients(UUID userId) {
         return clientRepository.findAllByUserId(userId)
                 .stream()
-                .map(c -> Pair.of(c.getName(), c.getClientId()))
+                .map(c -> MinimalClientDto.builder().id(c.getClientId()).name(c.getName()).build())
                 .collect(Collectors.toSet());
     }
 
