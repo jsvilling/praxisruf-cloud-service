@@ -1,13 +1,8 @@
 package ch.fhnw.ip5.praxiscloudservice.domain;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.UUID;
 
 /**
@@ -20,6 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // for JPA
 @Getter
+@Builder
 public class NotificationType {
 
     @Id
@@ -33,4 +29,8 @@ public class NotificationType {
     private String body;
 
     private String type;
+
+    @ManyToOne
+    @JoinColumn(name = "clientConfigurationId")
+    private ClientConfiguration clientConfiguration;
 }

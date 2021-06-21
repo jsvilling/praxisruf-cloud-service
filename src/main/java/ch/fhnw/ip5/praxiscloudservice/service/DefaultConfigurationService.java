@@ -3,6 +3,7 @@ package ch.fhnw.ip5.praxiscloudservice.service;
 import ch.fhnw.ip5.praxiscloudservice.api.ConfigurationService;
 import ch.fhnw.ip5.praxiscloudservice.api.RulesEngine;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientConfigurationDto;
+import ch.fhnw.ip5.praxiscloudservice.api.dto.NotificationTypeDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.RuleParametersDto;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
@@ -15,6 +16,7 @@ import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -78,6 +80,7 @@ public class DefaultConfigurationService implements ConfigurationService {
                 .name(configurationDto.getName())
                 .client(client)
                 .rules(toRuleParameters(configurationDto.getRuleParameters()))
+                .notificationTypes(toNotificationTypes(configurationDto.getNotificationTypes()))
                 .build();
 
         client.setClientConfiguration(configuration);
@@ -93,6 +96,17 @@ public class DefaultConfigurationService implements ConfigurationService {
                 .collect(Collectors.toSet());
     }
 
+    private Set<NotificationType> toNotificationTypes(List<NotificationTypeDto> dtos) {
+        return dtos.stream().map(dto ->
+                NotificationType.builder()
+                .body(dto.getBody())
+                .type(dto.getType())
+                .title(dto.getTitle())
+                .displayText(dto.getDisplayText())
+                .build()
+        ).collect(Collectors.toSet());
+    }
+
     @Override
     public UUID createClient(UUID userId, String clientName) {
         final Client client = Client.builder()
@@ -100,6 +114,23 @@ public class DefaultConfigurationService implements ConfigurationService {
                 .name(clientName)
                 .build();
         return clientRepository.saveAndFlush(client).getClientId();
+    }
+
+    @Override
+    public List<NotificationTypeDto> findNotificationTypesForClient(UUID clientId) {
+        final Client client = clientRepository.findById(clientId).orElseThrow(() -> new PraxisIntercomException(ErrorCode.CLIENT_NOT_FOUND));
+        return toNotificationTypeDtos(client.getClientConfiguration().getNotificationTypes());
+    }
+
+    private List<NotificationTypeDto> toNotificationTypeDtos(Collection<NotificationType> notificationTypes) {
+        return notificationTypes.stream()
+                .map(type -> NotificationTypeDto.builder()
+                                .body(type.getBody())
+                                .type(type.getType())
+                                .title(type.getTitle())
+                                .displayText(type.getDisplayText())
+                                .build()
+                        ).collect(Collectors.toList());
     }
 
 }

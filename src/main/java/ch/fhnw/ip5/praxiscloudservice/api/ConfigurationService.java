@@ -1,9 +1,11 @@
 package ch.fhnw.ip5.praxiscloudservice.api;
 
 import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientConfigurationDto;
+import ch.fhnw.ip5.praxiscloudservice.api.dto.NotificationTypeDto;
 import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
 import org.springframework.data.util.Pair;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -27,5 +29,7 @@ public interface ConfigurationService {
     void createClientConfiguration(ClientConfigurationDto configuratinoDto);
 
     UUID createClient(UUID userId, String clientName);
+
+    List<NotificationTypeDto> findNotificationTypesForClient(UUID clientId);
 
 }
