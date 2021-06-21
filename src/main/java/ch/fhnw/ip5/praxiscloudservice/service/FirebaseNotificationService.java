@@ -35,7 +35,7 @@ public class FirebaseNotificationService implements NotificationService {
     private final FcmIntegrationService fcmIntegrationService;
 
     public FirebaseNotificationService(WebClient.Builder webClientBuilder, NotificationTypeRepository notificationTypeRepository, FcmIntegrationService fcmIntegrationService) {
-        this.webClient = webClientBuilder.baseUrl("http://localhost:5000/praxis-intercom").build();
+        this.webClient = webClientBuilder.baseUrl("https://www.praxisruf.ch/praxis-intercom").build();
         this.notificationTypeRepository = notificationTypeRepository;
         this.fcmIntegrationService = fcmIntegrationService;
     }

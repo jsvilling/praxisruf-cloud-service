@@ -33,13 +33,13 @@ public class NotificationController {
 
     @PostMapping("/sendTest")
     @Operation(description = "Send a test notification to the client with the given token")
-    public void sendNotification(@RequestBody String token) throws Exception {
+    public void sendNotification(@RequestBody String token) {
         notificationService.send(token);
     }
 
     @PostMapping("/sendAll")
     @Operation(description = "Send a test notification to all registered clients")
-    public void sendNotification() throws Exception {
+    public void sendNotification() {
         notificationService.sendAll();
     }
 
