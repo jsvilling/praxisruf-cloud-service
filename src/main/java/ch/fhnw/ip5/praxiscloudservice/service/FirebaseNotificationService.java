@@ -35,7 +35,7 @@ public class FirebaseNotificationService implements NotificationService {
     private final FcmIntegrationService fcmIntegrationService;
 
     public FirebaseNotificationService(WebClient.Builder webClientBuilder, NotificationTypeRepository notificationTypeRepository, FcmIntegrationService fcmIntegrationService) {
-        this.webClient = webClientBuilder.baseUrl("https://www.praxisruf.ch/praxis-intercom").build();
+        this.webClient = webClientBuilder.baseUrl("https://www.praxisruf.ch/praxis-intercom/api").build();
         this.notificationTypeRepository = notificationTypeRepository;
         this.fcmIntegrationService = fcmIntegrationService;
     }
@@ -114,7 +114,7 @@ public class FirebaseNotificationService implements NotificationService {
      */
     public String[] getAllKnownFcmTokens() {
         return this.webClient.get()
-                .uri("/configuration/registration/tokens/")
+                .uri("/registrations/tokens/")
                 .retrieve()
                 .bodyToMono(String[].class)
                 .block();
@@ -122,7 +122,7 @@ public class FirebaseNotificationService implements NotificationService {
 
     public String[] getAllRelevantFcmTokens(PraxisNotification notification) {
         return this.webClient.post()
-                .uri("/configuration/registration/tokens/")
+                .uri("/registrations/tokens/")
                 .bodyValue(notification)
                 .retrieve()
                 .bodyToMono(String[].class)
