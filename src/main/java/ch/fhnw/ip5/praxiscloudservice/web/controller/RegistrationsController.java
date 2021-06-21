@@ -22,7 +22,7 @@ public class RegistrationsController {
         return configurationService.getAllKnownTokens();
     }
 
-    @PostMapping("/tokens/")
+    @PostMapping("/tokens")
     public Set<String> findRelevantTokens(@RequestBody PraxisNotification notification) {
         return configurationService.findAllRelevantTokens(notification);
     }
