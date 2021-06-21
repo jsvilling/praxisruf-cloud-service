@@ -42,6 +42,6 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(Exception.class)
     @ResponseStatus(value = INTERNAL_SERVER_ERROR)
     protected ResponseEntity<Object> handleGeneralException(Exception e, WebRequest w) {
-        return handleExceptionInternal(e, "An unexpected error occurred", new HttpHeaders(), INTERNAL_SERVER_ERROR, w);
+        return handleExceptionInternal(e, "An unexpected error occurred: " + e.getMessage(), new HttpHeaders(), INTERNAL_SERVER_ERROR, w);
     }
 }
