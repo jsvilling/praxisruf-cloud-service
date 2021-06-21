@@ -2,7 +2,9 @@ package ch.fhnw.ip5.praxiscloudservice.domain;
 
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.UUID;
 
 /**
@@ -30,7 +32,4 @@ public class NotificationType {
 
     private String type;
 
-    @ManyToOne
-    @JoinColumn(name = "clientConfigurationId")
-    private ClientConfiguration clientConfiguration;
 }
