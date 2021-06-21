@@ -19,6 +19,16 @@ public class DefaultUserService implements UserService {
     private final UserRepository userRepository;
 
     @Override
+    public UUID register(String userName) {
+        final PraxisIntercomUser user = PraxisIntercomUser
+                .builder()
+                .id(UUID.randomUUID())
+                .name(userName)
+                .build();
+        return userRepository.save(user).getId();
+    }
+
+    @Override
     public UUID login(String userName) {
         log.debug("Login " + userName);
         return userRepository

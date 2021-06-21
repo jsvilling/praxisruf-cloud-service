@@ -3,10 +3,7 @@ package ch.fhnw.ip5.praxiscloudservice.web.controller;
 import ch.fhnw.ip5.praxiscloudservice.api.UserService;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -17,6 +14,11 @@ import java.util.UUID;
 public class AuthController {
 
     private final UserService userService;
+
+    @PutMapping("/register")
+    public UUID register(String userName) {
+        return userService.register(userName);
+    }
 
     @GetMapping("/login")
     public UUID login(String userName) {

@@ -1,7 +1,7 @@
 package ch.fhnw.ip5.praxiscloudservice.domain;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,9 +17,9 @@ import java.util.UUID;
  *
  */
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // for JPA
 @Getter
+@Builder
 public class PraxisIntercomUser {
 
     @Id
