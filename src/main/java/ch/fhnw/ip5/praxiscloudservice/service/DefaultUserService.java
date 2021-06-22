@@ -50,7 +50,7 @@ public class DefaultUserService implements UserService {
         return userRepository.findAll()
                 .stream().map(user ->
                         UserDto.builder()
-                                .userId(user.getId())
+                                .id(user.getId())
                                 .userName(user.getName())
                                 .build())
                 .collect(Collectors.toList());

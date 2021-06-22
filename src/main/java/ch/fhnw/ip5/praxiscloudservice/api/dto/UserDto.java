@@ -8,6 +8,6 @@ import java.util.UUID;
 @Getter
 @Builder
 public class UserDto {
-    private UUID userId;
+    private UUID id;
     private String userName;
 }
