@@ -2,6 +2,7 @@ package ch.fhnw.ip5.praxiscloudservice.web.controller;
 
 import ch.fhnw.ip5.praxiscloudservice.api.ConfigurationService;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientConfigurationDto;
+import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.MinimalClientDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.NotificationTypeDto;
 import io.swagger.annotations.Api;
@@ -30,6 +31,12 @@ public class ClientsController {
     public Set<MinimalClientDto> getAvailableClients(@RequestHeader("userId") UUID userId) {
         return configurationService.findAvailableClients(userId);
     }
+
+    @GetMapping("/all")
+    public Set<ClientDto> getAllClients() {
+        return configurationService.findAllClients();
+    }
+
 
     @PostMapping
     public UUID createClient(@RequestHeader("userId") UUID userId, @RequestParam(value="clientName") String clientName) {

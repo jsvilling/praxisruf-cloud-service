@@ -1,6 +1,7 @@
 package ch.fhnw.ip5.praxiscloudservice.api;
 
 import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientConfigurationDto;
+import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.MinimalClientDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.NotificationTypeDto;
 import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
@@ -32,4 +33,5 @@ public interface ConfigurationService {
 
     List<NotificationTypeDto> findNotificationTypesForClient(UUID clientId);
 
+    Set<ClientDto> findAllClients();
 }
