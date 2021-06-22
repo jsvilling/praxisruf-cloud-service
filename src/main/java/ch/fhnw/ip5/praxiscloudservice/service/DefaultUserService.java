@@ -1,6 +1,7 @@
 package ch.fhnw.ip5.praxiscloudservice.service;
 
 import ch.fhnw.ip5.praxiscloudservice.api.UserService;
+import ch.fhnw.ip5.praxiscloudservice.api.dto.UserDto;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
 import ch.fhnw.ip5.praxiscloudservice.domain.PraxisIntercomUser;
@@ -9,7 +10,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -40,5 +43,16 @@ public class DefaultUserService implements UserService {
     @Override
     public void logout(String userName) {
         log.debug("Logout " + userName);
+    }
+
+    @Override
+    public List<UserDto> findAllUsers() {
+        return userRepository.findAll()
+                .stream().map(user ->
+                        UserDto.builder()
+                                .userId(user.getId())
+                                .userName(user.getName())
+                                .build())
+                .collect(Collectors.toList());
     }
 }

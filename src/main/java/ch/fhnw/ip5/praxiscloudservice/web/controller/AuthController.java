@@ -15,11 +15,6 @@ public class AuthController {
 
     private final UserService userService;
 
-    @PutMapping("/register")
-    public UUID register(String userName) {
-        return userService.register(userName);
-    }
-
     @GetMapping("/login")
     public UUID login(String userName) {
         return userService.login(userName);
