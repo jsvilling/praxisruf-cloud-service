@@ -73,7 +73,7 @@ public class FirebaseNotificationService implements NotificationService {
      * package ch.fhnw.ip5.praxiscloudservice.cloud@throws Exception
      */
     @Override
-    public void send(String token) {
+    public void sendTestNotification(String token) {
 
         final Notification notification = Notification.builder()
                 .setTitle("Notification Title")
@@ -98,9 +98,9 @@ public class FirebaseNotificationService implements NotificationService {
      * @throws Exception
      */
     @Override
-    public void sendAll() {
+    public void sendTestNotificationToAll() {
         for (String fcmToken : configurationWebClient.getAllKnownFcmTokens()) {
-            send(fcmToken);
+            sendTestNotification(fcmToken);
         }
     }
 }
