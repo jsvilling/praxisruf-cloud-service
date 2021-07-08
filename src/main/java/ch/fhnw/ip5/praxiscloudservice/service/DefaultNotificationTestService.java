@@ -2,7 +2,6 @@ package ch.fhnw.ip5.praxiscloudservice.service;
 
 import ch.fhnw.ip5.praxiscloudservice.api.NotificationTestService;
 import ch.fhnw.ip5.praxiscloudservice.config.ProfileRegistry;
-import ch.fhnw.ip5.praxiscloudservice.service.firebase.FcmIntegrationService;
 import ch.fhnw.ip5.praxiscloudservice.web.client.ConfigurationWebClient;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;

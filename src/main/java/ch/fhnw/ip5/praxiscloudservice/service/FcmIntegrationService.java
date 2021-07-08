@@ -1,4 +1,4 @@
-package ch.fhnw.ip5.praxiscloudservice.service.firebase;
+package ch.fhnw.ip5.praxiscloudservice.service;
 
 import ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
@@ -22,7 +22,6 @@ import javax.annotation.PostConstruct;
 @Slf4j
 public class FcmIntegrationService {
 
-    private static final String FIREBASE_CONFIG_PATH = "firebase_config.json";
     private final FirebaseProperties fcmProperties;
 
     public FcmIntegrationService(FirebaseProperties fcmProperties) {
