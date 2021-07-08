@@ -13,8 +13,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
-import java.util.UUID;
 
+import static ch.fhnw.ip5.praxiscloudservice.util.DefaultTestData.*;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -34,20 +34,7 @@ public class FirebaseNotificationServiceTest {
     @InjectMocks
     private FirebaseNotificationService firebaseNotificationService;
 
-    private static final String TOKEN = UUID.randomUUID().toString();
-    private static final String MESSAGE_ID = UUID.randomUUID().toString();
 
-    private NotificationType createNotificationType() {
-        return new NotificationType(UUID.randomUUID(), "", "", "", "");
-    }
-
-    private PraxisNotification createNotification() {
-        return new PraxisNotification(
-                UUID.randomUUID(),
-                UUID.randomUUID(),
-                UUID.randomUUID()
-        );
-    }
 
     @Test
     void testSend_ZeroRecipients() {
