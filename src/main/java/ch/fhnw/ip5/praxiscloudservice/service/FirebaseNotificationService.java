@@ -7,11 +7,12 @@ import ch.fhnw.ip5.praxiscloudservice.domain.NotificationType;
 import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
 import ch.fhnw.ip5.praxiscloudservice.persistence.NotificationTypeRepository;
 import ch.fhnw.ip5.praxiscloudservice.service.firebase.FcmIntegrationService;
+import ch.fhnw.ip5.praxiscloudservice.web.client.ConfigurationWebClient;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Arrays;
 
@@ -25,20 +26,15 @@ import java.util.Arrays;
  */
 @Service
 @Slf4j
+@AllArgsConstructor
 public class FirebaseNotificationService implements NotificationService {
 
     private static final String KEY = "Test Key";
     private static final String DATA = "Test Data";
 
-    private final WebClient webClient;
+    private final ConfigurationWebClient configurationWebClient;
     private final NotificationTypeRepository notificationTypeRepository;
     private final FcmIntegrationService fcmIntegrationService;
-
-    public FirebaseNotificationService(WebClient.Builder webClientBuilder, NotificationTypeRepository notificationTypeRepository, FcmIntegrationService fcmIntegrationService) {
-        this.webClient = webClientBuilder.baseUrl("https://www.praxisruf.ch/praxis-intercom/api").build();
-        this.notificationTypeRepository = notificationTypeRepository;
-        this.fcmIntegrationService = fcmIntegrationService;
-    }
 
     /**
      * Sends a Firebase Message for each client that has an applicable rule
@@ -56,7 +52,7 @@ public class FirebaseNotificationService implements NotificationService {
                 .setBody(notificationType.getBody())
                 .build();
 
-        Arrays.stream(getAllRelevantFcmTokens(notification))
+        Arrays.stream(configurationWebClient.getAllRelevantFcmTokens(notification))
                 .map(n -> toFirebaseMessage(firebaseNotification, n))
                 .forEach(fcmIntegrationService::send);
     }
@@ -103,29 +99,8 @@ public class FirebaseNotificationService implements NotificationService {
      */
     @Override
     public void sendAll() {
-        for (String fcmToken : getAllKnownFcmTokens()) {
+        for (String fcmToken : configurationWebClient.getAllKnownFcmTokens()) {
             send(fcmToken);
         }
-    }
-
-    /**
-     * Makes a call to the configuration endpoint to find all registered fcm tokens.
-     * @return String[] - All registered tokens.
-     */
-    public String[] getAllKnownFcmTokens() {
-        return this.webClient.get()
-                .uri("/registrations/tokens/")
-                .retrieve()
-                .bodyToMono(String[].class)
-                .block();
-    }
-
-    public String[] getAllRelevantFcmTokens(PraxisNotification notification) {
-        return this.webClient.post()
-                .uri("/registrations/tokens/")
-                .bodyValue(notification)
-                .retrieve()
-                .bodyToMono(String[].class)
-                .block();
     }
 }
