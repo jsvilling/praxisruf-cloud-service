@@ -11,8 +11,4 @@ public interface NotificationService {
 
     void send(PraxisNotification notification);
 
-    void sendTestNotification(String token);
-
-    void sendTestNotificationToAll();
-
 }

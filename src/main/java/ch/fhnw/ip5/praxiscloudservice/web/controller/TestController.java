@@ -1,6 +1,6 @@
 package ch.fhnw.ip5.praxiscloudservice.web.controller;
 
-import ch.fhnw.ip5.praxiscloudservice.api.NotificationService;
+import ch.fhnw.ip5.praxiscloudservice.api.NotificationTestService;
 import ch.fhnw.ip5.praxiscloudservice.config.ProfileRegistry;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,17 +18,17 @@ import org.springframework.web.bind.annotation.RestController;
 @Profile(ProfileRegistry.TEST)
 public class TestController {
 
-    private final NotificationService notificationService;
+    private final NotificationTestService notificationTestService;
 
     @PostMapping("/send")
     @Operation(description = "Send a test notification to the client with the given token")
     public void sendNotification(@RequestBody String token) {
-        notificationService.sendTestNotification(token);
+        notificationTestService.sendTestNotification(token);
     }
 
     @PostMapping("/send/all")
     @Operation(description = "Send a test notification to all registered clients")
     public void sendNotification() {
-        notificationService.sendTestNotificationToAll();
+        notificationTestService.sendTestNotificationToAll();
     }
 }
