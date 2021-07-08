@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class TypeRuleEvaluator implements RuleEvaluator {
+public class NotificationTypeRuleEvaluator implements RuleEvaluator {
 
     @Override
     public RuleType getRelevantType() {
-        return RuleType.TYPE;
+        return RuleType.NOTIFICATION_TYPE;
     }
 
     @Override
