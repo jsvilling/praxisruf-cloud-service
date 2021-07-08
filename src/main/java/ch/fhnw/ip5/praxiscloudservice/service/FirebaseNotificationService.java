@@ -5,6 +5,7 @@ import ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
 import ch.fhnw.ip5.praxiscloudservice.domain.NotificationType;
 import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
+import ch.fhnw.ip5.praxiscloudservice.persistence.NotificationRepository;
 import ch.fhnw.ip5.praxiscloudservice.persistence.NotificationTypeRepository;
 import ch.fhnw.ip5.praxiscloudservice.web.client.ConfigurationWebClient;
 import com.google.firebase.messaging.Message;
@@ -29,6 +30,7 @@ import java.util.Arrays;
 public class FirebaseNotificationService implements NotificationService {
 
     private final ConfigurationWebClient configurationWebClient;
+    private final NotificationRepository notificationRepository;
     private final NotificationTypeRepository notificationTypeRepository;
     private final FcmIntegrationService fcmIntegrationService;
 
@@ -43,6 +45,8 @@ public class FirebaseNotificationService implements NotificationService {
         final NotificationType notificationType = notificationTypeRepository.findById(notification.getNotificationTypeId())
                 .orElseThrow(() -> new PraxisIntercomException(ErrorCode.INVALID_NOTIFICATION_TYPE));
 
+        notificationRepository.save(notification);
+
         final Notification firebaseNotification = Notification.builder()
                 .setTitle(notificationType.getTitle())
                 .setBody(notificationType.getBody())
@@ -52,6 +56,7 @@ public class FirebaseNotificationService implements NotificationService {
                 .map(n -> toFirebaseMessage(firebaseNotification, n))
                 .forEach(this::send);
     }
+
 
     private void send(Message message) {
         try {
