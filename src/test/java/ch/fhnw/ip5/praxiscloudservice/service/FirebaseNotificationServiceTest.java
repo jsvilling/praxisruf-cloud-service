@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static ch.fhnw.ip5.praxiscloudservice.util.DefaultTestData.*;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -106,8 +107,7 @@ public class FirebaseNotificationServiceTest {
 
         // When
         // Then
-        assertThatThrownBy(() -> firebaseNotificationService.send(notification))
-                .isInstanceOf(RuntimeException.class);
+        assertThatNoException().isThrownBy(() -> firebaseNotificationService.send(notification));
     }
 
 }

@@ -50,7 +50,15 @@ public class FirebaseNotificationService implements NotificationService {
 
         Arrays.stream(configurationWebClient.getAllRelevantFcmTokens(notification))
                 .map(n -> toFirebaseMessage(firebaseNotification, n))
-                .forEach(fcmIntegrationService::send);
+                .forEach(this::send);
+    }
+
+    private void send(Message message) {
+        try {
+            fcmIntegrationService.send(message);
+        } catch (Exception e) {
+            log.error("Sending message {} failed with exception {}", message, e);
+        }
     }
 
     private Message toFirebaseMessage(Notification firebaseNotification, String token) {
