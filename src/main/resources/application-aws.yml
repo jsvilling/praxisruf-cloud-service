@@ -3,3 +3,7 @@ spring:
     url: jdbc:postgresql://${RDS_HOSTNAME}:${RDS_PORT}/${RDS_DB_NAME}
     username: ${RDS_USERNAME}
     password: ${RDS_PASSWORD}
+
+praxis-intercom:
+  web:
+    configuration-client-url: "https://www.praxisruf.ch/praxis-intercom/api"

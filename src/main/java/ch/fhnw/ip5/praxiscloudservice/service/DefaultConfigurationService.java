@@ -14,17 +14,18 @@ import ch.fhnw.ip5.praxiscloudservice.persistence.ClientRepository;
 import ch.fhnw.ip5.praxiscloudservice.persistence.NotificationTypeRepository;
 import ch.fhnw.ip5.praxiscloudservice.persistence.RegistrationRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode.INVALID_REGISTRATION_INFORMATION;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class DefaultConfigurationService implements ConfigurationService {
 
     private final RegistrationRepository registrationRepository;
@@ -36,12 +37,27 @@ public class DefaultConfigurationService implements ConfigurationService {
     @Override
     public void register(UUID clientId, String fcmToken) {
         final Registration registration = new Registration(clientId, fcmToken);
+        validateRegistration(registration);
         registrationRepository.save(registration);
+        log.info("Created or Updated Registration: {}", registration);
+    }
+
+    private void validateRegistration(Registration registration) {
+        if (registration.getClientId() == null || registration.getFcmToken() == null) {
+            log.error("Invalid Registration Data: {}", registration);
+            throw new PraxisIntercomException(INVALID_REGISTRATION_INFORMATION);
+        }
     }
 
     @Override
     public void unregister(UUID clientId) {
-        registrationRepository.deleteById(clientId);
+        try {
+            registrationRepository.deleteById(clientId);
+            log.info("Deleted Registration for clientId {}", clientId);
+        } catch (IllegalArgumentException e) {
+            log.info("Registration for clientId {} is already deleted", clientId);
+        }
+
     }
 
     @Override
@@ -59,6 +75,7 @@ public class DefaultConfigurationService implements ConfigurationService {
                 .map(ClientConfiguration::getClient)
                 .map(Client::getClientId)
                 .map(registrationRepository::findByClientId)
+                .flatMap(Optional::stream)
                 .map(Registration::getFcmToken)
                 .collect(Collectors.toSet());
     }
@@ -88,6 +105,7 @@ public class DefaultConfigurationService implements ConfigurationService {
         client.setClientConfiguration(configuration);
         clientRepository.saveAndFlush(client);
     }
+
 
     private Set<RuleParameters> toRuleParameters(List<RuleParametersDto> dtos) {
         return dtos.stream().map(dto ->

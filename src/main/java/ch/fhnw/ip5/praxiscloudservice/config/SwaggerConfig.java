@@ -1,4 +1,4 @@
-package ch.fhnw.ip5.praxiscloudservice.web.config;
+package ch.fhnw.ip5.praxiscloudservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

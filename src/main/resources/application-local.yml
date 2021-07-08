@@ -3,3 +3,7 @@ spring:
     url: jdbc:postgresql://localhost:5433/intercom_configuration_db_local
     username: admin
     password: secret
+
+praxis-intercom:
+  web:
+    configuration-client-url: "http://localhost:5000/praxis-intercom/api"
