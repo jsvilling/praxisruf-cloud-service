@@ -15,8 +15,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-
 /**
  * This service implements the NotificationService interface and is used to send Messages to client devices.
  *
@@ -34,6 +32,7 @@ public class FirebaseNotificationService implements NotificationService {
     private final NotificationRepository notificationRepository;
     private final NotificationTypeRepository notificationTypeRepository;
     private final FcmIntegrationService fcmIntegrationService;
+    private final NotificationSendProcessService notificationSendProcessService;
 
     /**
      * Sends a Firebase Message for each client that has an applicable rule
@@ -42,33 +41,45 @@ public class FirebaseNotificationService implements NotificationService {
      */
     @Override
     public void send(SendPraxisNotificationDto notificationDto) {
+        final NotificationType notificationType = findExistingNotificationType(notificationDto);
+        final PraxisNotification praxisNotification = createPraxisNotification(notificationDto);
+        final Notification firebaseNotification = createFirebaseNotification(notificationType);
+        final String[] allRelevantFcmTokens = configurationWebClient.getAllRelevantFcmTokens(praxisNotification);
 
-        final NotificationType notificationType = notificationTypeRepository.findById(notificationDto.getNotificationTypeId())
+        for (String token : allRelevantFcmTokens) {
+            final boolean success = send(firebaseNotification, token);
+            notificationSendProcessService.createNotificationSendLogEntry(praxisNotification.getId(), success, token);
+        }
+    }
+
+    private NotificationType findExistingNotificationType(SendPraxisNotificationDto notificationDto) {
+        return notificationTypeRepository.findById(notificationDto.getNotificationTypeId())
                 .orElseThrow(() -> new PraxisIntercomException(ErrorCode.INVALID_NOTIFICATION_TYPE));
+    }
 
+    private PraxisNotification createPraxisNotification(SendPraxisNotificationDto notificationDto) {
         final PraxisNotification notification = PraxisNotification.builder()
                 .notificationTypeId(notificationDto.getNotificationTypeId())
                 .sender(notificationDto.getSender())
                 .build();
+        return notificationRepository.save(notification);
+    }
 
-        notificationRepository.save(notification);
-
-        final Notification firebaseNotification = Notification.builder()
+    private Notification createFirebaseNotification(NotificationType notificationType) {
+        return Notification.builder()
                 .setTitle(notificationType.getTitle())
                 .setBody(notificationType.getBody())
                 .build();
-
-        Arrays.stream(configurationWebClient.getAllRelevantFcmTokens(notification))
-                .map(n -> toFirebaseMessage(firebaseNotification, n))
-                .forEach(this::send);
     }
 
-
-    private void send(Message message) {
+    private boolean send(Notification firebaseNotification, String token) {
         try {
+            Message message = toFirebaseMessage(firebaseNotification, token);
             fcmIntegrationService.send(message);
+            return true;
         } catch (Exception e) {
-            log.error("Sending message {} failed with exception {}", message, e);
+            log.error("Sending message {} to {} failed with exception {}", firebaseNotification, token, e);
+            return false;
         }
     }
 
