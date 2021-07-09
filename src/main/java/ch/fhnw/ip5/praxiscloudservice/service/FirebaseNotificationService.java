@@ -1,6 +1,7 @@
 package ch.fhnw.ip5.praxiscloudservice.service;
 
 import ch.fhnw.ip5.praxiscloudservice.api.NotificationService;
+import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationDto;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
 import ch.fhnw.ip5.praxiscloudservice.domain.NotificationType;
@@ -37,13 +38,18 @@ public class FirebaseNotificationService implements NotificationService {
     /**
      * Sends a Firebase Message for each client that has an applicable rule
      *
-     * @param notification
+     * @param notificationDto
      */
     @Override
-    public void send(PraxisNotification notification) {
+    public void send(SendPraxisNotificationDto notificationDto) {
 
-        final NotificationType notificationType = notificationTypeRepository.findById(notification.getNotificationTypeId())
+        final NotificationType notificationType = notificationTypeRepository.findById(notificationDto.getNotificationTypeId())
                 .orElseThrow(() -> new PraxisIntercomException(ErrorCode.INVALID_NOTIFICATION_TYPE));
+
+        final PraxisNotification notification = PraxisNotification.builder()
+                .notificationTypeId(notificationDto.getNotificationTypeId())
+                .sender(notificationDto.getSender())
+                .build();
 
         notificationRepository.save(notification);
 
