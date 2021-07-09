@@ -2,6 +2,7 @@ package ch.fhnw.ip5.praxiscloudservice.service.notification;
 
 import ch.fhnw.ip5.praxiscloudservice.api.NotificationService;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationDto;
+import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationResponseDto;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
 import ch.fhnw.ip5.praxiscloudservice.domain.NotificationType;
@@ -38,18 +39,22 @@ public class FirebaseNotificationService implements NotificationService {
      * Sends a Firebase Message for each client that has an applicable rule
      *
      * @param notificationDto
+     * @return
      */
     @Override
-    public void send(SendPraxisNotificationDto notificationDto) {
+    public SendPraxisNotificationResponseDto send(SendPraxisNotificationDto notificationDto) {
         final NotificationType notificationType = findExistingNotificationType(notificationDto);
         final PraxisNotification praxisNotification = createPraxisNotification(notificationDto);
         final Notification firebaseNotification = createFirebaseNotification(notificationType);
         final String[] allRelevantFcmTokens = configurationWebClient.getAllRelevantFcmTokens(praxisNotification);
+        boolean allSuccess = true;
 
         for (String token : allRelevantFcmTokens) {
             final boolean success = send(firebaseNotification, token);
             notificationSendProcessService.createNotificationSendLogEntry(praxisNotification.getId(), success, token);
+            allSuccess = allSuccess && success;
         }
+        return new SendPraxisNotificationResponseDto(praxisNotification.getId(), allSuccess);
     }
 
     private NotificationType findExistingNotificationType(SendPraxisNotificationDto notificationDto) {
