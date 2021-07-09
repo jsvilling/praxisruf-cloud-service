@@ -1,4 +1,4 @@
-package ch.fhnw.ip5.praxiscloudservice.service;
+package ch.fhnw.ip5.praxiscloudservice.service.notification;
 
 import ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;

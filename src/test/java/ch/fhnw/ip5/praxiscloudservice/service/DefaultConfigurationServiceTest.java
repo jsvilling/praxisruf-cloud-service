@@ -11,6 +11,7 @@ import ch.fhnw.ip5.praxiscloudservice.persistence.ClientConfigurationRepository;
 import ch.fhnw.ip5.praxiscloudservice.persistence.ClientRepository;
 import ch.fhnw.ip5.praxiscloudservice.persistence.NotificationTypeRepository;
 import ch.fhnw.ip5.praxiscloudservice.persistence.RegistrationRepository;
+import ch.fhnw.ip5.praxiscloudservice.service.configuration.DefaultConfigurationService;
 import ch.fhnw.ip5.praxiscloudservice.util.DefaultTestData;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
