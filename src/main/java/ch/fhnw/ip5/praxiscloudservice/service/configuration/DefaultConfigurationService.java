@@ -1,4 +1,4 @@
-package ch.fhnw.ip5.praxiscloudservice.service;
+package ch.fhnw.ip5.praxiscloudservice.service.configuration;
 
 import ch.fhnw.ip5.praxiscloudservice.api.ConfigurationService;
 import ch.fhnw.ip5.praxiscloudservice.api.RulesEngine;

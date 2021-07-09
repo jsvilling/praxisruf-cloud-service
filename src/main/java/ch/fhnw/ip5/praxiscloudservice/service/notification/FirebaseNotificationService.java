@@ -1,4 +1,4 @@
-package ch.fhnw.ip5.praxiscloudservice.service;
+package ch.fhnw.ip5.praxiscloudservice.service.notification;
 
 import ch.fhnw.ip5.praxiscloudservice.api.NotificationService;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationDto;
