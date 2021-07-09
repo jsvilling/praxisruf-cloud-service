@@ -7,7 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 
@@ -26,5 +28,12 @@ public class NotificationSendProcessService {
                 .success(success)
                 .build();
         notificationSendProcessRepository.save(logEntry);
+    }
+
+    @Transactional(readOnly = true)
+    public List<String> findAllFcmTokensForFailed(UUID notificationId) {
+        return notificationSendProcessRepository.findAllByNotificationIdAndSuccess(notificationId, false).stream()
+                .map(NotificationSendProcess::getRelevantToken)
+                .collect(Collectors.toList());
     }
 }

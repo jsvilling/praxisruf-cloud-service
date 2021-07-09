@@ -6,10 +6,9 @@ import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 /**
  * Controller for sending notifications.
@@ -32,4 +31,9 @@ public class NotificationController {
         return notificationService.send(notification);
     }
 
+    @PostMapping("/retry")
+    @Operation(description = "Retry all failed send for the given notification")
+    public SendPraxisNotificationResponseDto retryNotification(@RequestParam(value="clientId") UUID notificationId) {
+        return notificationService.retry(notificationId);
+    }
 }
