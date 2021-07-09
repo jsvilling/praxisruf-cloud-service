@@ -15,6 +15,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static ch.fhnw.ip5.praxiscloudservice.util.DefaultTestData.*;
@@ -49,7 +51,7 @@ public class FirebaseNotificationServiceTest {
         final SendPraxisNotificationDto notification = createSendNotificationDto();
         final NotificationType notificationType = createNotificationType();
         when(notificationTypeRepository.findById(any())).thenReturn(Optional.of(notificationType));
-        when(configurationWebClient.getAllRelevantFcmTokens(any())).thenReturn(new String[] {});
+        when(configurationWebClient.getAllRelevantFcmTokens(any())).thenReturn(Collections.emptyList());
 
         // When
         firebaseNotificationService.send(notification);
@@ -65,7 +67,7 @@ public class FirebaseNotificationServiceTest {
         final SendPraxisNotificationDto notification = createSendNotificationDto();
         final NotificationType notificationType = createNotificationType();
         when(notificationTypeRepository.findById(any())).thenReturn(Optional.of(notificationType));
-        when(configurationWebClient.getAllRelevantFcmTokens(any())).thenReturn(new String[] {TOKEN});
+        when(configurationWebClient.getAllRelevantFcmTokens(any())).thenReturn(List.of(TOKEN));
         when(fcmIntegrationService.send(any(Message.class))).thenReturn(MESSAGE_ID);
 
         // When
@@ -82,7 +84,7 @@ public class FirebaseNotificationServiceTest {
         final SendPraxisNotificationDto notification = createSendNotificationDto();
         final NotificationType notificationType = createNotificationType();
         when(notificationTypeRepository.findById(any())).thenReturn(Optional.of(notificationType));
-        when(configurationWebClient.getAllRelevantFcmTokens(any())).thenReturn(new String[] {TOKEN, TOKEN, TOKEN});
+        when(configurationWebClient.getAllRelevantFcmTokens(any())).thenReturn(List.of(TOKEN, TOKEN, TOKEN));
         when(fcmIntegrationService.send(any(Message.class))).thenReturn(MESSAGE_ID);
 
         // When
@@ -111,7 +113,7 @@ public class FirebaseNotificationServiceTest {
         final SendPraxisNotificationDto notification = createSendNotificationDto();
         final NotificationType notificationType = createNotificationType();
         when(notificationTypeRepository.findById(any())).thenReturn(Optional.of(notificationType));
-        when(configurationWebClient.getAllRelevantFcmTokens(any())).thenReturn(new String[] {TOKEN});
+        when(configurationWebClient.getAllRelevantFcmTokens(any())).thenReturn(List.of(TOKEN));
         when(fcmIntegrationService.send(any(Message.class))).thenThrow(new RuntimeException());
 
         // When

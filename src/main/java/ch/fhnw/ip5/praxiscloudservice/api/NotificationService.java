@@ -3,6 +3,8 @@ package ch.fhnw.ip5.praxiscloudservice.api;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationResponseDto;
 
+import java.util.UUID;
+
 /**
  * This interface specifies contracts for sending messages to client devices.
  *
@@ -11,5 +13,6 @@ import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationResponseDto;
 public interface NotificationService {
 
     SendPraxisNotificationResponseDto send(SendPraxisNotificationDto notification);
+    SendPraxisNotificationResponseDto retry(UUID notificationId);
 
 }

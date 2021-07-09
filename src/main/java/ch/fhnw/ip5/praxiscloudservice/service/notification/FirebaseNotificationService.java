@@ -16,6 +16,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.UUID;
+
 /**
  * This service implements the NotificationService interface and is used to send Messages to client devices.
  *
@@ -43,23 +46,30 @@ public class FirebaseNotificationService implements NotificationService {
      */
     @Override
     public SendPraxisNotificationResponseDto send(SendPraxisNotificationDto notificationDto) {
-        final NotificationType notificationType = findExistingNotificationType(notificationDto);
+        final NotificationType notificationType = findExistingNotificationType(notificationDto.getNotificationTypeId());
         final PraxisNotification praxisNotification = createPraxisNotification(notificationDto);
         final Notification firebaseNotification = createFirebaseNotification(notificationType);
-        final String[] allRelevantFcmTokens = configurationWebClient.getAllRelevantFcmTokens(praxisNotification);
-        boolean allSuccess = true;
-
-        for (String token : allRelevantFcmTokens) {
-            final boolean success = send(firebaseNotification, token);
-            notificationSendProcessService.createNotificationSendLogEntry(praxisNotification.getId(), success, token);
-            allSuccess = allSuccess && success;
-        }
-        return new SendPraxisNotificationResponseDto(praxisNotification.getId(), allSuccess);
+        final List<String> allRelevantFcmTokens = configurationWebClient.getAllRelevantFcmTokens(praxisNotification);
+        return send(allRelevantFcmTokens, firebaseNotification, praxisNotification);
     }
 
-    private NotificationType findExistingNotificationType(SendPraxisNotificationDto notificationDto) {
-        return notificationTypeRepository.findById(notificationDto.getNotificationTypeId())
+    @Override
+    public SendPraxisNotificationResponseDto retry(UUID notificationId) {
+        final PraxisNotification praxisNotification = findExistingNotification(notificationId);
+        final NotificationType notificationType = findExistingNotificationType(praxisNotification.getNotificationTypeId());
+        final Notification firebaseNotification = createFirebaseNotification(notificationType);
+        final List<String> allRelevantFcmTokens = notificationSendProcessService.findAllFcmTokensForFailed(notificationId);
+        return send(allRelevantFcmTokens, firebaseNotification, praxisNotification);
+    }
+
+    private NotificationType findExistingNotificationType(UUID notificationTypeId) {
+        return notificationTypeRepository.findById(notificationTypeId)
                 .orElseThrow(() -> new PraxisIntercomException(ErrorCode.INVALID_NOTIFICATION_TYPE));
+    }
+
+    private PraxisNotification findExistingNotification(UUID notificationId) {
+        return notificationRepository.findById(notificationId)
+                .orElseThrow(() -> new PraxisIntercomException(ErrorCode.NOTIFICATION_NOT_FOUND));
     }
 
     private PraxisNotification createPraxisNotification(SendPraxisNotificationDto notificationDto) {
@@ -75,6 +85,16 @@ public class FirebaseNotificationService implements NotificationService {
                 .setTitle(notificationType.getTitle())
                 .setBody(notificationType.getBody())
                 .build();
+    }
+
+    private SendPraxisNotificationResponseDto send(List<String> allRelevantFcmTokens, Notification firebaseNotification, PraxisNotification praxisNotification) {
+        boolean allSuccess = true;
+        for (String token : allRelevantFcmTokens) {
+            final boolean success = send(firebaseNotification, token);
+            notificationSendProcessService.createNotificationSendLogEntry(praxisNotification.getId(), success, token);
+            allSuccess = allSuccess && success;
+        }
+        return new SendPraxisNotificationResponseDto(praxisNotification.getId(), allSuccess);
     }
 
     private boolean send(Notification firebaseNotification, String token) {

@@ -2,7 +2,10 @@ package ch.fhnw.ip5.praxiscloudservice.web.client;
 
 import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
 import lombok.AllArgsConstructor;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.List;
 
 @AllArgsConstructor
 public class ConfigurationWebClient {
@@ -21,12 +24,12 @@ public class ConfigurationWebClient {
                 .block();
     }
 
-    public String[] getAllRelevantFcmTokens(PraxisNotification notification) {
+    public List<String> getAllRelevantFcmTokens(PraxisNotification notification) {
         return webClient.post()
                 .uri("/registrations/tokens/")
                 .bodyValue(notification)
                 .retrieve()
-                .bodyToMono(String[].class)
+                .bodyToMono(new ParameterizedTypeReference<List<String>>() {})
                 .block();
     }
 
