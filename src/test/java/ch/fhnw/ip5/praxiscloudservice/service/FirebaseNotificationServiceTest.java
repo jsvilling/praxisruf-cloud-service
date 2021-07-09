@@ -3,7 +3,6 @@ package ch.fhnw.ip5.praxiscloudservice.service;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationDto;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
 import ch.fhnw.ip5.praxiscloudservice.domain.NotificationType;
-import ch.fhnw.ip5.praxiscloudservice.persistence.NotificationRepository;
 import ch.fhnw.ip5.praxiscloudservice.persistence.NotificationTypeRepository;
 import ch.fhnw.ip5.praxiscloudservice.web.client.ConfigurationWebClient;
 import com.google.firebase.messaging.Message;
@@ -31,7 +30,7 @@ public class FirebaseNotificationServiceTest {
     private NotificationTypeRepository notificationTypeRepository;
 
     @Mock
-    private NotificationRepository notificationRepository;
+    private NotificationSendProcessService notificationSendProcessService;
 
     @Mock
     private FcmIntegrationService fcmIntegrationService;
@@ -54,6 +53,7 @@ public class FirebaseNotificationServiceTest {
 
         // Then
         verify(fcmIntegrationService, times(0)).send(any(Message.class));
+        verify(notificationSendProcessService, times(0)).createNotificationSendLogEntry(any(), any(), any());
     }
 
     @Test
@@ -70,6 +70,7 @@ public class FirebaseNotificationServiceTest {
 
         // Then
         verify(fcmIntegrationService, times(1)).send(any(Message.class));
+        verify(notificationSendProcessService, times(1)).createNotificationSendLogEntry(any(), any(), any());
     }
 
     @Test
@@ -86,6 +87,7 @@ public class FirebaseNotificationServiceTest {
 
         // Then
         verify(fcmIntegrationService, times(3)).send(any(Message.class));
+        verify(notificationSendProcessService, times(3)).createNotificationSendLogEntry(any(), any(), any());
     }
 
     @Test
