@@ -1,7 +1,7 @@
 package ch.fhnw.ip5.praxiscloudservice.web.controller;
 
 import ch.fhnw.ip5.praxiscloudservice.api.NotificationService;
-import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
+import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationDto;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
@@ -27,7 +27,7 @@ public class NotificationController {
 
     @PostMapping("/send")
     @Operation(description = "Send the given Notification to all relevant clients")
-    public void sendNotification(@RequestBody PraxisNotification notification) {
+    public void sendNotification(@RequestBody SendPraxisNotificationDto notification) {
         notificationService.send(notification);
     }
 

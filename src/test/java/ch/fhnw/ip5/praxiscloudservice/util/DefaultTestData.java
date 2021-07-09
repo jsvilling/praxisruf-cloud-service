@@ -1,5 +1,6 @@
 package ch.fhnw.ip5.praxiscloudservice.util;
 
+import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationDto;
 import ch.fhnw.ip5.praxiscloudservice.domain.*;
 
 import java.util.Set;
@@ -29,6 +30,13 @@ public class DefaultTestData {
                 UUID.randomUUID(),
                 UUID.randomUUID()
         );
+    }
+
+    public static SendPraxisNotificationDto createSendNotificationDto() {
+        return SendPraxisNotificationDto.builder()
+                .notificationTypeId(UUID.randomUUID())
+                .sender(CLIENT_ID)
+                .build();
     }
 
     public static ClientConfiguration createClientConfiguration() {

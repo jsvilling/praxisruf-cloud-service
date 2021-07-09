@@ -1,6 +1,6 @@
 package ch.fhnw.ip5.praxiscloudservice.api;
 
-import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
+import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationDto;
 
 /**
  * This interface specifies contracts for sending messages to client devices.
@@ -9,6 +9,6 @@ import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
  */
 public interface NotificationService {
 
-    void send(PraxisNotification notification);
+    void send(SendPraxisNotificationDto notification);
 
 }
