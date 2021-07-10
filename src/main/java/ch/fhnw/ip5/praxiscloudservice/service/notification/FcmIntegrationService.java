@@ -2,9 +2,7 @@ package ch.fhnw.ip5.praxiscloudservice.service.notification;
 
 import ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
-import ch.fhnw.ip5.praxiscloudservice.config.FirebaseProperties;
 import com.google.auth.oauth2.GoogleCredentials;
-import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -12,8 +10,11 @@ import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
 import javax.annotation.PostConstruct;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 /**
  * This Service initializes the connection to FireBaseMessaging.
@@ -22,11 +23,7 @@ import javax.annotation.PostConstruct;
 @Slf4j
 public class FcmIntegrationService {
 
-    private final FirebaseProperties fcmProperties;
-
-    public FcmIntegrationService(FirebaseProperties fcmProperties) {
-        this.fcmProperties = fcmProperties;
-    }
+    private static final String FIREBASE_CONFIG_PATH = "firebase_config.json";
 
     @PostConstruct
     public void connectToFirebase() throws Exception {
@@ -38,13 +35,9 @@ public class FcmIntegrationService {
     }
 
     private GoogleCredentials getCredentialStream() throws Exception {
-        return ServiceAccountCredentials.fromPkcs8(
-                fcmProperties.getClientId(),
-                fcmProperties.getClientEmail(),
-                fcmProperties.getPrivateKey(),
-                fcmProperties.getPrivateKeyId(),
-                null
-        );
+//        final InputStream credentialsInputStream = getClass().getClassLoader().getResourceAsStream(FIREBASE_CONFIG_PATH);
+        final InputStream credentialsInputStream = new FileInputStream(ResourceUtils.getFile(FIREBASE_CONFIG_PATH));
+        return GoogleCredentials.fromStream(credentialsInputStream);
     }
 
     public String send(Message firebaseMessage) {
