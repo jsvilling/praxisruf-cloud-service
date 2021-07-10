@@ -6,4 +6,4 @@ spring:
 
 praxis-intercom:
   web:
-    configuration-client-url: "http://localhost:5000/praxis-intercom/api"
+    configurationClientUrl: "http://localhost:5000/praxis-intercom/api"

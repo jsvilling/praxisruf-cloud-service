@@ -27,7 +27,7 @@ public class NotificationSendProcessService {
                 .relevantToken(relevantToken)
                 .success(success)
                 .build();
-        notificationSendProcessRepository.save(logEntry);
+        notificationSendProcessRepository.saveAndFlush(logEntry);
     }
 
     @Transactional(readOnly = true)

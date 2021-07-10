@@ -6,4 +6,4 @@ spring:
 
 praxis-intercom:
   web:
-    configuration-client-url: "https://www.praxisruf.ch/praxis-intercom/api"
+    configurationClientUrl: "https://www.praxisruf.ch/praxis-intercom/api"

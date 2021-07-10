@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
-@ConfigurationProperties(prefix = "praxis-intercom.web.configuration-client")
+@ConfigurationProperties(prefix = "praxis-intercom.web")
 @Setter
 public class WebClientConfig {
 
