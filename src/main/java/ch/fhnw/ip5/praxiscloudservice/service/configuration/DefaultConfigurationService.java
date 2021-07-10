@@ -33,7 +33,10 @@ public class DefaultConfigurationService implements ConfigurationService {
 
     @Override
     public void register(UUID clientId, String fcmToken) {
-        final Registration registration = new Registration(clientId, fcmToken);
+        final Registration registration = Registration.builder()
+                .clientId(clientId)
+                .fcmToken(fcmToken)
+                .build();
         validateRegistration(registration);
         registrationRepository.save(registration);
         log.info("Created or Updated Registration: {}", registration);
@@ -116,11 +119,11 @@ public class DefaultConfigurationService implements ConfigurationService {
     private Set<NotificationType> toNotificationTypes(List<NotificationTypeDto> dtos) {
         return dtos.stream().map(dto ->
                 NotificationType.builder()
-                .body(dto.getBody())
-                .type(dto.getType())
-                .title(dto.getTitle())
-                .displayText(dto.getDisplayText())
-                .build()
+                        .body(dto.getBody())
+                        .type(dto.getType())
+                        .title(dto.getTitle())
+                        .displayText(dto.getDisplayText())
+                        .build()
         ).collect(Collectors.toSet());
     }
 
@@ -149,13 +152,13 @@ public class DefaultConfigurationService implements ConfigurationService {
     private List<NotificationTypeDto> toNotificationTypeDtos(Collection<NotificationType> notificationTypes) {
         return notificationTypes.stream()
                 .map(type -> NotificationTypeDto.builder()
-                                .notificationTypeId(type.getId())
-                                .body(type.getBody())
-                                .type(type.getType())
-                                .title(type.getTitle())
-                                .displayText(type.getDisplayText())
-                                .build()
-                        ).collect(Collectors.toList());
+                        .notificationTypeId(type.getId())
+                        .body(type.getBody())
+                        .type(type.getType())
+                        .title(type.getTitle())
+                        .displayText(type.getDisplayText())
+                        .build()
+                ).collect(Collectors.toList());
     }
 
 }

@@ -11,6 +11,7 @@ import java.util.UUID;
 
 import static org.hibernate.annotations.CascadeType.ALL;
 
+
 /**
  * A Client represents a single client device.
  *
@@ -20,7 +21,7 @@ import static org.hibernate.annotations.CascadeType.ALL;
  */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // for JPA
-@AllArgsConstructor
+@AllArgsConstructor (access = AccessLevel.PRIVATE) // for Builder
 @Builder
 @Getter
 @Setter

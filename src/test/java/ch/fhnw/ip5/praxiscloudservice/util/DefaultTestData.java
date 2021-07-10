@@ -7,59 +7,73 @@ import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
+import static java.util.UUID.randomUUID;
+
 public class DefaultTestData {
 
     public static final String TOKEN = "token";
-    public static final UUID USER_ID = UUID.randomUUID();
-    public static final UUID CLIENT_ID = UUID.randomUUID();
-    public static final UUID RECIPIENT_CLIENT_ID = UUID.randomUUID();
+    public static final UUID USER_ID = randomUUID();
+    public static final UUID CLIENT_ID = randomUUID();
+    public static final UUID RECIPIENT_CLIENT_ID = randomUUID();
     public static final String CLIENT_NAME = "name";
-    public static final String MESSAGE_ID = UUID.randomUUID().toString();
+    public static final String MESSAGE_ID = randomUUID().toString();
 
     public static Registration createRegistration() {
-        return new Registration(CLIENT_ID, TOKEN);
+        return Registration.builder()
+                .clientId(CLIENT_ID)
+                .fcmToken(TOKEN)
+                .build();
     }
 
     public static NotificationType createNotificationType() {
-        return new NotificationType(UUID.randomUUID(), "", "", "", "");
+        return NotificationType.builder()
+                .id(randomUUID())
+                .type("")
+                .body("")
+                .title("")
+                .displayText("")
+                .build();
     }
 
     public static PraxisNotification createNotification() {
-        return new PraxisNotification(
-                UUID.randomUUID(),
-                UUID.randomUUID(),
-                UUID.randomUUID(),
-                LocalDateTime.now()
-        );
+        return PraxisNotification.builder()
+                .id(randomUUID())
+                .notificationTypeId(randomUUID())
+                .sender(randomUUID())
+                .build();
     }
 
     public static SendPraxisNotificationDto createSendNotificationDto() {
         return SendPraxisNotificationDto.builder()
-                .notificationTypeId(UUID.randomUUID())
+                .notificationTypeId(randomUUID())
                 .sender(CLIENT_ID)
                 .build();
     }
 
     public static ClientConfiguration createClientConfiguration() {
-        return new ClientConfiguration(
-                UUID.randomUUID(),
-                "ClientConfiguration",
-                createClient(),
-                Set.of(createRuleParameter()),
-                Set.of(createNotificationType())
-            );
+        return ClientConfiguration.builder()
+                .clientConfigurationId(randomUUID())
+                .name("ClientConfiguration")
+                .client(createClient())
+                .rules(Set.of(createRuleParameter()))
+                .notificationTypes(Set.of(createNotificationType()))
+                .build();
     }
 
     public static Client createClient() {
-        return new Client(
-                CLIENT_ID,
-                CLIENT_NAME,
-                USER_ID,
-                null
-        );
+        return Client.builder()
+                .clientId(CLIENT_ID)
+                .name(CLIENT_NAME)
+                .userId(USER_ID)
+                .clientConfiguration(null)
+                .build();
     }
 
     public static RuleParameters createRuleParameter() {
-        return new RuleParameters(UUID.randomUUID(), RuleType.SENDER, RECIPIENT_CLIENT_ID.toString());
+        return RuleParameters.builder()
+                .ruleParametersId(randomUUID())
+                .type(RuleType.SENDER)
+                .value(RECIPIENT_CLIENT_ID.toString())
+                .build();
     }
 }

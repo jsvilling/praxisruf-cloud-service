@@ -17,7 +17,7 @@ import java.util.UUID;
  * texts that can be displayed in the client.
  */
 @Entity
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE) // for Builder
 @NoArgsConstructor() // for JPA
 @Getter
 @Setter
