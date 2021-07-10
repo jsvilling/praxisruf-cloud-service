@@ -1,10 +1,12 @@
 package ch.fhnw.ip5.praxiscloudservice.domain;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -24,4 +26,7 @@ public class PraxisNotification {
     private UUID notificationTypeId;
 
     private UUID sender;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 }
