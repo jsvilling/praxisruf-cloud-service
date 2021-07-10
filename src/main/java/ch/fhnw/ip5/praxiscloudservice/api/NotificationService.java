@@ -2,6 +2,7 @@ package ch.fhnw.ip5.praxiscloudservice.api;
 
 import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationResponseDto;
+import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
 
 import java.util.UUID;
 
@@ -12,7 +13,21 @@ import java.util.UUID;
  */
 public interface NotificationService {
 
+    /**
+     * Sends the given {@link SendPraxisNotificationResponseDto} to all relevant recipients.
+     *
+     * @param notification
+     * @return SendPraxisNotificationResponseDto
+     */
     SendPraxisNotificationResponseDto send(SendPraxisNotificationDto notification);
+
+    /**
+     * Finds the {@link PraxisNotification} with the given notificationId and
+     * retries all previously failed send processes.
+     *
+     * @param notificationId
+     * @return SendPraxisNotificationResponseDto
+     */
     SendPraxisNotificationResponseDto retry(UUID notificationId);
 
 }

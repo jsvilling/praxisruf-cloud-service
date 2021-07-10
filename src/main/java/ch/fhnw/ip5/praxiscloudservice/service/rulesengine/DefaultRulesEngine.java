@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -17,13 +16,8 @@ public class DefaultRulesEngine implements RulesEngine {
     private final RuleEvaluatorFactory ruleEvaluatorFactory;
 
     @Override
-    public Collection<RuleParameters> filterRelevant(Collection<RuleParameters> p, PraxisNotification notification) {
-        return p.stream().filter(r -> isRelevant(notification, r)).collect(Collectors.toSet());
-    }
-
-    @Override
-    public boolean isAnyRelevant(Collection<RuleParameters> p, PraxisNotification notification) {
-        return p.stream().anyMatch(r -> isRelevant(notification, r));
+    public boolean isAnyRelevant(Collection<RuleParameters> ruleParameters, PraxisNotification notification) {
+        return ruleParameters.stream().anyMatch(r -> isRelevant(notification, r));
     }
 
     private boolean isRelevant(PraxisNotification notification, RuleParameters ruleParameters) {
