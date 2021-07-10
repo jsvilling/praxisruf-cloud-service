@@ -1,10 +1,13 @@
 package ch.fhnw.ip5.praxiscloudservice.domain;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -29,6 +32,12 @@ public class NotificationSendProcess {
     private String relevantToken;
 
     private boolean success;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 }
 
 
