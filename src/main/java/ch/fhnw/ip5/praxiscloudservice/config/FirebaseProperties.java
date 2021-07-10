@@ -12,4 +12,5 @@ public class FirebaseProperties {
     private String clientEmail;
     private String privateKey;
     private String privateKeyId;
+    private String projectKey;
 }
