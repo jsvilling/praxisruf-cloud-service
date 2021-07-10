@@ -18,7 +18,7 @@ public class ConfigurationWebClient {
      */
     public String[] getAllKnownFcmTokens() {
         return webClient.get()
-                .uri("/registrations/tokens/")
+                .uri(uriBuilder -> uriBuilder.path("/registrations/tokens/").build())
                 .retrieve()
                 .bodyToMono(String[].class)
                 .block();
@@ -26,7 +26,7 @@ public class ConfigurationWebClient {
 
     public List<String> getAllRelevantFcmTokens(PraxisNotification notification) {
         return webClient.post()
-                .uri("/registrations/tokens/")
+                .uri(uriBuilder -> uriBuilder.path("/registrations/tokens/").build())
                 .bodyValue(notification)
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<List<String>>() {})
