@@ -17,13 +17,19 @@ public class UsersController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public UUID register(String userName) {
-        return userService.register(userName);
+    public UUID register(String userName, String password, String role) {
+        return userService.register(UserDto.builder().userName(userName).password(password).role(role).build());
     }
 
     @GetMapping
     public List<UserDto> getAllUsers(){
         return userService.findAllUsers();
     }
+
+    @PutMapping
+    public UUID update(UserDto user){
+        return userService.updateUser(user);
+    }
+
 
 }

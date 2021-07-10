@@ -7,11 +7,9 @@ import java.util.UUID;
 
 public interface UserService {
 
-    UUID register(String userName);
-
-    UUID login(String userName);
-
-    void logout(String userName);
+    UUID register(UserDto user);
 
     List<UserDto> findAllUsers();
+
+    UUID updateUser(UserDto userName);
 }
