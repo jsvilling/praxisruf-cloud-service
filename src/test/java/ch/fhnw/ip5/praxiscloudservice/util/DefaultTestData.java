@@ -24,11 +24,11 @@ public class DefaultTestData {
     }
 
     public static PraxisNotification createNotification() {
-        return new PraxisNotification(
-                UUID.randomUUID(),
-                UUID.randomUUID(),
-                UUID.randomUUID()
-        );
+        return PraxisNotification.builder()
+                .id(UUID.randomUUID())
+                .notificationTypeId(UUID.randomUUID())
+                .sender(UUID.randomUUID())
+                .build();
     }
 
     public static SendPraxisNotificationDto createSendNotificationDto() {
