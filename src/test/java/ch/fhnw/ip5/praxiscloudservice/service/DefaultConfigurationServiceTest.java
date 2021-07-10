@@ -111,7 +111,7 @@ public class DefaultConfigurationServiceTest {
         void unregister_AlreadyUnregistered() {
             // Given
             final UUID id = UUID.randomUUID();
-            doThrow(new IllegalArgumentException()).when(registrationRepository).findById(any(UUID.class));
+            doThrow(new IllegalArgumentException()).when(registrationRepository).deleteById(any(UUID.class));
 
             // When
             // Then
@@ -123,7 +123,7 @@ public class DefaultConfigurationServiceTest {
             // Given
             final UUID id = UUID.randomUUID();
             final RuntimeException e = new IllegalStateException();
-            doThrow(e).when(registrationRepository).findById(any(UUID.class));
+            doThrow(e).when(registrationRepository).deleteById(any(UUID.class));
 
             // When
             // Then

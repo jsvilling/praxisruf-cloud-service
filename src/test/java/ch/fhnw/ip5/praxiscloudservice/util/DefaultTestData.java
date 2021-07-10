@@ -14,7 +14,6 @@ public class DefaultTestData {
     public static final UUID RECIPIENT_CLIENT_ID = UUID.randomUUID();
     public static final String CLIENT_NAME = "name";
     public static final String MESSAGE_ID = UUID.randomUUID().toString();
-    public static final UUID CLIENT_CONFIGURATION_ID = UUID.randomUUID();
 
     public static Registration createRegistration() {
         return new Registration(CLIENT_ID, TOKEN);
