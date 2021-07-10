@@ -13,7 +13,7 @@ import java.util.UUID;
  * Represents a Notification that is being sent and received.
  */
 @Entity
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE) // for Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // for JPA
 @Getter
 @Builder

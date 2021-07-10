@@ -11,7 +11,7 @@ import java.util.UUID;
  * to a specific client.
  */
 @Entity
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE) // for Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // for JPA
 @Getter
 @Builder

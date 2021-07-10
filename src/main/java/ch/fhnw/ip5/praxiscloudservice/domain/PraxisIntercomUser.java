@@ -19,7 +19,7 @@ import java.util.UUID;
  *
  */
 @Entity
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE) // for Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // for JPA
 @Builder
 public class PraxisIntercomUser implements UserDetails {
