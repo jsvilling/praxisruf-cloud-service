@@ -26,7 +26,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             config.setMaxAge(3600L);
             return config;
         }).and().csrf().disable() //TODO: add token handling
-                .authorizeRequests().antMatchers("/*").authenticated() //TODO: authorize endpoints by Role
+                .authorizeRequests()
+                .antMatchers("/api/user").permitAll()
+                .antMatchers("/api/users").authenticated()
+                .antMatchers("/api/clients/all").hasAnyRole("ADMIN","USER")//TODO: authorize endpoints by Role
                 .and().httpBasic();
     }
 
