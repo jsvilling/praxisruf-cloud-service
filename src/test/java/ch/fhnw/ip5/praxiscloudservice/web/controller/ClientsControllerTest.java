@@ -65,7 +65,6 @@ public class ClientsControllerTest {
     @Test
     void createClientConfiguration() {
         // Given
-        final UUID clientId = UUID.randomUUID();
         final String name = "name";
         final ClientConfigurationDto clientConfigurationDto = ClientConfigurationDto.builder()
                 .clientId(DefaultTestData.CLIENT_ID)
