@@ -21,9 +21,9 @@ import java.util.UUID;
 
 /**
  * This service implements the NotificationService interface and is used to send Messages to client devices.
- *
+ * <p>
  * This implementation is specific to FirebaseCloudMessaging and uses the Firebase AdminAdmin API to send messages.
- *
+ * <p>
  * It is expected that the connection to fire Firebase Messaging Service has already initialized when this service
  * is used to send a message. This initialisation should happen with FCMInitializer.
  */
@@ -94,7 +94,10 @@ public class FirebaseNotificationService implements NotificationService {
             notificationSendProcessService.createNotificationSendLogEntry(praxisNotification.getId(), success, token);
             allSuccess = allSuccess && success;
         }
-        return new SendPraxisNotificationResponseDto(praxisNotification.getId(), allSuccess);
+        return SendPraxisNotificationResponseDto.builder()
+                .notificationId(praxisNotification.getId())
+                .allSuccess(allSuccess)
+                .build();
     }
 
     private boolean send(Notification firebaseNotification, String token) {

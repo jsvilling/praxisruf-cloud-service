@@ -231,7 +231,10 @@ public class DefaultConfigurationServiceTest {
             final Set<MinimalClientDto> availableClients = configurationService.findAvailableClients(USER_ID);
 
             // Then
-            final MinimalClientDto expected = new MinimalClientDto(client.getClientId(), client.getName());
+            final MinimalClientDto expected = MinimalClientDto.builder()
+                    .id(client.getClientId())
+                    .name(client.getName())
+                    .build();
             assertThat(availableClients).containsExactly(expected);
         }
 
