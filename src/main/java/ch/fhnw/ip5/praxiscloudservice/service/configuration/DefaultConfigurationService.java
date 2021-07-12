@@ -2,10 +2,7 @@ package ch.fhnw.ip5.praxiscloudservice.service.configuration;
 
 import ch.fhnw.ip5.praxiscloudservice.api.ConfigurationService;
 import ch.fhnw.ip5.praxiscloudservice.api.RulesEngine;
-import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientConfigurationDto;
-import ch.fhnw.ip5.praxiscloudservice.api.dto.MinimalClientDto;
-import ch.fhnw.ip5.praxiscloudservice.api.dto.NotificationTypeDto;
-import ch.fhnw.ip5.praxiscloudservice.api.dto.RuleParametersDto;
+import ch.fhnw.ip5.praxiscloudservice.api.dto.*;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
 import ch.fhnw.ip5.praxiscloudservice.domain.*;
@@ -139,6 +136,14 @@ public class DefaultConfigurationService implements ConfigurationService {
     @Override
     public List<NotificationTypeDto> findNotificationTypesForClient(UUID clientId) {
         return toNotificationTypeDtos(notificationTypeRepository.findAll());
+    }
+
+    @Override
+    public Set<ClientDto> findAllClients() {
+        return clientRepository.findAll()
+                .stream()
+                .map(c -> ClientDto.builder().id(c.getClientId()).name(c.getName()).userId(c.getUserId()).build())
+                .collect(Collectors.toSet());
     }
 
     private List<NotificationTypeDto> toNotificationTypeDtos(Collection<NotificationType> notificationTypes) {

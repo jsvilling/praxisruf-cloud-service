@@ -1,13 +1,15 @@
 package ch.fhnw.ip5.praxiscloudservice.api;
 
+import ch.fhnw.ip5.praxiscloudservice.api.dto.UserDto;
+
+import java.util.List;
 import java.util.UUID;
 
 public interface UserService {
 
-    UUID register(String userName);
+    UUID register(UserDto user);
 
-    UUID login(String userName);
+    List<UserDto> findAllUsers();
 
-    void logout(String userName);
-
+    UUID updateUser(UserDto userName);
 }

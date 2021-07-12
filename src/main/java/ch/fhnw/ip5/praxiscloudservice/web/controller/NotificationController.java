@@ -18,7 +18,7 @@ import java.util.UUID;
  *
  */
 @RestController
-@RequestMapping("/notifications")
+@RequestMapping("/api/notifications")
 @AllArgsConstructor
 @Api(tags = "Notification")
 public class NotificationController {

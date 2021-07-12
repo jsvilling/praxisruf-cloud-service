@@ -1,6 +1,4 @@
 server:
-  servlet:
-    context-path: "/praxis-intercom"
   port: 5000
 
 spring:
