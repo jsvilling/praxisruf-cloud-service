@@ -6,6 +6,7 @@ import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,6 +16,12 @@ import java.util.UUID;
 @Api(tags = "Users")
 public class UsersController {
     private final UserService userService;
+
+    //Login Endpoint
+    @GetMapping("/user")
+    public Principal user(Principal user){
+        return user;
+    }
 
     @PostMapping("/register")
     public UUID register(String userName, String password, String role) {
