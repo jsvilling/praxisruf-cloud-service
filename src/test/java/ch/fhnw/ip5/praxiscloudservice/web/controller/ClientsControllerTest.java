@@ -2,6 +2,7 @@ package ch.fhnw.ip5.praxiscloudservice.web.controller;
 
 import ch.fhnw.ip5.praxiscloudservice.api.ConfigurationService;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientConfigurationDto;
+import ch.fhnw.ip5.praxiscloudservice.util.DefaultTestData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -64,9 +65,14 @@ public class ClientsControllerTest {
     @Test
     void createClientConfiguration() {
         // Given
-        final UUID userId = UUID.randomUUID();
+        final UUID clientId = UUID.randomUUID();
         final String name = "name";
-        final ClientConfigurationDto clientConfigurationDto = new ClientConfigurationDto(userId, name, Collections.emptyList(), Collections.emptyList());
+        final ClientConfigurationDto clientConfigurationDto = ClientConfigurationDto.builder()
+                .clientId(DefaultTestData.CLIENT_ID)
+                .name(name)
+                .notificationTypes(Collections.emptyList())
+                .ruleParameters(Collections.emptyList())
+                .build();
 
         // When
         clientsController.createClientConfiguration(clientConfigurationDto);
