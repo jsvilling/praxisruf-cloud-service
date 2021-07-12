@@ -18,7 +18,7 @@ public class UsersController {
     private final UserService userService;
 
     //Login Endpoint
-    @GetMapping("/user")
+    @GetMapping("/login")
     public Principal user(Principal user){
         return user;
     }
