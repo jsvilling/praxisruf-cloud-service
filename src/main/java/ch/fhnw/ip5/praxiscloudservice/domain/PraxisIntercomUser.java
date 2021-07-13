@@ -33,6 +33,7 @@ public class PraxisIntercomUser implements UserDetails {
 
     private String password;
 
+    @Getter
     private UserRole role;
 
     @Override
