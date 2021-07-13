@@ -11,5 +11,7 @@ public interface UserService {
 
     List<UserDto> findAllUsers();
 
-    UUID updateUser(UserDto userName);
+    UserDto updateUser(UserDto userName);
+
+    UserDto findUserById(UUID id);
 }

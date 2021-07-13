@@ -12,7 +12,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 
 @SpringBootApplication
 @EnableConfigurationProperties({FirebaseProperties.class, JWTProperties.class})
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class PraxisCloudServiceApplication {
 
     public static void main(String[] args) {

@@ -14,15 +14,13 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder.BCryptVersion;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -34,6 +32,7 @@ public class DefaultUserService implements UserService, UserDetailsService, Auth
 
     private final UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
+
     @Override
     public UUID register(UserDto userDto) {
         final PraxisIntercomUser user = PraxisIntercomUser
@@ -49,24 +48,38 @@ public class DefaultUserService implements UserService, UserDetailsService, Auth
     @Override
     public List<UserDto> findAllUsers() {
         return userRepository.findAll()
-                .stream().map(user ->
-                        UserDto.builder()
-                                .id(user.getId())
-                                .userName(user.getUsername())
-                                .build())
-                .collect(Collectors.toList());
+                             .stream().map(user ->
+                                                   UserDto.builder()
+                                                          .id(user.getId())
+                                                          .userName(user.getUsername())
+                                                          .build())
+                             .collect(Collectors.toList());
     }
 
     @Override
-    public UUID updateUser(UserDto userDto) {
-        PraxisIntercomUser user = userRepository.findByUserName(userDto.getUserName()).orElseThrow(() -> new PraxisIntercomException(ErrorCode.USER_NOT_FOUND));
+    public UserDto updateUser(UserDto userDto) {
+        PraxisIntercomUser user = userRepository.findById(userDto.getId()).orElseThrow(
+                () -> new PraxisIntercomException(ErrorCode.USER_NOT_FOUND));
+        String password = userDto.getPassword() == null ? userDto.getPassword() : user.getPassword();
+        if (!(password.startsWith(BCryptVersion.$2A.getVersion()) || password
+                .startsWith(BCryptVersion.$2B.getVersion()) || password.startsWith(BCryptVersion.$2Y.getVersion()))) {
+            password = passwordEncoder.encode(password);
+        }
         user = userRepository.save(PraxisIntercomUser.builder()
-                .id(user.getId())
-                .userName(userDto.getUserName())
-                .role(UserRole.valueOf(userDto.getRole()))
-                .password(passwordEncoder.encode(userDto.getPassword()))
-                .build());
-        return user.getId();
+                                                     .id(user.getId())
+                                                     .userName(userDto.getUserName())
+                                                     .role(UserRole.valueOf(userDto.getRole()))
+                                                     .password(password)
+                                                     .build());
+        return UserDto.builder().userName(user.getUsername()).password(user.getPassword()).role(user.getRole().name())
+                      .id(user.getId()).build();
+    }
+
+    @Override
+    public UserDto findUserById(UUID id) {
+        PraxisIntercomUser user = userRepository.findById(id).orElseThrow(
+                () -> new PraxisIntercomException(ErrorCode.USER_NOT_FOUND));
+        return UserDto.builder().userName(user.getUsername()).role(user.getRole().name()).id(user.getId()).build();
     }
 
     //Internal Spring Security Method
@@ -79,9 +92,10 @@ public class DefaultUserService implements UserService, UserDetailsService, Auth
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String userName = authentication.getName();
         String pwd = authentication.getCredentials().toString();
-        PraxisIntercomUser user = userRepository.findByUserName(userName).orElseThrow(() -> new BadCredentialsException("No User registered with: " + userName));
-        if(passwordEncoder.matches(pwd, user.getPassword())){
-            return new UsernamePasswordAuthenticationToken(userName,pwd, user.getAuthorities());
+        PraxisIntercomUser user = userRepository.findByUserName(userName).orElseThrow(
+                () -> new BadCredentialsException("No User registered with: " + userName));
+        if (passwordEncoder.matches(pwd, user.getPassword())) {
+            return new UsernamePasswordAuthenticationToken(userName, pwd, user.getAuthorities());
         } else {
             throw new BadCredentialsException("Invalid password!");
         }
