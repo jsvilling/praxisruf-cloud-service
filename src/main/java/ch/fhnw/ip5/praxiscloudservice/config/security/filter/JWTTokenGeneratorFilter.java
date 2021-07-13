@@ -1,6 +1,8 @@
-package ch.fhnw.ip5.praxiscloudservice.filter;
+package ch.fhnw.ip5.praxiscloudservice.config.security.filter;
 
-import ch.fhnw.ip5.praxiscloudservice.config.JWTProperties;
+import ch.fhnw.ip5.praxiscloudservice.config.security.JWTProperties;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,15 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 
 @AllArgsConstructor
 public class JWTTokenGeneratorFilter extends OncePerRequestFilter {

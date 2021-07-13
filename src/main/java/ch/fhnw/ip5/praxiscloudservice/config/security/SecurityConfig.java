@@ -1,7 +1,7 @@
-package ch.fhnw.ip5.praxiscloudservice.config;
+package ch.fhnw.ip5.praxiscloudservice.config.security;
 
-import ch.fhnw.ip5.praxiscloudservice.filter.JWTTokenGeneratorFilter;
-import ch.fhnw.ip5.praxiscloudservice.filter.JWTTokenValidatorFilter;
+import ch.fhnw.ip5.praxiscloudservice.config.security.filter.JWTTokenGeneratorFilter;
+import ch.fhnw.ip5.praxiscloudservice.config.security.filter.JWTTokenValidatorFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
