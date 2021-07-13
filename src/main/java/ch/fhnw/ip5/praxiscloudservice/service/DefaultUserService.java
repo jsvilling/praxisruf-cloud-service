@@ -60,7 +60,7 @@ public class DefaultUserService implements UserService, UserDetailsService, Auth
     public UserDto updateUser(UserDto userDto) {
         PraxisIntercomUser user = userRepository.findById(userDto.getId()).orElseThrow(
                 () -> new PraxisIntercomException(ErrorCode.USER_NOT_FOUND));
-        String password = userDto.getPassword() == null ? userDto.getPassword() : user.getPassword();
+        String password = userDto.getPassword() == null ? user.getPassword() : userDto.getPassword();
         if (!(password.startsWith(BCryptVersion.$2A.getVersion()) || password
                 .startsWith(BCryptVersion.$2B.getVersion()) || password.startsWith(BCryptVersion.$2Y.getVersion()))) {
             password = passwordEncoder.encode(password);

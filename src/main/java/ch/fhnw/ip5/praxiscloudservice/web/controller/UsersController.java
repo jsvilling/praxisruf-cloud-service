@@ -45,16 +45,8 @@ public class UsersController {
     }
 
     @PutMapping
-    public UserDto update(@RequestBody ObjectNode payload) throws BadHttpRequest {
-        if(!payload.has("id") && payload.get("id").asText().isBlank()){
-            throw new BadHttpRequest();
-        }
-        UUID id = UUID.fromString(payload.get("id").asText());
-        String userName = payload.has("userName") ? payload.get("userName").asText() : null;
-        String pwd = payload.has("password") ? payload.get("password").asText() : null;
-        String role = payload.has("role") ? payload.get("role").asText() : null;
-        UserDto user =  UserDto.builder().id(id).userName(userName).password(pwd).role(role).build();
-        return userService.updateUser(user);
+    public UserDto update(@RequestBody UserDto userDto) {
+        return userService.updateUser(userDto);
     }
 
 
