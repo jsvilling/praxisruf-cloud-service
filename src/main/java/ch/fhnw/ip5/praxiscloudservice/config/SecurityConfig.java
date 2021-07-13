@@ -34,6 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .addFilterBefore(new JWTTokenValidatorFilter(jwtProperties()), BasicAuthenticationFilter.class)
             .addFilterAfter(new JWTTokenGeneratorFilter(jwtProperties()), BasicAuthenticationFilter.class)
                 .authorizeRequests()
+                .antMatchers("/swagger-ui.html").permitAll()
                 .antMatchers("/api/users/login").authenticated()
                 .antMatchers("/api/users").authenticated()
                 .antMatchers("/api/clients/all").hasAnyRole("ADMIN","USER")//TODO: authorize endpoints by Role
