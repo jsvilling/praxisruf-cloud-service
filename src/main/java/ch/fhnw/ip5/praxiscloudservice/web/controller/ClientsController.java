@@ -22,26 +22,47 @@ public class ClientsController {
 
     private final ConfigurationService configurationService;
 
+    // ###### Admin CRUD Operations
+    @GetMapping("/{id}")
+    public ClientDto getClientById(@PathVariable("id") UUID clientId) {
+        return configurationService.findClientById(clientId);
+    }
+
+    @GetMapping()
+    public Set<ClientDto> getAllClients() {
+        return configurationService.findAllClients();
+    }
+
+    @PostMapping
+    public ClientDto createClient(@RequestBody ClientDto clientDto) {
+        return configurationService.createClient(clientDto);
+    }
+
+    @PutMapping
+    public ClientDto updateClient(@RequestBody ClientDto clientDto){
+        return configurationService.updateClient(clientDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable UUID id){configurationService.deleteClientById(id);}
+
+    @DeleteMapping("/many/{filter}")
+    public void deleteMany(@PathVariable List<UUID> filter){
+        configurationService.deleteAllById(filter);
+    }
+
+    // ###### Client API
+
     /**
      * @param userId
      * @return Set of key value pairs where each entry consists of (clientName, clientId)
      */
-    @GetMapping
+    @GetMapping("/byUser")
     @Operation(description = "Find all available clients for a given user")
     public Set<MinimalClientDto> getAvailableClients(@RequestHeader("userId") UUID userId) {
         return configurationService.findAvailableClients(userId);
     }
 
-    @GetMapping("/all")
-    public Set<ClientDto> getAllClients() {
-        return configurationService.findAllClients();
-    }
-
-
-    @PostMapping
-    public UUID createClient(@RequestHeader("userId") UUID userId, @RequestParam(value="clientName") String clientName) {
-        return configurationService.createClient(userId, clientName);
-    }
 
     @GetMapping("{clientId}/configuration/notification-types")
     @Operation(description = "Find the active configuration for an existing client")

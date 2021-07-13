@@ -29,9 +29,17 @@ public interface ConfigurationService {
 
     void createClientConfiguration(ClientConfigurationDto configuratinoDto);
 
-    UUID createClient(UUID userId, String clientName);
+    ClientDto createClient(ClientDto clientDto);
 
     List<NotificationTypeDto> findNotificationTypesForClient(UUID clientId);
 
     Set<ClientDto> findAllClients();
+
+    ClientDto findClientById(UUID clientId);
+
+    ClientDto updateClient(ClientDto clientDto);
+
+    void deleteClientById(UUID id);
+
+    void deleteAllById(List<UUID> filter);
 }

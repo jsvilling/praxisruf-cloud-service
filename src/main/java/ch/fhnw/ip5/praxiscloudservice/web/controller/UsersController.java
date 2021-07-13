@@ -30,6 +30,7 @@ public class UsersController {
         return user;
     }
 
+    // ###### Admin CRUD Operations
     @GetMapping("/{id}")
     public UserDto getUserById(@PathVariable UUID id){
         return userService.findUserById(id);

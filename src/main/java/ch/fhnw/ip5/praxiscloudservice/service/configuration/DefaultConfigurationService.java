@@ -34,19 +34,12 @@ public class DefaultConfigurationService implements ConfigurationService {
     @Override
     public void register(UUID clientId, String fcmToken) {
         final Registration registration = Registration.builder()
-                .clientId(clientId)
-                .fcmToken(fcmToken)
-                .build();
+                                                      .clientId(clientId)
+                                                      .fcmToken(fcmToken)
+                                                      .build();
         validateRegistration(registration);
         registrationRepository.save(registration);
         log.info("Created or Updated Registration: {}", registration);
-    }
-
-    private void validateRegistration(Registration registration) {
-        if (registration.getClientId() == null || registration.getFcmToken() == null) {
-            log.error("Invalid Registration Data: {}", registration);
-            throw new PraxisIntercomException(INVALID_REGISTRATION_INFORMATION);
-        }
     }
 
     @Override
@@ -63,29 +56,29 @@ public class DefaultConfigurationService implements ConfigurationService {
     @Override
     public Set<String> getAllKnownTokens() {
         return registrationRepository.findAll()
-                .stream()
-                .map(Registration::getFcmToken)
-                .collect(Collectors.toSet());
+                                     .stream()
+                                     .map(Registration::getFcmToken)
+                                     .collect(Collectors.toSet());
     }
 
     @Override
     public Set<String> findAllRelevantTokens(PraxisNotification notification) {
         return clientConfigurationRepository.findAll()
-                .stream().filter(c -> rulesEngine.isAnyRelevant(c.getRules(), notification))
-                .map(ClientConfiguration::getClient)
-                .map(Client::getClientId)
-                .map(registrationRepository::findByClientId)
-                .flatMap(Optional::stream)
-                .map(Registration::getFcmToken)
-                .collect(Collectors.toSet());
+                                            .stream().filter(c -> rulesEngine.isAnyRelevant(c.getRules(), notification))
+                                            .map(ClientConfiguration::getClient)
+                                            .map(Client::getClientId)
+                                            .map(registrationRepository::findByClientId)
+                                            .flatMap(Optional::stream)
+                                            .map(Registration::getFcmToken)
+                                            .collect(Collectors.toSet());
     }
 
     @Override
     public Set<MinimalClientDto> findAvailableClients(UUID userId) {
         return clientRepository.findAllByUserId(userId)
-                .stream()
-                .map(c -> MinimalClientDto.builder().id(c.getClientId()).name(c.getName()).build())
-                .collect(Collectors.toSet());
+                               .stream()
+                               .map(c -> MinimalClientDto.builder().id(c.getClientId()).name(c.getName()).build())
+                               .collect(Collectors.toSet());
     }
 
     @Override
@@ -93,47 +86,29 @@ public class DefaultConfigurationService implements ConfigurationService {
     public void createClientConfiguration(ClientConfigurationDto configurationDto) {
         final UUID clientId = configurationDto.getClientId();
         final Client client = clientRepository.findById(clientId)
-                .orElseThrow(() -> new PraxisIntercomException(ErrorCode.CLIENT_NOT_FOUND));
+                                              .orElseThrow(
+                                                      () -> new PraxisIntercomException(ErrorCode.CLIENT_NOT_FOUND));
 
         final ClientConfiguration configuration = ClientConfiguration.builder()
-                .name(configurationDto.getName())
-                .client(client)
-                .rules(toRuleParameters(configurationDto.getRuleParameters()))
-                .notificationTypes(toNotificationTypes(configurationDto.getNotificationTypes()))
-                .build();
+                                                                     .name(configurationDto.getName())
+                                                                     .client(client)
+                                                                     .rules(toRuleParameters(
+                                                                             configurationDto.getRuleParameters()))
+                                                                     .notificationTypes(toNotificationTypes(
+                                                                             configurationDto.getNotificationTypes()))
+                                                                     .build();
 
         client.setClientConfiguration(configuration);
         clientRepository.saveAndFlush(client);
     }
 
-
-    private Set<RuleParameters> toRuleParameters(List<RuleParametersDto> dtos) {
-        return dtos.stream().map(dto ->
-                RuleParameters.builder()
-                        .type(dto.getRuleType())
-                        .value(dto.getValue())
-                        .build())
-                .collect(Collectors.toSet());
-    }
-
-    private Set<NotificationType> toNotificationTypes(List<NotificationTypeDto> dtos) {
-        return dtos.stream().map(dto ->
-                NotificationType.builder()
-                        .body(dto.getBody())
-                        .type(dto.getType())
-                        .title(dto.getTitle())
-                        .displayText(dto.getDisplayText())
-                        .build()
-        ).collect(Collectors.toSet());
-    }
-
     @Override
-    public UUID createClient(UUID userId, String clientName) {
+    public ClientDto createClient(ClientDto clientDto) {
         final Client client = Client.builder()
-                .userId(userId)
-                .name(clientName)
-                .build();
-        return clientRepository.saveAndFlush(client).getClientId();
+                                    .userId(clientDto.getUserId())
+                                    .name(clientDto.getName())
+                                    .build();
+        return toClientDto(clientRepository.saveAndFlush(client));
     }
 
     @Override
@@ -144,21 +119,84 @@ public class DefaultConfigurationService implements ConfigurationService {
     @Override
     public Set<ClientDto> findAllClients() {
         return clientRepository.findAll()
-                .stream()
-                .map(c -> ClientDto.builder().id(c.getClientId()).name(c.getName()).userId(c.getUserId()).build())
-                .collect(Collectors.toSet());
+                               .stream()
+                               .map(c -> ClientDto.builder().id(c.getClientId()).name(c.getName()).userId(c.getUserId())
+                                                  .build())
+                               .collect(Collectors.toSet());
+    }
+
+    @Override
+    public ClientDto findClientById(UUID clientId) {
+        return toClientDto(clientRepository.findById(clientId)
+                                           .orElseThrow(() -> new PraxisIntercomException(ErrorCode.CLIENT_NOT_FOUND)));
+    }
+
+    @Override
+    public ClientDto updateClient(ClientDto clientDto) {
+        Client client = clientRepository.findById(clientDto.getId())
+                                        .orElseThrow(() -> new PraxisIntercomException(ErrorCode.CLIENT_NOT_FOUND));
+        client = clientRepository.saveAndFlush(
+                Client.builder()
+                      .clientId(client.getClientId())
+                      .name(clientDto.getName())
+                      .userId(clientDto.getUserId())
+                      .build());
+        return toClientDto(client);
+    }
+
+    @Override
+    public void deleteClientById(UUID id) {
+        clientRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteAllById(List<UUID> filter) {
+        filter.forEach(this::deleteClientById);
+    }
+
+    private void validateRegistration(Registration registration) {
+        if (registration.getClientId() == null || registration.getFcmToken() == null) {
+            log.error("Invalid Registration Data: {}", registration);
+            throw new PraxisIntercomException(INVALID_REGISTRATION_INFORMATION);
+        }
+    }
+
+    private Set<RuleParameters> toRuleParameters(List<RuleParametersDto> dtos) {
+        return dtos.stream().map(dto -> RuleParameters.builder()
+                                                      .type(dto.getRuleType())
+                                                      .value(dto.getValue())
+                                                      .build())
+                   .collect(Collectors.toSet());
+    }
+
+    private Set<NotificationType> toNotificationTypes(List<NotificationTypeDto> dtos) {
+        return dtos.stream().map(dto -> NotificationType.builder()
+                                                        .body(dto.getBody())
+                                                        .type(dto.getType())
+                                                        .title(dto.getTitle())
+                                                        .displayText(dto.getDisplayText())
+                                                        .build()
+        ).collect(Collectors.toSet());
     }
 
     private List<NotificationTypeDto> toNotificationTypeDtos(Collection<NotificationType> notificationTypes) {
         return notificationTypes.stream()
-                .map(type -> NotificationTypeDto.builder()
-                        .notificationTypeId(type.getId())
-                        .body(type.getBody())
-                        .type(type.getType())
-                        .title(type.getTitle())
-                        .displayText(type.getDisplayText())
-                        .build()
-                ).collect(Collectors.toList());
+                                .map(type -> NotificationTypeDto.builder()
+                                                                .notificationTypeId(type.getId())
+                                                                .body(type.getBody())
+                                                                .type(type.getType())
+                                                                .title(type.getTitle())
+                                                                .displayText(type.getDisplayText())
+                                                                .build()
+                                ).collect(Collectors.toList());
+    }
+
+    private ClientDto toClientDto(Client client) {
+        return ClientDto.builder()
+                        .id(client.getClientId())
+                        .userId(client.getUserId())
+                        .name(client.getName())
+                        .build();
     }
 
 }
