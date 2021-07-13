@@ -34,7 +34,7 @@ public class DefaultUserService implements UserService, UserDetailsService, Auth
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public UUID register(UserDto userDto) {
+    public UserDto register(UserDto userDto) {
         final PraxisIntercomUser user = PraxisIntercomUser
                 .builder()
                 .id(UUID.randomUUID())
@@ -42,7 +42,8 @@ public class DefaultUserService implements UserService, UserDetailsService, Auth
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .role(UserRole.valueOf(userDto.getRole()))
                 .build();
-        return userRepository.save(user).getId();
+        userRepository.save(user);
+        return UserDto.builder().userName(user.getUsername()).role(user.getRole().name()).password(user.getPassword()).id(user.getId()).build();
     }
 
     @Override
@@ -79,7 +80,17 @@ public class DefaultUserService implements UserService, UserDetailsService, Auth
     public UserDto findUserById(UUID id) {
         PraxisIntercomUser user = userRepository.findById(id).orElseThrow(
                 () -> new PraxisIntercomException(ErrorCode.USER_NOT_FOUND));
-        return UserDto.builder().userName(user.getUsername()).role(user.getRole().name()).id(user.getId()).build();
+        return UserDto.builder().userName(user.getUsername()).password(user.getPassword()).role(user.getRole().name()).id(user.getId()).build();
+    }
+
+    @Override
+    public void deleteById(UUID id) {
+        userRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteAllById(List<UUID> ids) {
+        ids.forEach(this::deleteById);
     }
 
     //Internal Spring Security Method

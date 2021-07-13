@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -34,14 +35,14 @@ public class UsersController {
         return userService.findUserById(id);
     }
 
-    @PostMapping("/register")
-    public UUID register(String userName, String password, String role) {
-        return userService.register(UserDto.builder().userName(userName).password(password).role(role).build());
-    }
-
     @GetMapping
     public List<UserDto> getAllUsers(){
         return userService.findAllUsers();
+    }
+
+    @PostMapping()
+    public UserDto register(@RequestBody UserDto user) {
+        return userService.register(user);
     }
 
     @PutMapping
@@ -49,5 +50,14 @@ public class UsersController {
         return userService.updateUser(userDto);
     }
 
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable UUID id){
+        userService.deleteById(id);
+    }
+
+    @DeleteMapping("/many/{filter}")
+    public void deleteMany(@PathVariable List<UUID> filter){
+        userService.deleteAllById(filter);
+    }
 
 }
