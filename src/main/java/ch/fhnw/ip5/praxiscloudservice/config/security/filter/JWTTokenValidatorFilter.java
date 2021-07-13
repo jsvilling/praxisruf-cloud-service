@@ -1,6 +1,6 @@
-package ch.fhnw.ip5.praxiscloudservice.filter;
+package ch.fhnw.ip5.praxiscloudservice.config.security.filter;
 
-import ch.fhnw.ip5.praxiscloudservice.config.JWTProperties;
+import ch.fhnw.ip5.praxiscloudservice.config.security.JWTProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;

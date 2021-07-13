@@ -1,4 +1,4 @@
-package ch.fhnw.ip5.praxiscloudservice.config;
+package ch.fhnw.ip5.praxiscloudservice.config.security;
 
 import lombok.Getter;
 import lombok.Setter;
