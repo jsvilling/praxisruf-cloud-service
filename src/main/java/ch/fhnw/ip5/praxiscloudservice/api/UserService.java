@@ -7,11 +7,15 @@ import java.util.UUID;
 
 public interface UserService {
 
-    UUID register(UserDto user);
+    UserDto register(UserDto user);
 
     List<UserDto> findAllUsers();
 
     UserDto updateUser(UserDto userName);
 
     UserDto findUserById(UUID id);
+
+    void deleteById(UUID id);
+
+    void deleteAllById(List<UUID> ids);
 }
