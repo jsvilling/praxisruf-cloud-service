@@ -2,6 +2,7 @@ package ch.fhnw.ip5.praxiscloudservice.web.controller;
 
 import ch.fhnw.ip5.praxiscloudservice.api.ConfigurationService;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientConfigurationDto;
+import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientDto;
 import ch.fhnw.ip5.praxiscloudservice.util.DefaultTestData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,14 +41,13 @@ public class ClientsControllerTest {
     @Test
     void createClient() {
         // Given
-        final UUID userId = UUID.randomUUID();
-        final String clientName = "name";
+        ClientDto dto = ClientDto.builder().id(UUID.randomUUID()).name("name").build();
 
         // When
-        clientsController.createClient(userId, clientName);
+        clientsController.createClient(dto);
 
         // Then
-        verify(configurationService, times(1)).createClient(eq(userId), eq(clientName));
+        verify(configurationService, times(1)).createClient(eq(dto));
     }
 
     @Test
