@@ -138,7 +138,11 @@ public class DefaultConfigurationService implements ConfigurationService {
 
     @Override
     public List<NotificationTypeDto> findNotificationTypesForClient(UUID clientId) {
-        return toNotificationTypeDtos(notificationTypeRepository.findAll());
+        return clientRepository.findById(clientId)
+                .map(Client::getClientConfiguration)
+                .map(ClientConfiguration::getNotificationTypes)
+                .map(this::toNotificationTypeDtos)
+                .orElseThrow(() -> new PraxisIntercomException(ErrorCode.CLIENT_NOT_FOUND));
     }
 
     @Override
