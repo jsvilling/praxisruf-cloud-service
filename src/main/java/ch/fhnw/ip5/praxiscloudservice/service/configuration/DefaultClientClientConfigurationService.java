@@ -12,8 +12,6 @@ import ch.fhnw.ip5.praxiscloudservice.domain.NotificationType;
 import ch.fhnw.ip5.praxiscloudservice.domain.RuleParameters;
 import ch.fhnw.ip5.praxiscloudservice.persistence.ClientConfigurationRepository;
 import ch.fhnw.ip5.praxiscloudservice.persistence.ClientRepository;
-import ch.fhnw.ip5.praxiscloudservice.persistence.NotificationTypeRepository;
-import ch.fhnw.ip5.praxiscloudservice.persistence.RuleParametersRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,8 +29,6 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
 
     private final ClientRepository clientRepository;
     private final ClientConfigurationRepository clientConfigurationRepository;
-    private final NotificationTypeRepository notificationTypeRepository;
-    private final RuleParametersRepository ruleParametersRepository;
 
     @Override
     @Transactional
@@ -66,37 +62,19 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
 
     @Override
     public ClientConfigurationDto updateClientConfiguration(ClientConfigurationDto configurationDto) {
-        final ClientConfiguration configuration = findExistingClientConfiguration(configurationDto.getId());
+        final ClientConfiguration oldClientConfiguration = findExistingClientConfiguration(configurationDto.getId());
+        final Set<RuleParameters> ruleParameters = toRuleParameters(configurationDto.getRuleParameters());
+        final Set<NotificationType> notificationTypes = toNotificationTypes(configurationDto.getNotificationTypes());
 
-        Set<RuleParameters> ruleParameters = configurationDto.getRuleParameters().stream().map(ruleParametersDto -> {
-            if (ruleParametersDto.getId() == null) {
-                return RuleParameters.builder().type(ruleParametersDto.getRuleType()).value(ruleParametersDto.getValue()).build();
-            } else {
-                RuleParameters parameters = ruleParametersRepository.findById(ruleParametersDto.getId()).orElseThrow();
-                parameters.setType(ruleParametersDto.getRuleType());
-                parameters.setValue(ruleParametersDto.getValue());
-                return parameters;
-            }
-        }).collect(Collectors.toSet());
+        final ClientConfiguration updatedClientConfiguration = ClientConfiguration.builder()
+                .clientConfigurationId(configurationDto.getId())
+                .name(configurationDto.getName())
+                .client(oldClientConfiguration.getClient())
+                .rules(ruleParameters)
+                .notificationTypes(notificationTypes)
+                .build();
 
-        Set<NotificationType> notificationTypes = configurationDto.getNotificationTypes().stream().map(notificationTypeDto -> {
-            if (notificationTypeDto.getId() == null) {
-                return NotificationType.builder().type(notificationTypeDto.getType()).body(notificationTypeDto.getBody()).displayText(notificationTypeDto.getDisplayText()).title(notificationTypeDto.getTitle()).build();
-            } else {
-                NotificationType notificationType = notificationTypeRepository.findById(notificationTypeDto.getId()).orElseThrow();
-                notificationType.setType(notificationTypeDto.getType());
-                notificationType.setBody(notificationTypeDto.getBody());
-                notificationType.setDisplayText(notificationTypeDto.getDisplayText());
-                notificationType.setTitle(notificationTypeDto.getTitle());
-                return notificationType;
-            }
-        }).collect(Collectors.toSet());
-
-        configuration.setName(configurationDto.getName());
-        configuration.setRules(ruleParameters);
-        configuration.setNotificationTypes(notificationTypes);
-
-        return toClientConfigurationDto(clientConfigurationRepository.save(configuration));
+        return toClientConfigurationDto(clientConfigurationRepository.save(updatedClientConfiguration));
     }
 
     @Override

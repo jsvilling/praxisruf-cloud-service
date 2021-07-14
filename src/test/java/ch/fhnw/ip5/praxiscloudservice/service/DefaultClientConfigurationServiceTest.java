@@ -2,8 +2,6 @@ package ch.fhnw.ip5.praxiscloudservice.service;
 
 import ch.fhnw.ip5.praxiscloudservice.persistence.ClientConfigurationRepository;
 import ch.fhnw.ip5.praxiscloudservice.persistence.ClientRepository;
-import ch.fhnw.ip5.praxiscloudservice.persistence.NotificationTypeRepository;
-import ch.fhnw.ip5.praxiscloudservice.persistence.RuleParametersRepository;
 import ch.fhnw.ip5.praxiscloudservice.service.configuration.DefaultClientClientConfigurationService;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -28,12 +26,6 @@ public class DefaultClientConfigurationServiceTest {
 
     @Mock
     private ClientConfigurationRepository clientConfigurationRepository;
-
-    @Mock
-    private NotificationTypeRepository notificationTypeRepository;
-
-    @Mock
-    private RuleParametersRepository ruleParametersRepository;
 
     @InjectMocks
     private DefaultClientClientConfigurationService clientConfigurationService;
