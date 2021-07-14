@@ -9,6 +9,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Collections;
 import java.util.UUID;
@@ -30,9 +32,11 @@ public class ClientsControllerTest {
     void getAvailableClients() {
         // Given
         final UUID userId = UUID.randomUUID();
-
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken("test",null,null);
+        token.setDetails(userId);
+        SecurityContextHolder.getContext().setAuthentication(token);
         // When
-        clientsController.getAvailableClients(userId);
+        clientsController.getAvailableClients();
 
         // Then
         verify(configurationService, times(1)).findAvailableClients(eq(userId));

@@ -8,6 +8,8 @@ import ch.fhnw.ip5.praxiscloudservice.api.dto.NotificationTypeDto;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -59,8 +61,9 @@ public class ClientsController {
      */
     @GetMapping("/byUser")
     @Operation(description = "Find all available clients for a given user")
-    public Set<MinimalClientDto> getAvailableClients(@RequestHeader("userId") UUID userId) {
-        return configurationService.findAvailableClients(userId);
+    public Set<MinimalClientDto> getAvailableClients() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return configurationService.findAvailableClients((UUID) auth.getDetails());
     }
 
 
