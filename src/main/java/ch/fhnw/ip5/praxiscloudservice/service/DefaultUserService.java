@@ -106,7 +106,9 @@ public class DefaultUserService implements UserService, UserDetailsService, Auth
         PraxisIntercomUser user = userRepository.findByUserName(userName).orElseThrow(
                 () -> new BadCredentialsException("No User registered with: " + userName));
         if (passwordEncoder.matches(pwd, user.getPassword())) {
-            return new UsernamePasswordAuthenticationToken(userName, pwd, user.getAuthorities());
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userName, pwd, user.getAuthorities());
+            authenticationToken.setDetails(user.getId());
+            return authenticationToken;
         } else {
             throw new BadCredentialsException("Invalid password!");
         }
