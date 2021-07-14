@@ -1,12 +1,15 @@
 package ch.fhnw.ip5.praxiscloudservice.service.configuration;
 
-import ch.fhnw.ip5.praxiscloudservice.api.ConfigurationService;
+import ch.fhnw.ip5.praxiscloudservice.api.ClientConfigurationService;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientConfigurationDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.NotificationTypeDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.RuleParametersDto;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
-import ch.fhnw.ip5.praxiscloudservice.domain.*;
+import ch.fhnw.ip5.praxiscloudservice.domain.Client;
+import ch.fhnw.ip5.praxiscloudservice.domain.ClientConfiguration;
+import ch.fhnw.ip5.praxiscloudservice.domain.NotificationType;
+import ch.fhnw.ip5.praxiscloudservice.domain.RuleParameters;
 import ch.fhnw.ip5.praxiscloudservice.persistence.ClientConfigurationRepository;
 import ch.fhnw.ip5.praxiscloudservice.persistence.ClientRepository;
 import ch.fhnw.ip5.praxiscloudservice.persistence.NotificationTypeRepository;
@@ -21,12 +24,10 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode.INVALID_REGISTRATION_INFORMATION;
-
 @Service
 @AllArgsConstructor
 @Slf4j
-public class DefaultConfigurationService implements ConfigurationService {
+public class DefaultClientClientConfigurationService implements ClientConfigurationService {
 
     private final ClientRepository clientRepository;
     private final ClientConfigurationRepository clientConfigurationRepository;
@@ -116,13 +117,6 @@ public class DefaultConfigurationService implements ConfigurationService {
     @Override
     public void deleteAllConfigurationsById(List<UUID> filter) {
 
-    }
-
-    private void validateRegistration(Registration registration) {
-        if (registration.getClientId() == null || registration.getFcmToken() == null) {
-            log.error("Invalid Registration Data: {}", registration);
-            throw new PraxisIntercomException(INVALID_REGISTRATION_INFORMATION);
-        }
     }
 
     private Set<RuleParameters> toRuleParameters(List<RuleParametersDto> dtos) {

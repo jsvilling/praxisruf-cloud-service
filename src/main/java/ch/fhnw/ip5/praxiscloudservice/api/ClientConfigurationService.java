@@ -11,7 +11,7 @@ import java.util.UUID;
  *
  * @author J. Villing
  */
-public interface ConfigurationService {
+public interface ClientConfigurationService {
 
     ClientConfigurationDto createClientConfiguration(ClientConfigurationDto configuratinoDto);
 

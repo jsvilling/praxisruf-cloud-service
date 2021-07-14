@@ -1,7 +1,7 @@
 package ch.fhnw.ip5.praxiscloudservice.service;
 
 import ch.fhnw.ip5.praxiscloudservice.persistence.ClientConfigurationRepository;
-import ch.fhnw.ip5.praxiscloudservice.service.configuration.DefaultConfigurationService;
+import ch.fhnw.ip5.praxiscloudservice.service.configuration.DefaultClientClientConfigurationService;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -14,6 +14,6 @@ public class DefaultConfigurationServiceTest {
     private ClientConfigurationRepository clientConfigurationRepository;
 
     @InjectMocks
-    private DefaultConfigurationService configurationService;
+    private DefaultClientClientConfigurationService configurationService;
 
 }
