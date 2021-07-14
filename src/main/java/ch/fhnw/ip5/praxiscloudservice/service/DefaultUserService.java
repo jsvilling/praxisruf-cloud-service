@@ -52,6 +52,8 @@ public class DefaultUserService implements UserService, UserDetailsService, Auth
                              .stream().map(user ->
                                                    UserDto.builder()
                                                           .id(user.getId())
+                                                          .role(user.getRole().name())
+                                                          .password(user.getPassword())
                                                           .userName(user.getUsername())
                                                           .build())
                              .collect(Collectors.toList());

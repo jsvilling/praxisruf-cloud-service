@@ -8,7 +8,7 @@ import java.util.UUID;
 @Getter
 @Builder
 public class NotificationTypeDto {
-    private UUID notificationTypeId;
+    private UUID id;
     private String displayText;
     private String title;
     private String body;

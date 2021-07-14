@@ -1,9 +1,7 @@
 package ch.fhnw.ip5.praxiscloudservice.web.controller;
 
 import ch.fhnw.ip5.praxiscloudservice.api.ConfigurationService;
-import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientConfigurationDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientDto;
-import ch.fhnw.ip5.praxiscloudservice.util.DefaultTestData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,7 +10,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.util.Collections;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.eq;
@@ -66,21 +63,4 @@ public class ClientsControllerTest {
         verify(configurationService, times(1)).findNotificationTypesForClient(eq(clientId));
     }
 
-    @Test
-    void createClientConfiguration() {
-        // Given
-        final String name = "name";
-        final ClientConfigurationDto clientConfigurationDto = ClientConfigurationDto.builder()
-                .clientId(DefaultTestData.CLIENT_ID)
-                .name(name)
-                .notificationTypes(Collections.emptyList())
-                .ruleParameters(Collections.emptyList())
-                .build();
-
-        // When
-        clientsController.createClientConfiguration(clientConfigurationDto);
-
-        // Then
-        verify(configurationService, times(1)).createClientConfiguration(eq(clientConfigurationDto));
-    }
 }

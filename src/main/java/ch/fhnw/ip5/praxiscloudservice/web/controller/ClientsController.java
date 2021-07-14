@@ -56,7 +56,6 @@ public class ClientsController {
     // ###### Client API
 
     /**
-     * @param userId
      * @return Set of key value pairs where each entry consists of (clientName, clientId)
      */
     @GetMapping("/byUser")
@@ -71,12 +70,6 @@ public class ClientsController {
     @Operation(description = "Find the active configuration for an existing client")
     public List<NotificationTypeDto> findNotificationTypesForClient(@PathVariable(value = "clientId") UUID clientId) {
         return configurationService.findNotificationTypesForClient(clientId);
-    }
-
-    @PostMapping("/configuration")
-    @Operation(description = "Create a new client configuration")
-    public void createClientConfiguration(@RequestBody ClientConfigurationDto configurationDto) {
-        configurationService.createClientConfiguration(configurationDto);
     }
 
 }
