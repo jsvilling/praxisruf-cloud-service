@@ -27,7 +27,7 @@ public interface ConfigurationService {
 
     Set<MinimalClientDto> findAvailableClients(UUID userId);
 
-    void createClientConfiguration(ClientConfigurationDto configuratinoDto);
+    ClientConfigurationDto createClientConfiguration(ClientConfigurationDto configuratinoDto);
 
     ClientDto createClient(ClientDto clientDto);
 
@@ -42,4 +42,14 @@ public interface ConfigurationService {
     void deleteClientById(UUID id);
 
     void deleteAllById(List<UUID> filter);
+
+    ClientConfigurationDto findClientConfigurationById(UUID configurationId);
+
+    Set<ClientConfigurationDto> findAllClientConfigurations();
+
+    ClientConfigurationDto updateClientConfiguration(ClientConfigurationDto configurationDto);
+
+    void deleteClientConfigurationById(UUID configurationId);
+
+    void deleteAllConfigurationsById(List<UUID> filter);
 }

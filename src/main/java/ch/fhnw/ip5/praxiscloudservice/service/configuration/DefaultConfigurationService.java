@@ -6,10 +6,7 @@ import ch.fhnw.ip5.praxiscloudservice.api.dto.*;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
 import ch.fhnw.ip5.praxiscloudservice.domain.*;
-import ch.fhnw.ip5.praxiscloudservice.persistence.ClientConfigurationRepository;
-import ch.fhnw.ip5.praxiscloudservice.persistence.ClientRepository;
-import ch.fhnw.ip5.praxiscloudservice.persistence.NotificationTypeRepository;
-import ch.fhnw.ip5.praxiscloudservice.persistence.RegistrationRepository;
+import ch.fhnw.ip5.praxiscloudservice.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,6 +27,7 @@ public class DefaultConfigurationService implements ConfigurationService {
     private final ClientConfigurationRepository clientConfigurationRepository;
     private final NotificationTypeRepository notificationTypeRepository;
     private final RulesEngine rulesEngine;
+    private final RuleParametersRepository ruleParametersRepository;
 
     @Override
     public void register(UUID clientId, String fcmToken) {
@@ -83,9 +81,9 @@ public class DefaultConfigurationService implements ConfigurationService {
 
     @Override
     @Transactional
-    public void createClientConfiguration(ClientConfigurationDto configurationDto) {
+    public ClientConfigurationDto createClientConfiguration(ClientConfigurationDto configurationDto) {
         final UUID clientId = configurationDto.getClientId();
-        final Client client = clientRepository.findById(clientId)
+        Client client = clientRepository.findById(clientId)
                                               .orElseThrow(
                                                       () -> new PraxisIntercomException(ErrorCode.CLIENT_NOT_FOUND));
 
@@ -99,7 +97,8 @@ public class DefaultConfigurationService implements ConfigurationService {
                                                                      .build();
 
         client.setClientConfiguration(configuration);
-        clientRepository.saveAndFlush(client);
+        client = clientRepository.saveAndFlush(client);
+        return toClientConfigurationDto(client.getClientConfiguration());
     }
 
     @Override
@@ -154,6 +153,69 @@ public class DefaultConfigurationService implements ConfigurationService {
         filter.forEach(this::deleteClientById);
     }
 
+    @Override
+    public ClientConfigurationDto findClientConfigurationById(UUID configurationId) {
+        return toClientConfigurationDto(clientConfigurationRepository.findById(configurationId).orElseThrow(
+                () -> new PraxisIntercomException(ErrorCode.CLIENT_CONFIG_NOT_FOUND)));
+    }
+
+    @Override
+    public Set<ClientConfigurationDto> findAllClientConfigurations() {
+        return clientConfigurationRepository.findAll().stream().map(this::toClientConfigurationDto)
+                                            .collect(Collectors.toSet());
+    }
+
+    @Override
+    public ClientConfigurationDto updateClientConfiguration(ClientConfigurationDto configurationDto) {
+        ClientConfiguration configuration = clientConfigurationRepository
+                .findById(configurationDto.getId())
+                .orElseThrow(() -> new PraxisIntercomException(ErrorCode.CLIENT_CONFIG_NOT_FOUND));
+        if (!configuration.getClient().getClientId().equals(configurationDto.getClientId())) {
+            configuration.setClient(clientRepository.findById(configurationDto.getClientId()).orElseThrow(
+                    () -> new PraxisIntercomException(ErrorCode.CLIENT_NOT_FOUND)));
+        }
+
+        Set<RuleParameters> ruleParameters = configurationDto.getRuleParameters().stream().map(ruleParametersDto -> {
+            if(ruleParametersDto.getId() == null){
+                return RuleParameters.builder().type(ruleParametersDto.getRuleType()).value(ruleParametersDto.getValue()).build();
+            } else {
+                RuleParameters parameters = ruleParametersRepository.findById(ruleParametersDto.getId()).orElseThrow();
+                parameters.setType(ruleParametersDto.getRuleType());
+                parameters.setValue(ruleParametersDto.getValue());
+                return parameters;
+            }
+        }).collect(Collectors.toSet());
+        Set<NotificationType> notificationTypes = configurationDto.getNotificationTypes().stream().map(notificationTypeDto -> {
+            if(notificationTypeDto.getId() == null){
+                return NotificationType.builder().type(notificationTypeDto.getType()).body(notificationTypeDto.getBody()).displayText(notificationTypeDto.getDisplayText()).title(notificationTypeDto.getTitle()).build();
+            } else {
+                NotificationType notificationType = notificationTypeRepository.findById(notificationTypeDto.getId()).orElseThrow();
+                notificationType.setType(notificationTypeDto.getType());
+                notificationType.setBody(notificationTypeDto.getBody());
+                notificationType.setDisplayText(notificationTypeDto.getDisplayText());
+                notificationType.setTitle(notificationTypeDto.getTitle());
+                return notificationType;
+            }
+        }).collect(Collectors.toSet());
+
+        configuration.setName(configurationDto.getName());
+        configuration.setRules(ruleParameters);
+        configuration.setNotificationTypes(notificationTypes);
+
+        return toClientConfigurationDto(clientConfigurationRepository.save(configuration));
+
+    }
+
+    @Override
+    public void deleteClientConfigurationById(UUID configurationId) {
+
+    }
+
+    @Override
+    public void deleteAllConfigurationsById(List<UUID> filter) {
+
+    }
+
     private void validateRegistration(Registration registration) {
         if (registration.getClientId() == null || registration.getFcmToken() == null) {
             log.error("Invalid Registration Data: {}", registration);
@@ -182,7 +244,7 @@ public class DefaultConfigurationService implements ConfigurationService {
     private List<NotificationTypeDto> toNotificationTypeDtos(Collection<NotificationType> notificationTypes) {
         return notificationTypes.stream()
                                 .map(type -> NotificationTypeDto.builder()
-                                                                .notificationTypeId(type.getId())
+                                                                .id(type.getId())
                                                                 .body(type.getBody())
                                                                 .type(type.getType())
                                                                 .title(type.getTitle())
@@ -197,6 +259,34 @@ public class DefaultConfigurationService implements ConfigurationService {
                         .userId(client.getUserId())
                         .name(client.getName())
                         .build();
+    }
+
+    private ClientConfigurationDto toClientConfigurationDto(ClientConfiguration configuration) {
+        return ClientConfigurationDto.builder()
+                                     .id(configuration.getClientConfigurationId())
+                                     .clientId(configuration.getClient().getClientId())
+                                     .name(configuration.getName())
+                                     .notificationTypes(configuration.getNotificationTypes().stream()
+                                                                     .map(this::toNotificationTypeDto).collect(
+                                                     Collectors.toList()))
+                                     .ruleParameters(configuration.getRules().stream().map(this::toRuleParameterDto)
+                                                                  .collect(Collectors.toList()))
+                                     .build();
+    }
+
+    private RuleParametersDto toRuleParameterDto(RuleParameters ruleParameters) {
+        return RuleParametersDto.builder().id(ruleParameters.getRuleParametersId()).ruleType(ruleParameters.getType())
+                                .value(ruleParameters.getValue())
+                                .build();
+    }
+
+    private NotificationTypeDto toNotificationTypeDto(NotificationType notificationType) {
+        return NotificationTypeDto.builder().id(notificationType.getId())
+                                  .body(notificationType.getBody())
+                                  .title(notificationType.getTitle())
+                                  .type(notificationType.getTitle())
+                                  .displayText(notificationType.getDisplayText())
+                                  .build();
     }
 
 }

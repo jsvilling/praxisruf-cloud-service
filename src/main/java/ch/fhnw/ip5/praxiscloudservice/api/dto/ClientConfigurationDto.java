@@ -10,6 +10,8 @@ import java.util.UUID;
 @Builder
 public class ClientConfigurationDto {
 
+    private UUID id;
+
     private UUID clientId;
 
     private String name;
