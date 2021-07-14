@@ -2,8 +2,6 @@ package ch.fhnw.ip5.praxiscloudservice.service.configuration;
 
 import ch.fhnw.ip5.praxiscloudservice.api.ClientConfigurationService;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientConfigurationDto;
-import ch.fhnw.ip5.praxiscloudservice.api.dto.NotificationTypeDto;
-import ch.fhnw.ip5.praxiscloudservice.api.dto.RuleParametersDto;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
 import ch.fhnw.ip5.praxiscloudservice.domain.Client;
@@ -12,6 +10,7 @@ import ch.fhnw.ip5.praxiscloudservice.domain.NotificationType;
 import ch.fhnw.ip5.praxiscloudservice.domain.RuleParameters;
 import ch.fhnw.ip5.praxiscloudservice.persistence.ClientConfigurationRepository;
 import ch.fhnw.ip5.praxiscloudservice.persistence.ClientRepository;
+import ch.fhnw.ip5.praxiscloudservice.service.configuration.mapper.ClientConfigurationMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,6 +20,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static ch.fhnw.ip5.praxiscloudservice.service.configuration.mapper.ClientConfigurationMapper.toClientConfigurationDto;
+import static ch.fhnw.ip5.praxiscloudservice.service.configuration.mapper.NotificationTypesMapper.toNotificationTypes;
+import static ch.fhnw.ip5.praxiscloudservice.service.configuration.mapper.RulesParametersMapper.toRuleParameters;
 
 @Service
 @AllArgsConstructor
@@ -48,13 +51,13 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
 
     @Override
     public ClientConfigurationDto findClientConfigurationById(UUID configurationId) {
-        return toClientConfigurationDto(clientConfigurationRepository.findById(configurationId).orElseThrow(
-                () -> new PraxisIntercomException(ErrorCode.CLIENT_CONFIG_NOT_FOUND)));
+        return toClientConfigurationDto(findExistingClientConfiguration(configurationId));
     }
 
     @Override
     public Set<ClientConfigurationDto> findAllClientConfigurations() {
-        return clientConfigurationRepository.findAll().stream().map(this::toClientConfigurationDto)
+        return clientConfigurationRepository.findAll().stream()
+                .map(ClientConfigurationMapper::toClientConfigurationDto)
                 .collect(Collectors.toSet());
     }
 
@@ -87,52 +90,6 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
     @Override
     public void deleteAllClientConfigurationsById(List<UUID> configurationIds) {
         configurationIds.forEach(this::deleteClientConfigurationById);
-    }
-
-    private Set<RuleParameters> toRuleParameters(List<RuleParametersDto> dtos) {
-        return dtos.stream().map(dto -> RuleParameters.builder()
-                .type(dto.getRuleType())
-                .value(dto.getValue())
-                .build())
-                .collect(Collectors.toSet());
-    }
-
-    private Set<NotificationType> toNotificationTypes(List<NotificationTypeDto> dtos) {
-        return dtos.stream().map(dto -> NotificationType.builder()
-                .body(dto.getBody())
-                .type(dto.getType())
-                .title(dto.getTitle())
-                .displayText(dto.getDisplayText())
-                .build()
-        ).collect(Collectors.toSet());
-    }
-
-    private ClientConfigurationDto toClientConfigurationDto(ClientConfiguration configuration) {
-        return ClientConfigurationDto.builder()
-                .id(configuration.getClientConfigurationId())
-                .clientId(configuration.getClient().getClientId())
-                .name(configuration.getName())
-                .notificationTypes(configuration.getNotificationTypes().stream()
-                        .map(this::toNotificationTypeDto).collect(
-                                Collectors.toList()))
-                .ruleParameters(configuration.getRules().stream().map(this::toRuleParameterDto)
-                        .collect(Collectors.toList()))
-                .build();
-    }
-
-    private RuleParametersDto toRuleParameterDto(RuleParameters ruleParameters) {
-        return RuleParametersDto.builder().id(ruleParameters.getRuleParametersId()).ruleType(ruleParameters.getType())
-                .value(ruleParameters.getValue())
-                .build();
-    }
-
-    private NotificationTypeDto toNotificationTypeDto(NotificationType notificationType) {
-        return NotificationTypeDto.builder().id(notificationType.getId())
-                .body(notificationType.getBody())
-                .title(notificationType.getTitle())
-                .type(notificationType.getTitle())
-                .displayText(notificationType.getDisplayText())
-                .build();
     }
 
     private Client findExistingClient(UUID clientId) {
