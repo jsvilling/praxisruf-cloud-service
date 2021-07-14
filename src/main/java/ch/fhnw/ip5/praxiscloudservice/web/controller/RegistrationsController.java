@@ -1,6 +1,6 @@
 package ch.fhnw.ip5.praxiscloudservice.web.controller;
 
-import ch.fhnw.ip5.praxiscloudservice.api.ConfigurationService;
+import ch.fhnw.ip5.praxiscloudservice.api.RegistrationService;
 import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
@@ -15,26 +15,26 @@ import java.util.UUID;
 @Api(tags = "Registration")
 public class RegistrationsController {
 
-    private final ConfigurationService configurationService;
+    private final RegistrationService registrationService;
 
     @GetMapping("/tokens")
     public Set<String> getAllKnownTokens() {
-        return configurationService.getAllKnownTokens();
+        return registrationService.getAllKnownTokens();
     }
 
     @PostMapping("/tokens")
     public Set<String> findRelevantTokens(@RequestBody PraxisNotification notification) {
-        return configurationService.findAllRelevantTokens(notification);
+        return registrationService.findAllRelevantTokens(notification);
     }
 
     @PostMapping
     public void register(@RequestParam(value="clientId") UUID clientId, @RequestParam(value ="fcmToken")  String fcmToken) {
-        configurationService.register(clientId, fcmToken);
+        registrationService.register(clientId, fcmToken);
     }
 
     @DeleteMapping
     public void unregister(UUID clientId) {
-        configurationService.unregister(clientId);
+        registrationService.unregister(clientId);
     }
 
 }
