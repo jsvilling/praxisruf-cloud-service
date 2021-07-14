@@ -34,7 +34,7 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
     @Transactional
     public ClientConfigurationDto createClientConfiguration(ClientConfigurationDto configurationDto) {
         final UUID clientId = configurationDto.getClientId();
-        Client client = findExistingClient(clientId);
+        final Client client = findExistingClient(clientId);
 
         final ClientConfiguration configuration = ClientConfiguration.builder()
                 .name(configurationDto.getName())
@@ -43,9 +43,7 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
                 .notificationTypes(toNotificationTypes(configurationDto.getNotificationTypes()))
                 .build();
 
-        client.setClientConfiguration(configuration);
-        client = clientRepository.saveAndFlush(client);
-        return toClientConfigurationDto(client.getClientConfiguration());
+        return toClientConfigurationDto(clientConfigurationRepository.saveAndFlush(configuration));
     }
 
     @Override
