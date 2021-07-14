@@ -67,7 +67,11 @@ public class DefaultClientService implements ClientService {
 
     @Override
     public void deleteClientById(UUID id) {
-        clientRepository.deleteById(id);
+        try {
+            clientRepository.deleteById(id);
+        } catch (IllegalArgumentException e) {
+            log.info("Client with id {} is already deleted", id);
+        }
     }
 
     @Override
