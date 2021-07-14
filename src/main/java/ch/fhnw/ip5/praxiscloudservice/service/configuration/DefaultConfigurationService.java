@@ -1,7 +1,9 @@
 package ch.fhnw.ip5.praxiscloudservice.service.configuration;
 
 import ch.fhnw.ip5.praxiscloudservice.api.ConfigurationService;
-import ch.fhnw.ip5.praxiscloudservice.api.dto.*;
+import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientConfigurationDto;
+import ch.fhnw.ip5.praxiscloudservice.api.dto.NotificationTypeDto;
+import ch.fhnw.ip5.praxiscloudservice.api.dto.RuleParametersDto;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
 import ch.fhnw.ip5.praxiscloudservice.domain.*;
@@ -14,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -31,14 +32,6 @@ public class DefaultConfigurationService implements ConfigurationService {
     private final ClientConfigurationRepository clientConfigurationRepository;
     private final NotificationTypeRepository notificationTypeRepository;
     private final RuleParametersRepository ruleParametersRepository;
-
-    @Override
-    public Set<MinimalClientDto> findAvailableClients(UUID userId) {
-        return clientRepository.findAllByUserId(userId)
-                               .stream()
-                               .map(c -> MinimalClientDto.builder().id(c.getClientId()).name(c.getName()).build())
-                               .collect(Collectors.toSet());
-    }
 
     @Override
     @Transactional
@@ -60,58 +53,6 @@ public class DefaultConfigurationService implements ConfigurationService {
         client.setClientConfiguration(configuration);
         client = clientRepository.saveAndFlush(client);
         return toClientConfigurationDto(client.getClientConfiguration());
-    }
-
-    @Override
-    public ClientDto createClient(ClientDto clientDto) {
-        final Client client = Client.builder()
-                                    .userId(clientDto.getUserId())
-                                    .name(clientDto.getName())
-                                    .build();
-        return toClientDto(clientRepository.saveAndFlush(client));
-    }
-
-    @Override
-    public List<NotificationTypeDto> findNotificationTypesForClient(UUID clientId) {
-        return toNotificationTypeDtos(notificationTypeRepository.findAll());
-    }
-
-    @Override
-    public Set<ClientDto> findAllClients() {
-        return clientRepository.findAll()
-                               .stream()
-                               .map(c -> ClientDto.builder().id(c.getClientId()).name(c.getName()).userId(c.getUserId())
-                                                  .build())
-                               .collect(Collectors.toSet());
-    }
-
-    @Override
-    public ClientDto findClientById(UUID clientId) {
-        return toClientDto(clientRepository.findById(clientId)
-                                           .orElseThrow(() -> new PraxisIntercomException(ErrorCode.CLIENT_NOT_FOUND)));
-    }
-
-    @Override
-    public ClientDto updateClient(ClientDto clientDto) {
-        Client client = clientRepository.findById(clientDto.getId())
-                                        .orElseThrow(() -> new PraxisIntercomException(ErrorCode.CLIENT_NOT_FOUND));
-        client = clientRepository.saveAndFlush(
-                Client.builder()
-                      .clientId(client.getClientId())
-                      .name(clientDto.getName())
-                      .userId(clientDto.getUserId())
-                      .build());
-        return toClientDto(client);
-    }
-
-    @Override
-    public void deleteClientById(UUID id) {
-        clientRepository.deleteById(id);
-    }
-
-    @Override
-    public void deleteAllById(List<UUID> filter) {
-        filter.forEach(this::deleteClientById);
     }
 
     @Override
@@ -200,26 +141,6 @@ public class DefaultConfigurationService implements ConfigurationService {
                                                         .displayText(dto.getDisplayText())
                                                         .build()
         ).collect(Collectors.toSet());
-    }
-
-    private List<NotificationTypeDto> toNotificationTypeDtos(Collection<NotificationType> notificationTypes) {
-        return notificationTypes.stream()
-                                .map(type -> NotificationTypeDto.builder()
-                                                                .id(type.getId())
-                                                                .body(type.getBody())
-                                                                .type(type.getType())
-                                                                .title(type.getTitle())
-                                                                .displayText(type.getDisplayText())
-                                                                .build()
-                                ).collect(Collectors.toList());
-    }
-
-    private ClientDto toClientDto(Client client) {
-        return ClientDto.builder()
-                        .id(client.getClientId())
-                        .userId(client.getUserId())
-                        .name(client.getName())
-                        .build();
     }
 
     private ClientConfigurationDto toClientConfigurationDto(ClientConfiguration configuration) {

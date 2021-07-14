@@ -1,6 +1,6 @@
 package ch.fhnw.ip5.praxiscloudservice.web.controller;
 
-import ch.fhnw.ip5.praxiscloudservice.api.ConfigurationService;
+import ch.fhnw.ip5.praxiscloudservice.api.ClientService;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.verify;
 public class ClientsControllerTest {
 
     @Mock
-    private ConfigurationService configurationService;
+    private ClientService configurationService;
 
     @InjectMocks
     private ClientsController clientsController;
