@@ -27,12 +27,12 @@ public class RegistrationsController {
         return configurationService.findAllRelevantTokens(notification);
     }
 
-    @PostMapping("/registration")
+    @PostMapping
     public void register(@RequestParam(value="clientId") UUID clientId, @RequestParam(value ="fcmToken")  String fcmToken) {
         configurationService.register(clientId, fcmToken);
     }
 
-    @DeleteMapping("/registration")
+    @DeleteMapping
     public void unregister(UUID clientId) {
         configurationService.unregister(clientId);
     }
