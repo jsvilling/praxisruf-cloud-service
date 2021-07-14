@@ -52,11 +52,6 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
         return toClientConfigurationDto(client.getClientConfiguration());
     }
 
-    private Client findExistingClient(UUID clientId) {
-        return clientRepository.findById(clientId)
-                .orElseThrow(() -> new PraxisIntercomException(ErrorCode.CLIENT_NOT_FOUND));
-    }
-
     @Override
     public ClientConfigurationDto findClientConfigurationById(UUID configurationId) {
         return toClientConfigurationDto(clientConfigurationRepository.findById(configurationId).orElseThrow(
@@ -71,13 +66,7 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
 
     @Override
     public ClientConfigurationDto updateClientConfiguration(ClientConfigurationDto configurationDto) {
-        ClientConfiguration configuration = clientConfigurationRepository
-                .findById(configurationDto.getId())
-                .orElseThrow(() -> new PraxisIntercomException(ErrorCode.CLIENT_CONFIG_NOT_FOUND));
-        if (!configuration.getClient().getClientId().equals(configurationDto.getClientId())) {
-            configuration.setClient(clientRepository.findById(configurationDto.getClientId()).orElseThrow(
-                    () -> new PraxisIntercomException(ErrorCode.CLIENT_NOT_FOUND)));
-        }
+        final ClientConfiguration configuration = findExistingClientConfiguration(configurationDto.getId());
 
         Set<RuleParameters> ruleParameters = configurationDto.getRuleParameters().stream().map(ruleParametersDto -> {
             if (ruleParametersDto.getId() == null) {
@@ -89,6 +78,7 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
                 return parameters;
             }
         }).collect(Collectors.toSet());
+
         Set<NotificationType> notificationTypes = configurationDto.getNotificationTypes().stream().map(notificationTypeDto -> {
             if (notificationTypeDto.getId() == null) {
                 return NotificationType.builder().type(notificationTypeDto.getType()).body(notificationTypeDto.getBody()).displayText(notificationTypeDto.getDisplayText()).title(notificationTypeDto.getTitle()).build();
@@ -107,7 +97,6 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
         configuration.setNotificationTypes(notificationTypes);
 
         return toClientConfigurationDto(clientConfigurationRepository.save(configuration));
-
     }
 
     @Override
@@ -168,6 +157,17 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
                 .type(notificationType.getTitle())
                 .displayText(notificationType.getDisplayText())
                 .build();
+    }
+
+    private Client findExistingClient(UUID clientId) {
+        return clientRepository.findById(clientId)
+                .orElseThrow(() -> new PraxisIntercomException(ErrorCode.CLIENT_NOT_FOUND));
+    }
+
+    private ClientConfiguration findExistingClientConfiguration(UUID clientId) {
+        return clientConfigurationRepository
+                .findById(clientId)
+                .orElseThrow(() -> new PraxisIntercomException(ErrorCode.CLIENT_CONFIG_NOT_FOUND));
     }
 
 }
