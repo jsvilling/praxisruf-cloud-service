@@ -23,5 +23,5 @@ public interface ClientConfigurationService {
 
     void deleteClientConfigurationById(UUID configurationId);
 
-    void deleteAllConfigurationsById(List<UUID> filter);
+    void deleteAllClientConfigurationsById(List<UUID> filter);
 }

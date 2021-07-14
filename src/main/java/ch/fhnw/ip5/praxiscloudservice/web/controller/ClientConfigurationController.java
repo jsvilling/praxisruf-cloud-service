@@ -48,7 +48,7 @@ public class ClientConfigurationController {
     @DeleteMapping("/many/{filter}")
     public void deleteMany(@PathVariable List<UUID> filter)
     {
-        clientConfigurationService.deleteAllConfigurationsById(filter);
+        clientConfigurationService.deleteAllClientConfigurationsById(filter);
     }
 
 
