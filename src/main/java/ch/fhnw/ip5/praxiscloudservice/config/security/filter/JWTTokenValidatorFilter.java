@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
 @AllArgsConstructor
 public class JWTTokenValidatorFilter extends OncePerRequestFilter {
@@ -42,9 +43,11 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
                                     .getBody();
                 String username = String.valueOf(claims.get("username"));
                 String authorities = (String) claims.get("authorities");
-                Authentication auth = new UsernamePasswordAuthenticationToken(username, null, AuthorityUtils
+                UUID userId = UUID.fromString(String.valueOf(claims.get("userId")));
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, AuthorityUtils
                         .commaSeparatedStringToAuthorityList(authorities));
-                SecurityContextHolder.getContext().setAuthentication(auth);
+                authenticationToken.setDetails(userId);
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             } catch (Exception e) {
                 throw new BadCredentialsException("Invalid Token received!");
             }

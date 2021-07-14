@@ -36,6 +36,7 @@ public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
             String jwt = Jwts.builder().setIssuer("Praxis Intercom").setSubject("JWT Token")
                              .claim("username", authentication.getName())
                              .claim("authorities", populateAuthorities(authentication.getAuthorities()))
+                             .claim("userId",authentication.getDetails())
                              .setIssuedAt(today)
                              .setExpiration(new Date(today.getTime() + (1000*60*60*24)))
                              .signWith(key).compact();
