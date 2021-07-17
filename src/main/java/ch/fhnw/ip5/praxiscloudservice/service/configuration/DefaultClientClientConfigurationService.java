@@ -46,6 +46,8 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
                 .notificationTypes(toNotificationTypes(configurationDto.getNotificationTypes()))
                 .build();
 
+        // TODO: Make sure Client : ClientConfiguration is always 1 : 1 after update
+
         return toClientConfigurationDto(clientConfigurationRepository.saveAndFlush(configuration));
     }
 
@@ -63,17 +65,19 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
 
     @Override
     public ClientConfigurationDto updateClientConfiguration(ClientConfigurationDto configurationDto) {
-        final ClientConfiguration oldClientConfiguration = findExistingClientConfiguration(configurationDto.getId());
+        final Client client = findExistingClient(configurationDto.getClientId());
         final Set<RuleParameters> ruleParameters = toRuleParameters(configurationDto.getRuleParameters());
         final Set<NotificationType> notificationTypes = toNotificationTypes(configurationDto.getNotificationTypes());
 
         final ClientConfiguration updatedClientConfiguration = ClientConfiguration.builder()
                 .clientConfigurationId(configurationDto.getId())
                 .name(configurationDto.getName())
-                .client(oldClientConfiguration.getClient())
+                .client(client)
                 .rules(ruleParameters)
                 .notificationTypes(notificationTypes)
                 .build();
+
+        // TODO: Make sure Client : ClientConfiguration is always 1 : 1 after update
 
         return toClientConfigurationDto(clientConfigurationRepository.save(updatedClientConfiguration));
     }
