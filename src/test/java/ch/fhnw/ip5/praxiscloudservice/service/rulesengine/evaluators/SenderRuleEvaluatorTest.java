@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static ch.fhnw.ip5.praxiscloudservice.util.DefaultTestData.*;
+import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SenderRuleEvaluatorTest {
@@ -56,6 +57,37 @@ public class SenderRuleEvaluatorTest {
     void isRelevant_invalidRuleType() {
         // Given
         final RuleParameters ruleParameters = createNotificationTypeRuleParameters();
+        final PraxisNotification notification = createNotification();
+
+        // When
+        final boolean isRelevant = senderRuleEvaluator.isRelevant(notification, ruleParameters);
+
+        // Then
+        assertThat(isRelevant).isFalse();
+    }
+
+
+    @Test
+    void isRelevant_matchingSender() {
+        // Given
+        final PraxisNotification notification = createNotification();
+        final RuleParameters ruleParameters = RuleParameters.builder()
+                .ruleParametersId(randomUUID())
+                .type(RuleType.SENDER)
+                .value(notification.getSender().toString())
+                .build();
+
+        // When
+        final boolean isRelevant = senderRuleEvaluator.isRelevant(notification, ruleParameters);
+
+        // Then
+        assertThat(isRelevant).isTrue();
+    }
+
+    @Test
+    void isRelevant_nonMatchingSender() {
+        // Given
+        final RuleParameters ruleParameters = createSenderRuleParameters();
         final PraxisNotification notification = createNotification();
 
         // When
