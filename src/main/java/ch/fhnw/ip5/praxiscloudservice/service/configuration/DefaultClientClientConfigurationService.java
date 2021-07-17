@@ -85,6 +85,9 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
     @Override
     public void deleteClientConfigurationById(UUID configurationId) {
         try {
+            Client client = clientRepository.findByClientConfiguration_ClientConfigurationId(configurationId).orElseThrow(() -> new PraxisIntercomException(ErrorCode.CLIENT_NOT_FOUND));
+            client.setClientConfiguration(null);
+            clientRepository.saveAndFlush(client);
             clientConfigurationRepository.deleteById(configurationId);
         } catch (IllegalArgumentException e) {
             log.info("Client Configuration with id {} was already deleted", configurationId);
