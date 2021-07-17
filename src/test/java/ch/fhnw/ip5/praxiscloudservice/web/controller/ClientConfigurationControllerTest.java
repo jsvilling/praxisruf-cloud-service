@@ -1,6 +1,6 @@
 package ch.fhnw.ip5.praxiscloudservice.web.controller;
 
-import ch.fhnw.ip5.praxiscloudservice.api.ConfigurationService;
+import ch.fhnw.ip5.praxiscloudservice.api.ClientConfigurationService;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientConfigurationDto;
 import ch.fhnw.ip5.praxiscloudservice.util.DefaultTestData;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.verify;
 public class ClientConfigurationControllerTest {
 
     @Mock
-    private ConfigurationService configurationService;
+    private ClientConfigurationService clientConfigurationService;
 
     @InjectMocks
     private ClientConfigurationController clientConfigurationController;
@@ -40,6 +40,6 @@ public class ClientConfigurationControllerTest {
         clientConfigurationController.createClientConfiguration(clientConfigurationDto);
 
         // Then
-        verify(configurationService, times(1)).createClientConfiguration(eq(clientConfigurationDto));
+        verify(clientConfigurationService, times(1)).createClientConfiguration(eq(clientConfigurationDto));
     }
 }

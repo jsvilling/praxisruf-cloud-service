@@ -1,7 +1,6 @@
 package ch.fhnw.ip5.praxiscloudservice.web.controller;
 
-import ch.fhnw.ip5.praxiscloudservice.api.ConfigurationService;
-import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientConfigurationDto;
+import ch.fhnw.ip5.praxiscloudservice.api.ClientService;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.MinimalClientDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.NotificationTypeDto;
@@ -22,35 +21,36 @@ import java.util.UUID;
 @Api(tags = "Client")
 public class ClientsController {
 
-    private final ConfigurationService configurationService;
+    private final ClientService clientService;
 
     // ###### Admin CRUD Operations
     @GetMapping("/{id}")
     public ClientDto getClientById(@PathVariable("id") UUID clientId) {
-        return configurationService.findClientById(clientId);
+        return clientService.findClientById(clientId);
     }
 
     @GetMapping()
     public Set<ClientDto> getAllClients() {
-        return configurationService.findAllClients();
+        return clientService.findAllClients();
     }
 
     @PostMapping
     public ClientDto createClient(@RequestBody ClientDto clientDto) {
-        return configurationService.createClient(clientDto);
+        return clientService.createClient(clientDto);
     }
 
     @PutMapping
     public ClientDto updateClient(@RequestBody ClientDto clientDto){
-        return configurationService.updateClient(clientDto);
+        return clientService.updateClient(clientDto);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable UUID id){configurationService.deleteClientById(id);}
+    public void delete(@PathVariable UUID id){
+        clientService.deleteClientById(id);}
 
     @DeleteMapping("/many/{filter}")
     public void deleteMany(@PathVariable List<UUID> filter){
-        configurationService.deleteAllById(filter);
+        clientService.deleteAllById(filter);
     }
 
     // ###### Client API
@@ -62,14 +62,14 @@ public class ClientsController {
     @Operation(description = "Find all available clients for a given user")
     public Set<MinimalClientDto> getAvailableClients() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return configurationService.findAvailableClients((UUID) auth.getDetails());
+        return clientService.findAvailableClients((UUID) auth.getDetails());
     }
 
 
     @GetMapping("{clientId}/configuration/notification-types")
     @Operation(description = "Find the active configuration for an existing client")
     public List<NotificationTypeDto> findNotificationTypesForClient(@PathVariable(value = "clientId") UUID clientId) {
-        return configurationService.findNotificationTypesForClient(clientId);
+        return clientService.findNotificationTypesForClient(clientId);
     }
 
 }

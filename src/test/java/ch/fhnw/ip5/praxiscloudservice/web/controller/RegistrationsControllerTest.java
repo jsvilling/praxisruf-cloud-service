@@ -1,6 +1,6 @@
 package ch.fhnw.ip5.praxiscloudservice.web.controller;
 
-import ch.fhnw.ip5.praxiscloudservice.api.ConfigurationService;
+import ch.fhnw.ip5.praxiscloudservice.api.RegistrationService;
 import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +17,7 @@ import static org.mockito.Mockito.verify;
 public class RegistrationsControllerTest {
 
     @Mock
-    private ConfigurationService configurationService;
+    private RegistrationService registrationService;
 
     @InjectMocks
     private RegistrationsController registrationsController;
@@ -28,7 +28,7 @@ public class RegistrationsControllerTest {
         registrationsController.getAllKnownTokens();
 
         // Then
-        verify(configurationService, times(1)).getAllKnownTokens();
+        verify(registrationService, times(1)).getAllKnownTokens();
     }
 
     @Test
@@ -40,7 +40,7 @@ public class RegistrationsControllerTest {
         registrationsController.findRelevantTokens(notification);
 
         // Then
-        verify(configurationService, times(1)).findAllRelevantTokens(eq(notification));
+        verify(registrationService, times(1)).findAllRelevantTokens(eq(notification));
     }
 
     @Test
@@ -49,7 +49,7 @@ public class RegistrationsControllerTest {
         registrationsController.register(CLIENT_ID, TOKEN);
 
         // Then
-        verify(configurationService, times(1)).register(CLIENT_ID, TOKEN);
+        verify(registrationService, times(1)).register(CLIENT_ID, TOKEN);
     }
 
     @Test
@@ -58,6 +58,6 @@ public class RegistrationsControllerTest {
         registrationsController.unregister(CLIENT_ID);
 
         // Then
-        verify(configurationService, times(1)).unregister(CLIENT_ID);
+        verify(registrationService, times(1)).unregister(CLIENT_ID);
     }
 }
