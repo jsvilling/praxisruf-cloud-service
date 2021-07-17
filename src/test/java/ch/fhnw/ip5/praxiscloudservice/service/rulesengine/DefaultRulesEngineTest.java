@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static ch.fhnw.ip5.praxiscloudservice.util.DefaultTestData.createNotification;
-import static ch.fhnw.ip5.praxiscloudservice.util.DefaultTestData.createRuleParameter;
+import static ch.fhnw.ip5.praxiscloudservice.util.DefaultTestData.createSenderRuleParameters;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -53,7 +53,7 @@ public class DefaultRulesEngineTest {
     @Test
     void isRelevant_noEvaluatorFound() {
         // Given
-        final RuleParameters ruleParameters = createRuleParameter();
+        final RuleParameters ruleParameters = createSenderRuleParameters();
         when(ruleEvaluatorFactory.get(ruleParameters.getType())).thenReturn(null);
 
         final PraxisNotification notification = createNotification();
@@ -70,11 +70,11 @@ public class DefaultRulesEngineTest {
         // Given
         final PraxisNotification notification = createNotification();
 
-        final RuleParameters ruleParameters1 = createRuleParameter();
+        final RuleParameters ruleParameters1 = createSenderRuleParameters();
         RuleEvaluator evaluator1 = Mockito.mock(RuleEvaluator.class);
         when(evaluator1.isRelevant(notification, ruleParameters1)).thenReturn(false);
 
-        final RuleParameters ruleParameters2 = createRuleParameter();
+        final RuleParameters ruleParameters2 = createSenderRuleParameters();
         RuleEvaluator evaluator2 = Mockito.mock(RuleEvaluator.class);
         when(evaluator1.isRelevant(notification, ruleParameters1)).thenReturn(true);
 
@@ -92,11 +92,11 @@ public class DefaultRulesEngineTest {
         // Given
         final PraxisNotification notification = createNotification();
 
-        final RuleParameters ruleParameters1 = createRuleParameter();
+        final RuleParameters ruleParameters1 = createSenderRuleParameters();
         RuleEvaluator evaluator1 = Mockito.mock(RuleEvaluator.class);
         when(evaluator1.isRelevant(notification, ruleParameters1)).thenReturn(true);
 
-        final RuleParameters ruleParameters2 = createRuleParameter();
+        final RuleParameters ruleParameters2 = createSenderRuleParameters();
         RuleEvaluator evaluator2 = Mockito.mock(RuleEvaluator.class);
         when(evaluator1.isRelevant(notification, ruleParameters1)).thenReturn(true);
 
@@ -114,11 +114,11 @@ public class DefaultRulesEngineTest {
         // Given
         final PraxisNotification notification = createNotification();
 
-        final RuleParameters ruleParameters1 = createRuleParameter();
+        final RuleParameters ruleParameters1 = createSenderRuleParameters();
         RuleEvaluator evaluator1 = Mockito.mock(RuleEvaluator.class);
         when(evaluator1.isRelevant(notification, ruleParameters1)).thenReturn(false);
 
-        final RuleParameters ruleParameters2 = createRuleParameter();
+        final RuleParameters ruleParameters2 = createSenderRuleParameters();
         RuleEvaluator evaluator2 = Mockito.mock(RuleEvaluator.class);
         when(evaluator1.isRelevant(notification, ruleParameters1)).thenReturn(false);
 
