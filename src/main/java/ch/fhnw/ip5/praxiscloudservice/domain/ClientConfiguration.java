@@ -45,13 +45,4 @@ public class ClientConfiguration {
     @JoinColumn(name = "client_configuration_id")
     private Set<NotificationType> notificationTypes;
 
-    public void setRules(Set<RuleParameters> ruleParameters) {
-        rules.clear();
-        rules.addAll(ruleParameters);
-    }
-
-    public void setNotificationTypes(Set<NotificationType> notificationTypes) {
-        notificationTypes.clear();
-        notificationTypes.addAll(notificationTypes);
-    }
 }
