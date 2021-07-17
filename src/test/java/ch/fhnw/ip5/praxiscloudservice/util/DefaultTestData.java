@@ -3,7 +3,6 @@ package ch.fhnw.ip5.praxiscloudservice.util;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationDto;
 import ch.fhnw.ip5.praxiscloudservice.domain.*;
 
-import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -76,4 +75,5 @@ public class DefaultTestData {
                 .value(RECIPIENT_CLIENT_ID.toString())
                 .build();
     }
+
 }
