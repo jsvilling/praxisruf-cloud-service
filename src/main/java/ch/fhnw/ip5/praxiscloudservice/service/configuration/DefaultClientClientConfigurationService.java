@@ -95,8 +95,8 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
     }
 
     @Override
-    public void deleteAllClientConfigurationsById(List<UUID> configurationIds) {
-        configurationIds.forEach(this::deleteClientConfigurationById);
+    public void deleteAllClientConfigurationsById(List<UUID> clientConfigurationIds) {
+        clientConfigurationIds.forEach(this::deleteClientConfigurationById);
     }
 
     private Client findExistingClient(UUID clientId) {
