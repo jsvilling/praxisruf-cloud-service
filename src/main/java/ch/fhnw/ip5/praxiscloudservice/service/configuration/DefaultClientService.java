@@ -75,8 +75,8 @@ public class DefaultClientService implements ClientService {
     }
 
     @Override
-    public void deleteAllById(List<UUID> filter) {
-        filter.forEach(this::deleteClientById);
+    public void deleteAllById(List<UUID> clientIds) {
+        clientIds.forEach(this::deleteClientById);
     }
 
     @Override

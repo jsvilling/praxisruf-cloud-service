@@ -9,7 +9,7 @@ import java.util.UUID;
 /**
  * This interface specifies interactions with ClientConfigurations.
  *
- * @author J. Villing
+ * @author J. Villing & K. Zellweger
  */
 public interface ClientConfigurationService {
 
@@ -39,7 +39,9 @@ public interface ClientConfigurationService {
     Set<ClientConfigurationDto> findAllClientConfigurations();
 
     /**
-     * Creates a ClientConfiguration according to the given DTO.
+     * Updates a ClientConfiguration according to the given DTO.
+     *
+     * The property id of the given ClientConfigurationDto is used to determine which Client will be updated.
      *
      * @param configurationDto
      * @throws PraxisIntercomException - If the ClientConfigurationDto is invalid.
@@ -50,12 +52,18 @@ public interface ClientConfigurationService {
     /**
      * Deletes the ClientConfiguration with the given id.
      *
+     * If no ClientConfiguration with the given id is found it is assumed that this client was already deleted.
+     * In this case no change will be made and the operation terminates silently.
+     *
      * @param configurationId
      */
     void deleteClientConfigurationById(UUID configurationId);
 
     /**
      * Deletes ClientConfigurations with any of the given ids.
+     *
+     * If the deletion of any of the given clientConfigurationIds fails, the process will be aborted and the exception
+     * is re-thrown.
      *
      * @param clientConfigurationIds
      */
