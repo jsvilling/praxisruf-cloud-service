@@ -18,7 +18,16 @@ public class NotificationTypeRuleEvaluator implements RuleEvaluator {
 
     @Override
     public boolean isRelevant(PraxisNotification notification, RuleParameters ruleParameters) {
+        if (isInvalidRequest(notification, ruleParameters)) {
+            return false;
+        }
         final UUID relevantNotificationTypeId = UUID.fromString(ruleParameters.getValue());
         return relevantNotificationTypeId.equals(notification.getNotificationTypeId());
+    }
+
+    private boolean isInvalidRequest(PraxisNotification notification, RuleParameters ruleParameters) {
+        return notification == null
+                || ruleParameters == null
+                || !getRelevantType().equals(ruleParameters.getType());
     }
 }
