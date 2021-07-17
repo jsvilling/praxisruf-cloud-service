@@ -41,7 +41,7 @@ public class ClientConfigurationController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable UUID configurationId){
+    public void delete(@PathVariable("id") UUID configurationId){
         clientConfigurationService.deleteClientConfigurationById(configurationId);
     }
 

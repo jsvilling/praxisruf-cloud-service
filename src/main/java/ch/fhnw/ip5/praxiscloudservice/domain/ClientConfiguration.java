@@ -16,6 +16,9 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"clientId"})
+})
 public class ClientConfiguration {
 
     @Id
