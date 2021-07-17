@@ -1,5 +1,10 @@
 package ch.fhnw.ip5.praxiscloudservice.api;
 
+/**
+ * This interface specifies contracts for sending test messages to client devices.
+ *
+ * @author J. Villing
+ */
 public interface NotificationTestService {
 
     /**
