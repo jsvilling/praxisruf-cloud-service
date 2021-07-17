@@ -14,9 +14,6 @@ import java.util.UUID;
 
 /**
  * Represents a user.
- *
- * Note: This is only a thin placeholder.
- *
  */
 @Entity
 @AllArgsConstructor(access = AccessLevel.PRIVATE) // for Builder
