@@ -7,18 +7,19 @@ import ch.fhnw.ip5.praxiscloudservice.api.dto.NotificationTypeDto;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
 import ch.fhnw.ip5.praxiscloudservice.domain.Client;
-import ch.fhnw.ip5.praxiscloudservice.domain.NotificationType;
 import ch.fhnw.ip5.praxiscloudservice.persistence.ClientRepository;
 import ch.fhnw.ip5.praxiscloudservice.persistence.NotificationTypeRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static ch.fhnw.ip5.praxiscloudservice.service.configuration.mapper.ClientMapper.toClientDto;
+import static ch.fhnw.ip5.praxiscloudservice.service.configuration.mapper.NotificationTypesMapper.toNotificationTypeDtos;
 
 @Service
 @AllArgsConstructor
@@ -88,23 +89,4 @@ public class DefaultClientService implements ClientService {
         return toNotificationTypeDtos(notificationTypeRepository.findAll());
     }
 
-    private List<NotificationTypeDto> toNotificationTypeDtos(Collection<NotificationType> notificationTypes) {
-        return notificationTypes.stream()
-                .map(type -> NotificationTypeDto.builder()
-                        .id(type.getId())
-                        .body(type.getBody())
-                        .type(type.getType())
-                        .title(type.getTitle())
-                        .displayText(type.getDisplayText())
-                        .build()
-                ).collect(Collectors.toList());
-    }
-
-    private ClientDto toClientDto(Client client) {
-        return ClientDto.builder()
-                .id(client.getClientId())
-                .userId(client.getUserId())
-                .name(client.getName())
-                .build();
-    }
 }
