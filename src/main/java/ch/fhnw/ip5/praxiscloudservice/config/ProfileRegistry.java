@@ -1,7 +1,10 @@
 package ch.fhnw.ip5.praxiscloudservice.config;
 
+/**
+ * Registry containing all available Profiles.
+ */
 public interface ProfileRegistry {
-    public static final String AWS = "aws";
-    public static final String LOCAL = "local";
-    public static final String TEST = "test";
+    String AWS = "aws";
+    String LOCAL = "local";
+    String TEST = "test";
 }
