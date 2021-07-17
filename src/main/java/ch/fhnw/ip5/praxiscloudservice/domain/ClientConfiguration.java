@@ -14,7 +14,11 @@ import java.util.UUID;
 @AllArgsConstructor(access = AccessLevel.PRIVATE) // for Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // for JPA
 @Getter
+@Setter
 @Builder
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"clientId"})
+})
 public class ClientConfiguration {
 
     @Id
@@ -40,4 +44,14 @@ public class ClientConfiguration {
     )
     @JoinColumn(name = "client_configuration_id")
     private Set<NotificationType> notificationTypes;
+
+    public void setRules(Set<RuleParameters> ruleParameters) {
+        rules.clear();
+        rules.addAll(ruleParameters);
+    }
+
+    public void setNotificationTypes(Set<NotificationType> notificationTypes) {
+        notificationTypes.clear();
+        notificationTypes.addAll(notificationTypes);
+    }
 }

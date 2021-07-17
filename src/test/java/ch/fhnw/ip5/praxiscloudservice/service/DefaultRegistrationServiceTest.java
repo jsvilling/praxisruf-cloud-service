@@ -1,17 +1,14 @@
 package ch.fhnw.ip5.praxiscloudservice.service;
 
 import ch.fhnw.ip5.praxiscloudservice.api.RulesEngine;
-import ch.fhnw.ip5.praxiscloudservice.api.dto.MinimalClientDto;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
 import ch.fhnw.ip5.praxiscloudservice.domain.Client;
 import ch.fhnw.ip5.praxiscloudservice.domain.ClientConfiguration;
 import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
 import ch.fhnw.ip5.praxiscloudservice.domain.Registration;
 import ch.fhnw.ip5.praxiscloudservice.persistence.ClientConfigurationRepository;
-import ch.fhnw.ip5.praxiscloudservice.persistence.ClientRepository;
-import ch.fhnw.ip5.praxiscloudservice.persistence.NotificationTypeRepository;
 import ch.fhnw.ip5.praxiscloudservice.persistence.RegistrationRepository;
-import ch.fhnw.ip5.praxiscloudservice.service.configuration.DefaultConfigurationService;
+import ch.fhnw.ip5.praxiscloudservice.service.configuration.DefaultRegistrationService;
 import ch.fhnw.ip5.praxiscloudservice.util.DefaultTestData;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -28,28 +25,24 @@ import java.util.UUID;
 
 import static ch.fhnw.ip5.praxiscloudservice.util.DefaultTestData.*;
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class DefaultConfigurationServiceTest {
+public class DefaultRegistrationServiceTest {
 
     @Mock
     private RegistrationRepository registrationRepository;
 
     @Mock
-    private ClientRepository clientRepository;
-
-    @Mock
     private ClientConfigurationRepository clientConfigurationRepository;
-
-    @Mock
-    private NotificationTypeRepository notificationTypeRepository;
 
     @Mock
     private RulesEngine rulesEngine;
 
     @InjectMocks
-    private DefaultConfigurationService configurationService;
+    private DefaultRegistrationService registrationService;
 
     @Nested
     class Register {
@@ -62,7 +55,7 @@ public class DefaultConfigurationServiceTest {
             when(registrationRepository.save(any())).thenAnswer(AdditionalAnswers.returnsFirstArg());
 
             // When
-            configurationService.register(id, token);
+            registrationService.register(id, token);
 
             // Then
             verify(registrationRepository, times(1)).save(any());
@@ -75,7 +68,7 @@ public class DefaultConfigurationServiceTest {
 
             // When
             // Then
-            assertThatThrownBy(() -> configurationService.register(null, token))
+            assertThatThrownBy(() -> registrationService.register(null, token))
                     .isInstanceOf(PraxisIntercomException.class);
         }
 
@@ -86,7 +79,7 @@ public class DefaultConfigurationServiceTest {
 
             // When
             // Then
-            assertThatThrownBy(() -> configurationService.register(id, null))
+            assertThatThrownBy(() -> registrationService.register(id, null))
                     .isInstanceOf(PraxisIntercomException.class);
         }
 
@@ -101,7 +94,7 @@ public class DefaultConfigurationServiceTest {
             final UUID id = UUID.randomUUID();
 
             // When
-            configurationService.unregister(id);
+            registrationService.unregister(id);
 
             // Then
             verify(registrationRepository, times(1)).deleteById(id);
@@ -115,7 +108,7 @@ public class DefaultConfigurationServiceTest {
 
             // When
             // Then
-            assertThatNoException().isThrownBy(() -> configurationService.unregister(id));
+            assertThatNoException().isThrownBy(() -> registrationService.unregister(id));
         }
 
         @Test
@@ -127,7 +120,7 @@ public class DefaultConfigurationServiceTest {
 
             // When
             // Then
-            assertThatThrownBy(() -> configurationService.unregister(id)).isEqualTo(e);
+            assertThatThrownBy(() -> registrationService.unregister(id)).isEqualTo(e);
         }
     }
 
@@ -142,7 +135,7 @@ public class DefaultConfigurationServiceTest {
             when(registrationRepository.findAll()).thenReturn(registrations);
 
             // When
-            final Set<String> allKnownTokens = configurationService.getAllKnownTokens();
+            final Set<String> allKnownTokens = registrationService.getAllKnownTokens();
 
             // Then
             assertThat(allKnownTokens).containsExactly(registration.getFcmToken());
@@ -165,7 +158,7 @@ public class DefaultConfigurationServiceTest {
             when(registrationRepository.findByClientId(client.getClientId())).thenReturn(Optional.of(registration));
 
             // When
-            final Set<String> allKnownTokens = configurationService.findAllRelevantTokens(notification);
+            final Set<String> allKnownTokens = registrationService.findAllRelevantTokens(notification);
 
             // Then
             assertThat(allKnownTokens).containsExactly(registration.getFcmToken());
@@ -180,7 +173,7 @@ public class DefaultConfigurationServiceTest {
             when(rulesEngine.isAnyRelevant(any(), eq(notification))).thenReturn(false);
 
             // When
-            final Set<String> allKnownTokens = configurationService.findAllRelevantTokens(notification);
+            final Set<String> allKnownTokens = registrationService.findAllRelevantTokens(notification);
 
             // Then
             assertThat(allKnownTokens).isEmpty();
@@ -193,7 +186,7 @@ public class DefaultConfigurationServiceTest {
             when(clientConfigurationRepository.findAll()).thenReturn(List.of());
 
             // When
-            final Set<String> allKnownTokens = configurationService.findAllRelevantTokens(notification);
+            final Set<String> allKnownTokens = registrationService.findAllRelevantTokens(notification);
 
             // Then
             assertThat(allKnownTokens).isEmpty();
@@ -211,58 +204,12 @@ public class DefaultConfigurationServiceTest {
             when(registrationRepository.findByClientId(client.getClientId())).thenReturn(Optional.empty());
 
             // When
-            final Set<String> allKnownTokens = configurationService.findAllRelevantTokens(notification);
+            final Set<String> allKnownTokens = registrationService.findAllRelevantTokens(notification);
 
             // Then
             assertThat(allKnownTokens).isEmpty();
         }
 
     }
-
-    @Nested
-    class findAvailableClients {
-        @Test
-        void findAvailableClients_clientFound() {
-            // Given
-            final Client client = createClient();
-            when(clientRepository.findAllByUserId(USER_ID)).thenReturn(Set.of(client));
-
-            // When
-            final Set<MinimalClientDto> availableClients = configurationService.findAvailableClients(USER_ID);
-
-            // Then
-            final MinimalClientDto expected = MinimalClientDto.builder()
-                    .id(client.getClientId())
-                    .name(client.getName())
-                    .build();
-            assertThat(availableClients).containsExactly(expected);
-        }
-
-        @Test
-        void findAvailableClients_noClientFound() {
-            // Given
-            when(clientRepository.findAllByUserId(USER_ID)).thenReturn(Set.of());
-
-            // When
-            final Set<MinimalClientDto> availableClients = configurationService.findAvailableClients(USER_ID);
-
-            // Then
-            assertThat(availableClients).isEmpty();
-        }
-    }
-
-    @Nested
-    class createClient {
-
-
-
-    }
-
-    @Nested
-    class createClientConfiguration {
-
-
-
-    }
-
+    
 }

@@ -2,6 +2,7 @@ package ch.fhnw.ip5.praxiscloudservice.web.controller;
 
 import ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,4 +46,11 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
     protected ResponseEntity<Object> handleGeneralException(Exception e, WebRequest w) {
         return handleExceptionInternal(e, "An unexpected error occurred: " + e.getMessage(), new HttpHeaders(), INTERNAL_SERVER_ERROR, w);
     }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(value = BAD_REQUEST)
+    protected ResponseEntity<Object> handleHibernateException(Exception e, WebRequest w){
+        return handleExceptionInternal(e,"A constraint Violation occurred: " + e.getMessage(), new HttpHeaders(), BAD_REQUEST, w);
+    }
+
 }

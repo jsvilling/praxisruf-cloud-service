@@ -1,15 +1,15 @@
 package ch.fhnw.ip5.praxiscloudservice.web.controller;
 
-import ch.fhnw.ip5.praxiscloudservice.api.ConfigurationService;
-import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientConfigurationDto;
-import ch.fhnw.ip5.praxiscloudservice.util.DefaultTestData;
+import ch.fhnw.ip5.praxiscloudservice.api.ClientService;
+import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.util.Collections;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.eq;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.verify;
 public class ClientsControllerTest {
 
     @Mock
-    private ConfigurationService configurationService;
+    private ClientService configurationService;
 
     @InjectMocks
     private ClientsController clientsController;
@@ -29,9 +29,11 @@ public class ClientsControllerTest {
     void getAvailableClients() {
         // Given
         final UUID userId = UUID.randomUUID();
-
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken("test",null,null);
+        token.setDetails(userId);
+        SecurityContextHolder.getContext().setAuthentication(token);
         // When
-        clientsController.getAvailableClients(userId);
+        clientsController.getAvailableClients();
 
         // Then
         verify(configurationService, times(1)).findAvailableClients(eq(userId));
@@ -40,14 +42,13 @@ public class ClientsControllerTest {
     @Test
     void createClient() {
         // Given
-        final UUID userId = UUID.randomUUID();
-        final String clientName = "name";
+        ClientDto dto = ClientDto.builder().id(UUID.randomUUID()).name("name").build();
 
         // When
-        clientsController.createClient(userId, clientName);
+        clientsController.createClient(dto);
 
         // Then
-        verify(configurationService, times(1)).createClient(eq(userId), eq(clientName));
+        verify(configurationService, times(1)).createClient(eq(dto));
     }
 
     @Test
@@ -62,21 +63,4 @@ public class ClientsControllerTest {
         verify(configurationService, times(1)).findNotificationTypesForClient(eq(clientId));
     }
 
-    @Test
-    void createClientConfiguration() {
-        // Given
-        final String name = "name";
-        final ClientConfigurationDto clientConfigurationDto = ClientConfigurationDto.builder()
-                .clientId(DefaultTestData.CLIENT_ID)
-                .name(name)
-                .notificationTypes(Collections.emptyList())
-                .ruleParameters(Collections.emptyList())
-                .build();
-
-        // When
-        clientsController.createClientConfiguration(clientConfigurationDto);
-
-        // Then
-        verify(configurationService, times(1)).createClientConfiguration(eq(clientConfigurationDto));
-    }
 }
