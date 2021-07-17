@@ -41,6 +41,23 @@ public interface ClientService {
     ClientDto findClientById(UUID clientId);
 
     /**
+     * Finds all Clients that are registered for the given userId.
+     *
+     * @param userId
+     * @return Set<MinimalClientDto>
+     */
+    Set<MinimalClientDto> findAvailableClients(UUID userId);
+
+    /**
+     * Finds all Notification Types that are configured for the client with the given id.
+     *
+     * @param clientId
+     * @throws PraxisIntercomException - If no Client with the given id exists.
+     * @return
+     */
+    List<NotificationTypeDto> findNotificationTypesForClient(UUID clientId);
+
+    /**
      * Creates a Client according to the given DTO.
      *
      * The property id of the given ClientDto is used to determine which Client will be updated.
@@ -70,21 +87,5 @@ public interface ClientService {
      */
     void deleteAllById(List<UUID> clientIds);
 
-    /**
-     * Finds all Clients that are registered for the given userId.
-     *
-     * @param userId
-     * @return Set<MinimalClientDto>
-     */
-    Set<MinimalClientDto> findAvailableClients(UUID userId);
-
-    /**
-     * Finds all Notification Types that are configured for the client with the given id.
-     *
-     * @param clientId
-     * @throws PraxisIntercomException - If no Client with the given id exists.
-     * @return
-     */
-    List<NotificationTypeDto> findNotificationTypesForClient(UUID clientId);
 
 }

@@ -29,6 +29,15 @@ public interface UserService {
     List<UserDto> findAllUsers();
 
     /**
+     * Finds the PraxisIntercomUser with the given userId
+     *
+     * @param id
+     * @throws PraxisIntercomException - If no User with the given id exists.
+     * @return
+     */
+    UserDto findUserById(UUID id);
+
+    /**
      * Updates a PraxisIntercomUser according to the given UserDto.
      *
      * The property id of the given userDto is relevant for determining which PraxisIntercomUser is updated.
@@ -39,14 +48,6 @@ public interface UserService {
      */
     UserDto updateUser(UserDto userDto);
 
-    /**
-     * Finds the PraxisIntercomUser with the given userId
-     *
-     * @param id
-     * @throws PraxisIntercomException - If no User with the given id exists.
-     * @return
-     */
-    UserDto findUserById(UUID id);
 
     /**
      * Deletes the PraxisIntercomUser with the given id.

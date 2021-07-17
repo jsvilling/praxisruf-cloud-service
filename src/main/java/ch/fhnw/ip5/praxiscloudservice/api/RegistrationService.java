@@ -24,16 +24,6 @@ public interface RegistrationService {
     void register(UUID clientId, String fcmToken);
 
     /**
-     * Removes the Registration with the given clientId.
-     *
-     * If no such registration exists, it is assumed that the Registartion was alread removed. In this case the
-     * operation terminates silently.
-     *
-     * @param clientId
-     */
-    void unregister(UUID clientId);
-
-    /**
      * Finds all fcmTokens that are part of an existing Registration.
      *
      * @return Set<String>
@@ -52,4 +42,13 @@ public interface RegistrationService {
      */
     Set<String> findAllRelevantTokens(PraxisNotification notification);
 
+    /**
+     * Removes the Registration with the given clientId.
+     *
+     * If no such registration exists, it is assumed that the Registartion was alread removed. In this case the
+     * operation terminates silently.
+     *
+     * @param clientId
+     */
+    void unregister(UUID clientId);
 }
