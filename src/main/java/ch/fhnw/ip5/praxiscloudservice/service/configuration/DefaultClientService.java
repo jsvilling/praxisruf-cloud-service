@@ -3,10 +3,8 @@ package ch.fhnw.ip5.praxiscloudservice.service.configuration;
 import ch.fhnw.ip5.praxiscloudservice.api.ClientService;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.MinimalClientDto;
-import ch.fhnw.ip5.praxiscloudservice.api.dto.NotificationTypeDto;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
 import ch.fhnw.ip5.praxiscloudservice.domain.Client;
-import ch.fhnw.ip5.praxiscloudservice.domain.ClientConfiguration;
 import ch.fhnw.ip5.praxiscloudservice.persistence.ClientRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +17,6 @@ import java.util.stream.Collectors;
 
 import static ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode.CLIENT_NOT_FOUND;
 import static ch.fhnw.ip5.praxiscloudservice.service.configuration.mapper.ClientMapper.toClientDto;
-import static ch.fhnw.ip5.praxiscloudservice.service.configuration.mapper.NotificationTypesMapper.toNotificationTypeDtos;
 
 @Service
 @AllArgsConstructor
@@ -85,13 +82,6 @@ public class DefaultClientService implements ClientService {
                 .stream()
                 .map(c -> MinimalClientDto.builder().id(c.getClientId()).name(c.getName()).build())
                 .collect(Collectors.toSet());
-    }
-
-    @Override
-    public Set<NotificationTypeDto> findNotificationTypesForClient(UUID clientId) {
-        final Client client = findExistingClient(clientId);
-        final ClientConfiguration clientConfiguration = client.getClientConfiguration();
-        return toNotificationTypeDtos(clientConfiguration.getNotificationTypes());
     }
 
     private Client findExistingClient(UUID clientId) {
