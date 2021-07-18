@@ -8,4 +8,6 @@ import java.util.UUID;
 
 public interface NotificationTypeRepository extends JpaRepository<NotificationType, UUID> {
 
+    boolean existsById(UUID id);
+
 }
