@@ -25,6 +25,9 @@ public class DefaultNotificationTypeService implements NotificationTypeService {
 
     @Override
     public NotificationTypeDto findById(UUID notificationTypeId) {
+        if (notificationTypeRepository.existsById(notificationTypeId)) {
+            throw new PraxisIntercomException(ErrorCode.NOTIFICATION_TYPE_ALREADY_EXISTS);
+        }
         return toNotificationTypeDto(findExisting(notificationTypeId));
     }
 
@@ -35,17 +38,13 @@ public class DefaultNotificationTypeService implements NotificationTypeService {
 
     @Override
     public NotificationTypeDto create(NotificationTypeDto notificationTypeDto) {
-        final NotificationType notificationType = toNotificationType(notificationTypeDto);
-        final NotificationType persistedNotificationType = notificationTypeRepository.saveAndFlush(notificationType);
-        return toNotificationTypeDto(persistedNotificationType);
+        return toNotificationTypeDto(createOrUpdate(notificationTypeDto));
     }
 
     @Override
     public NotificationTypeDto update(NotificationTypeDto notificationTypeDto) {
         findExisting(notificationTypeDto.getId());
-        final NotificationType updatedNotificationType = toNotificationType(notificationTypeDto);
-        final NotificationType persistedNotificationType = notificationTypeRepository.saveAndFlush(updatedNotificationType);
-        return toNotificationTypeDto(persistedNotificationType);
+        return toNotificationTypeDto(createOrUpdate(notificationTypeDto));
     }
 
     @Override
@@ -72,5 +71,11 @@ public class DefaultNotificationTypeService implements NotificationTypeService {
     private void removeNotificationTypeFromRelatedConfigurations(NotificationType notificationType) {
         notificationType.getClientConfigurations()
                 .forEach(c -> c.removeNotificationType(notificationType));
+    }
+
+    private NotificationType createOrUpdate(NotificationTypeDto notificationTypeDto) {
+        final NotificationType updatedNotificationType = toNotificationType(notificationTypeDto);
+        final NotificationType persistedNotificationType = notificationTypeRepository.saveAndFlush(updatedNotificationType);
+        return persistedNotificationType;
     }
 }
