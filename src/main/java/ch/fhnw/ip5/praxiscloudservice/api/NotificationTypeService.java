@@ -12,6 +12,15 @@ public interface NotificationTypeService {
 
     Set<NotificationTypeDto> findAll();
 
+    /**
+     * Finds all Notification Types that are configured for the client with the given id.
+     *
+     * @param clientId
+     * @throws PraxisIntercomException - If no Client with the given id exists.
+     * @return
+     */
+    Set<NotificationTypeDto> findNotificationTypesForClient(UUID clientId);
+
     NotificationTypeDto create(NotificationTypeDto notificationTypeDto);
 
     NotificationTypeDto update(NotificationTypeDto notificationTypeDto);

@@ -37,6 +37,12 @@ public class DefaultNotificationTypeService implements NotificationTypeService {
     }
 
     @Override
+    public Set<NotificationTypeDto> findNotificationTypesForClient(UUID clientId) {
+        final Set<NotificationType> notificationTypes = notificationTypeRepository.findByClientConfigurations_Client_ClientId(clientId);
+        return toNotificationTypeDtos(notificationTypes);
+    }
+
+    @Override
     public NotificationTypeDto create(NotificationTypeDto notificationTypeDto) {
         return toNotificationTypeDto(createOrUpdate(notificationTypeDto));
     }

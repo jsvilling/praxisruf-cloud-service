@@ -29,6 +29,12 @@ public class NotificationTypeController {
         return notificationTypeService.findAll();
     }
 
+    @GetMapping("/search")
+    @Operation(description = "Find the active configuration for an existing client")
+    public Set<NotificationTypeDto> findNotificationTypesForClient(@RequestParam(value = "clientId") UUID clientId) {
+        return notificationTypeService.findNotificationTypesForClient(clientId);
+    }
+
     @PostMapping()
     @Operation(description = "Create a new client configuration")
     public NotificationTypeDto createClientConfiguration(@RequestBody NotificationTypeDto configurationDto) {

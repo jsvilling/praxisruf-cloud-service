@@ -3,7 +3,6 @@ package ch.fhnw.ip5.praxiscloudservice.web.controller;
 import ch.fhnw.ip5.praxiscloudservice.api.ClientService;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.MinimalClientDto;
-import ch.fhnw.ip5.praxiscloudservice.api.dto.NotificationTypeDto;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
@@ -63,13 +62,6 @@ public class ClientsController {
     public Set<MinimalClientDto> getAvailableClients() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return clientService.findAvailableClients((UUID) auth.getDetails());
-    }
-
-
-    @GetMapping("{clientId}/configuration/notification-types")
-    @Operation(description = "Find the active configuration for an existing client")
-    public Set<NotificationTypeDto> findNotificationTypesForClient(@PathVariable(value = "clientId") UUID clientId) {
-        return clientService.findNotificationTypesForClient(clientId);
     }
 
 }
