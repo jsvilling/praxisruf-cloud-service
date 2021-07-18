@@ -2,7 +2,6 @@ package ch.fhnw.ip5.praxiscloudservice.api;
 
 import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.MinimalClientDto;
-import ch.fhnw.ip5.praxiscloudservice.api.dto.NotificationTypeDto;
 
 import java.util.List;
 import java.util.Set;
@@ -32,10 +31,10 @@ public interface ClientService {
     Set<ClientDto> findAllClients();
 
     /**
-     * Creates a Client according to the given DTO.
+     * Finds the client with the given Id.
      *
-     * @param clientDto
-     * @throws PraxisIntercomException - If the ClientDto is invalid
+     * @param clientId
+     * @throws PraxisIntercomException - If not client with the given id exists
      * @return ClientDto
      */
     ClientDto findClientById(UUID clientId);
@@ -47,15 +46,6 @@ public interface ClientService {
      * @return Set<MinimalClientDto>
      */
     Set<MinimalClientDto> findAvailableClients(UUID userId);
-
-    /**
-     * Finds all Notification Types that are configured for the client with the given id.
-     *
-     * @param clientId
-     * @throws PraxisIntercomException - If no Client with the given id exists.
-     * @return
-     */
-    Set<NotificationTypeDto> findNotificationTypesForClient(UUID clientId);
 
     /**
      * Creates a Client according to the given DTO.
