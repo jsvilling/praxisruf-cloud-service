@@ -31,7 +31,7 @@ public class NotificationTypeControllerTest {
         notificationTypeController.findNotificationTypesForClient(clientId);
 
         // Then
-        verify(notificationTypeController, times(1)).findNotificationTypesForClient(eq(clientId));
+        verify(notificationTypeService, times(1)).findNotificationTypesForClient(eq(clientId));
     }
 
 }

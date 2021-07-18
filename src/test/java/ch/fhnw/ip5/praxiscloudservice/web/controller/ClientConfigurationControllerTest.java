@@ -32,7 +32,7 @@ public class ClientConfigurationControllerTest {
         final ClientConfigurationDto clientConfigurationDto = ClientConfigurationDto.builder()
                                                                                     .clientId(DefaultTestData.CLIENT_ID)
                                                                                     .name(name)
-                                                                                    .notificationTypes(Collections.emptyList())
+                                                                                    .notificationTypes(Collections.emptySet())
                                                                                     .ruleParameters(Collections.emptyList())
                                                                                     .build();
 
