@@ -3,6 +3,7 @@ package ch.fhnw.ip5.praxiscloudservice.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -39,6 +40,10 @@ public class ClientConfiguration {
     private Set<RuleParameters> rules;
 
     @ManyToMany
-    private Set<NotificationType> notificationTypes;
+    private Set<NotificationType> notificationTypes = new HashSet<>();
+
+    public void removeNotificationType(NotificationType notificationType) {
+        notificationTypes.remove(notificationType);
+    }
 
 }
