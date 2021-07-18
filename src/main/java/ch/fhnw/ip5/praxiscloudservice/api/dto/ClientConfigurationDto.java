@@ -19,6 +19,6 @@ public class ClientConfigurationDto {
 
     private List<RuleParametersDto> ruleParameters;
 
-    private Set<NotificationTypeDto> notificationTypes;
+    private Set<UUID> notificationTypes;
 
 }

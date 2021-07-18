@@ -12,4 +12,6 @@ public interface ClientConfigurationRepository extends JpaRepository<ClientConfi
 
     boolean existsByClient(Client client);
 
+    boolean existsByClientConfigurationId(UUID clientConfigurationId);
+
 }

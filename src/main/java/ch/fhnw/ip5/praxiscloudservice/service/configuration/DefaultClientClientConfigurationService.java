@@ -10,19 +10,20 @@ import ch.fhnw.ip5.praxiscloudservice.domain.NotificationType;
 import ch.fhnw.ip5.praxiscloudservice.domain.RuleParameters;
 import ch.fhnw.ip5.praxiscloudservice.persistence.ClientConfigurationRepository;
 import ch.fhnw.ip5.praxiscloudservice.persistence.ClientRepository;
+import ch.fhnw.ip5.praxiscloudservice.persistence.NotificationTypeRepository;
 import ch.fhnw.ip5.praxiscloudservice.service.configuration.mapper.ClientConfigurationMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static ch.fhnw.ip5.praxiscloudservice.service.configuration.mapper.ClientConfigurationMapper.toClientConfigurationDto;
-import static ch.fhnw.ip5.praxiscloudservice.service.configuration.mapper.NotificationTypesMapper.toNotificationTypes;
 import static ch.fhnw.ip5.praxiscloudservice.service.configuration.mapper.RulesParametersMapper.toRuleParameters;
 
 @Service
@@ -32,31 +33,25 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
 
     private final ClientRepository clientRepository;
     private final ClientConfigurationRepository clientConfigurationRepository;
+    private final NotificationTypeRepository notificationTypeRepository;
 
     @Override
     @Transactional
     public ClientConfigurationDto createClientConfiguration(ClientConfigurationDto configurationDto) {
-        final UUID clientId = configurationDto.getClientId();
-        final Client client = findExistingClient(clientId);
-
-        final ClientConfiguration configuration = ClientConfiguration.builder()
-                .name(configurationDto.getName())
-                .client(client)
-                .rules(toRuleParameters(configurationDto.getRuleParameters()))
-                .notificationTypes(toNotificationTypes(configurationDto.getNotificationTypes()))
-                .build();
-
-        // TODO: Make sure Client : ClientConfiguration is always 1 : 1 after update
-
-        return toClientConfigurationDto(clientConfigurationRepository.saveAndFlush(configuration));
+        if (clientConfigurationRepository.existsByClientConfigurationId(configurationDto.getId())) {
+            throw new PraxisIntercomException(ErrorCode.CLIENT_CONFIG_ALREADY_EXISTS);
+        }
+        return toClientConfigurationDto(createOrUpdate(configurationDto));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ClientConfigurationDto findClientConfigurationById(UUID configurationId) {
         return toClientConfigurationDto(findExistingClientConfiguration(configurationId));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Set<ClientConfigurationDto> findAllClientConfigurations() {
         return clientConfigurationRepository.findAll().stream()
                 .map(ClientConfigurationMapper::toClientConfigurationDto)
@@ -64,25 +59,16 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
     }
 
     @Override
+    @Transactional
     public ClientConfigurationDto updateClientConfiguration(ClientConfigurationDto configurationDto) {
-        final Client client = findExistingClient(configurationDto.getClientId());
-        final Set<RuleParameters> ruleParameters = toRuleParameters(configurationDto.getRuleParameters());
-        final Set<NotificationType> notificationTypes = toNotificationTypes(configurationDto.getNotificationTypes());
-
-        final ClientConfiguration updatedClientConfiguration = ClientConfiguration.builder()
-                .clientConfigurationId(configurationDto.getId())
-                .name(configurationDto.getName())
-                .client(client)
-                .rules(ruleParameters)
-                .notificationTypes(notificationTypes)
-                .build();
-
-        // TODO: Make sure Client : ClientConfiguration is always 1 : 1 after update
-
-        return toClientConfigurationDto(clientConfigurationRepository.save(updatedClientConfiguration));
+        if (!clientConfigurationRepository.existsByClientConfigurationId(configurationDto.getId())) {
+            throw new PraxisIntercomException(ErrorCode.CLIENT_CONFIG_NOT_FOUND);
+        }
+        return toClientConfigurationDto(createOrUpdate(configurationDto));
     }
 
     @Override
+    @Transactional
     public void deleteClientConfigurationById(UUID configurationId) {
         try {
             Client client = clientRepository.findByClientConfiguration_ClientConfigurationId(configurationId).orElseThrow(() -> new PraxisIntercomException(ErrorCode.CLIENT_NOT_FOUND));
@@ -95,6 +81,7 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
     }
 
     @Override
+    @Transactional
     public void deleteAllClientConfigurationsById(List<UUID> clientConfigurationIds) {
         clientConfigurationIds.forEach(this::deleteClientConfigurationById);
     }
@@ -108,6 +95,27 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
         return clientConfigurationRepository
                 .findById(clientId)
                 .orElseThrow(() -> new PraxisIntercomException(ErrorCode.CLIENT_CONFIG_NOT_FOUND));
+    }
+
+    private ClientConfiguration createOrUpdate(ClientConfigurationDto configurationDto) {
+        final Client client = findExistingClient(configurationDto.getClientId());
+        final Set<RuleParameters> ruleParameters = toRuleParameters(configurationDto.getRuleParameters());
+        final List<NotificationType> notificationTypes = notificationTypeRepository.findAllById(configurationDto.getNotificationTypes());
+
+        final ClientConfiguration updatedClientConfiguration = ClientConfiguration.builder()
+                .clientConfigurationId(configurationDto.getId())
+                .name(configurationDto.getName())
+                .client(client)
+                .rules(ruleParameters)
+                .notificationTypes(new HashSet<>(notificationTypes))
+                .build();
+
+        notificationTypes.forEach(nt -> nt.addClientConfiguration(updatedClientConfiguration));
+        notificationTypeRepository.saveAll(notificationTypes);
+
+        // TODO: Make sure Client : ClientConfiguration is always 1 : 1 after update
+
+        return clientConfigurationRepository.saveAndFlush(updatedClientConfiguration);
     }
 
 }

@@ -38,11 +38,7 @@ public class ClientConfiguration {
     @JoinColumn(name = "client_configuration_id")
     private Set<RuleParameters> rules;
 
-    @OneToMany(
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    @JoinColumn(name = "client_configuration_id")
+    @ManyToMany
     private Set<NotificationType> notificationTypes;
 
 }

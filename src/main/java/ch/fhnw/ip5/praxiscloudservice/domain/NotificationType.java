@@ -5,6 +5,8 @@ import lombok.*;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -32,5 +34,12 @@ public class NotificationType {
     private String body;
 
     private String type;
+
+    @ManyToMany
+    private Set<ClientConfiguration> clientConfigurations;
+
+    public void addClientConfiguration(ClientConfiguration clientConfiguration) {
+        clientConfigurations.add(clientConfiguration);
+    }
 
 }

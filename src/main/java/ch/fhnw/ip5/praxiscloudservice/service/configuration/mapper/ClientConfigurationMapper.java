@@ -3,7 +3,8 @@ package ch.fhnw.ip5.praxiscloudservice.service.configuration.mapper;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientConfigurationDto;
 import ch.fhnw.ip5.praxiscloudservice.domain.ClientConfiguration;
 
-import static ch.fhnw.ip5.praxiscloudservice.service.configuration.mapper.NotificationTypesMapper.toNotificationTypeDtos;
+import java.util.stream.Collectors;
+
 import static ch.fhnw.ip5.praxiscloudservice.service.configuration.mapper.RulesParametersMapper.toRuleParameterDtos;
 
 public class ClientConfigurationMapper {
@@ -13,7 +14,7 @@ public class ClientConfigurationMapper {
                 .id(configuration.getClientConfigurationId())
                 .clientId(configuration.getClient().getClientId())
                 .name(configuration.getName())
-                .notificationTypes(toNotificationTypeDtos(configuration.getNotificationTypes()))
+                .notificationTypes(configuration.getNotificationTypes().stream().map(n -> n.getId()).collect(Collectors.toSet()))
                 .ruleParameters(toRuleParameterDtos(configuration.getRules()))
                 .build();
     }
