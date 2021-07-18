@@ -51,16 +51,4 @@ public class ClientsControllerTest {
         verify(configurationService, times(1)).createClient(eq(dto));
     }
 
-    @Test
-    void findNotificationTypesForClient() {
-        // Given
-        final UUID clientId = UUID.randomUUID();
-
-        // When
-        clientsController.findNotificationTypesForClient(clientId);
-
-        // Then
-        verify(configurationService, times(1)).findNotificationTypesForClient(eq(clientId));
-    }
-
 }
