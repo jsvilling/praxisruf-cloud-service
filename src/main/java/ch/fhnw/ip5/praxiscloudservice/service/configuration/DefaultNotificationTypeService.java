@@ -51,6 +51,8 @@ public class DefaultNotificationTypeService implements NotificationTypeService {
     @Override
     public void deleteById(UUID notificationTypeId) {
         try {
+            notificationTypeRepository.findById(notificationTypeId)
+                    .ifPresent(this::removeNotificationTypeFromRelatedConfigurations);
             notificationTypeRepository.deleteById(notificationTypeId);
         } catch (IllegalArgumentException e) {
             log.info("NotificationType with id {} was already deleted", notificationTypeId);
@@ -65,5 +67,10 @@ public class DefaultNotificationTypeService implements NotificationTypeService {
     private NotificationType findExisting(UUID uuid) {
         return notificationTypeRepository.findById(uuid)
                 .orElseThrow(() -> new PraxisIntercomException(ErrorCode.NOTIFICATION_TYPE_NOT_FOUND));
+    }
+
+    private void removeNotificationTypeFromRelatedConfigurations(NotificationType notificationType) {
+        notificationType.getClientConfigurations()
+                .forEach(c -> c.removeNotificationType(notificationType));
     }
 }
