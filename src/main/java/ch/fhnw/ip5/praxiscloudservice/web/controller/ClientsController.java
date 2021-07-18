@@ -68,7 +68,7 @@ public class ClientsController {
 
     @GetMapping("{clientId}/configuration/notification-types")
     @Operation(description = "Find the active configuration for an existing client")
-    public List<NotificationTypeDto> findNotificationTypesForClient(@PathVariable(value = "clientId") UUID clientId) {
+    public Set<NotificationTypeDto> findNotificationTypesForClient(@PathVariable(value = "clientId") UUID clientId) {
         return clientService.findNotificationTypesForClient(clientId);
     }
 
