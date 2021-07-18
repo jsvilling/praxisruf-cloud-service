@@ -32,6 +32,7 @@ public class NotificationTypesMapper {
 
     public static NotificationType toNotificationType(NotificationTypeDto dto) {
         return NotificationType.builder()
+                .id(dto.getId())
                 .body(dto.getBody())
                 .type(dto.getType())
                 .title(dto.getTitle())

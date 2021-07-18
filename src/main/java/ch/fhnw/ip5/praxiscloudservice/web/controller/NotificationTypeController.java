@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/notification-types")
+@RequestMapping("/api/notificationtypes")
 @AllArgsConstructor
 @Api(tags = "Notification Types")
 public class NotificationTypeController {
