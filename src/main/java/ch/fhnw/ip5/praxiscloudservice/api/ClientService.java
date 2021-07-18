@@ -55,7 +55,7 @@ public interface ClientService {
      * @throws PraxisIntercomException - If no Client with the given id exists.
      * @return
      */
-    List<NotificationTypeDto> findNotificationTypesForClient(UUID clientId);
+    Set<NotificationTypeDto> findNotificationTypesForClient(UUID clientId);
 
     /**
      * Creates a Client according to the given DTO.

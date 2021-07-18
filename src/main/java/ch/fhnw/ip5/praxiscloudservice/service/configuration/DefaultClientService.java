@@ -88,7 +88,7 @@ public class DefaultClientService implements ClientService {
     }
 
     @Override
-    public List<NotificationTypeDto> findNotificationTypesForClient(UUID clientId) {
+    public Set<NotificationTypeDto> findNotificationTypesForClient(UUID clientId) {
         final Client client = findExistingClient(clientId);
         final ClientConfiguration clientConfiguration = client.getClientConfiguration();
         return toNotificationTypeDtos(clientConfiguration.getNotificationTypes());

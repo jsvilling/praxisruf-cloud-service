@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -18,6 +19,6 @@ public class ClientConfigurationDto {
 
     private List<RuleParametersDto> ruleParameters;
 
-    private List<NotificationTypeDto> notificationTypes;
+    private Set<NotificationTypeDto> notificationTypes;
 
 }

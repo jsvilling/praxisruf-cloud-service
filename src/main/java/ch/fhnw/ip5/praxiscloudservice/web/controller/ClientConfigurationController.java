@@ -26,7 +26,9 @@ public class ClientConfigurationController {
     }
 
     @GetMapping()
-    public Set<ClientConfigurationDto> getAllConfigurations(){return clientConfigurationService.findAllClientConfigurations();}
+    public Set<ClientConfigurationDto> getAllConfigurations(){
+        return clientConfigurationService.findAllClientConfigurations();
+    }
 
     @PostMapping()
     @Operation(description = "Create a new client configuration")
@@ -46,10 +48,8 @@ public class ClientConfigurationController {
     }
 
     @DeleteMapping("/many/{filter}")
-    public void deleteMany(@PathVariable List<UUID> filter)
-    {
+    public void deleteMany(@PathVariable List<UUID> filter) {
         clientConfigurationService.deleteAllClientConfigurationsById(filter);
     }
-
 
 }
