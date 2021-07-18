@@ -19,7 +19,7 @@ public class NotificationTypesMapper {
         return NotificationTypeDto.builder().id(notificationType.getId())
                 .body(notificationType.getBody())
                 .title(notificationType.getTitle())
-                .type(notificationType.getTitle())
+                .description(notificationType.getTitle())
                 .displayText(notificationType.getDisplayText())
                 .build();
     }
@@ -34,7 +34,7 @@ public class NotificationTypesMapper {
         return NotificationType.builder()
                 .id(dto.getId())
                 .body(dto.getBody())
-                .type(dto.getType())
+                .type(dto.getDescription())
                 .title(dto.getTitle())
                 .displayText(dto.getDisplayText())
                 .build();

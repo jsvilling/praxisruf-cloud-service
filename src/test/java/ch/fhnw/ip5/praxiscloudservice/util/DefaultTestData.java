@@ -1,5 +1,6 @@
 package ch.fhnw.ip5.praxiscloudservice.util;
 
+import ch.fhnw.ip5.praxiscloudservice.api.dto.NotificationTypeDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationDto;
 import ch.fhnw.ip5.praxiscloudservice.domain.*;
 
@@ -28,6 +29,16 @@ public class DefaultTestData {
         return NotificationType.builder()
                 .id(randomUUID())
                 .type("")
+                .body("")
+                .title("")
+                .displayText("")
+                .build();
+    }
+
+    public static NotificationTypeDto createNotificationTypeDto() {
+        return NotificationTypeDto.builder()
+                .id(randomUUID())
+                .description("")
                 .body("")
                 .title("")
                 .displayText("")

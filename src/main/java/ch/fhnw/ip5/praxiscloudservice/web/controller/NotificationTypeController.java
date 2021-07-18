@@ -20,12 +20,12 @@ public class NotificationTypeController {
     private final NotificationTypeService notificationTypeService;
 
     @GetMapping("/{id}")
-    public NotificationTypeDto getConfigurationById(@PathVariable("id") UUID configurationId){
-        return notificationTypeService.findById(configurationId);
+    public NotificationTypeDto findById(@PathVariable("id") UUID notificationTypeId){
+        return notificationTypeService.findById(notificationTypeId);
     }
 
     @GetMapping()
-    public Set<NotificationTypeDto> getAllConfigurations(){
+    public Set<NotificationTypeDto> findAll(){
         return notificationTypeService.findAll();
     }
 
@@ -37,19 +37,19 @@ public class NotificationTypeController {
 
     @PostMapping()
     @Operation(description = "Create a new client configuration")
-    public NotificationTypeDto createClientConfiguration(@RequestBody NotificationTypeDto configurationDto) {
-        return notificationTypeService.create(configurationDto);
+    public NotificationTypeDto create(@RequestBody NotificationTypeDto notificationTypeDto) {
+        return notificationTypeService.create(notificationTypeDto);
     }
 
     @PutMapping()
     @Operation(description = "Update an existing client configuration")
-    public NotificationTypeDto updateClientConfiguration(@RequestBody NotificationTypeDto configurationDto) {
-        return notificationTypeService.update(configurationDto);
+    public NotificationTypeDto update(@RequestBody NotificationTypeDto notificationTypeDto) {
+        return notificationTypeService.update(notificationTypeDto);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") UUID configurationId){
-        notificationTypeService.deleteById(configurationId);
+    public void delete(@PathVariable("id") UUID notificationTypeId){
+        notificationTypeService.deleteById(notificationTypeId);
     }
 
     @DeleteMapping("/many/{filter}")
