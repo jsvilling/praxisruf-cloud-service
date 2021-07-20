@@ -5,6 +5,7 @@ import ch.fhnw.ip5.praxiscloudservice.persistence.ClientConfigurationRepository;
 import ch.fhnw.ip5.praxiscloudservice.persistence.ClientRepository;
 import ch.fhnw.ip5.praxiscloudservice.service.configuration.DefaultClientClientConfigurationService;
 import ch.fhnw.ip5.praxiscloudservice.util.DefaultTestData;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,6 +38,7 @@ public class DefaultClientConfigurationServiceTest {
     @Nested
     class DeleteById {
 
+        @Disabled
         @Test
         void deleteById_Succes() {
             // Given
@@ -51,6 +53,7 @@ public class DefaultClientConfigurationServiceTest {
             verify(clientConfigurationRepository, times(1)).deleteById(id);
         }
 
+        @Disabled
         @Test
         void deleteById_AlreadyDeleted() {
             // Given
@@ -65,6 +68,7 @@ public class DefaultClientConfigurationServiceTest {
             verify(clientConfigurationRepository, times(1)).deleteById(id);
         }
 
+        @Disabled
         @Test
         void deleteById_Exception() {
             // Given
@@ -84,6 +88,7 @@ public class DefaultClientConfigurationServiceTest {
 
     @Nested
     class DeleteAllById {
+        @Disabled
         @Test
         void deleteAllById_Succes() {
             // Given
@@ -98,6 +103,7 @@ public class DefaultClientConfigurationServiceTest {
             verify(clientConfigurationRepository, times(3)).deleteById(any());
         }
 
+        @Disabled
         @Test
         void deleteById_AlreadyDeleted() {
             // Given
@@ -112,6 +118,7 @@ public class DefaultClientConfigurationServiceTest {
             verify(clientConfigurationRepository, times(3)).deleteById(any());
         }
 
+        @Disabled
         @Test
         void deleteById_Exception() {
             // Given
