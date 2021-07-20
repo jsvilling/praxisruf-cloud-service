@@ -25,9 +25,9 @@ public class DefaultNotificationTypeService implements NotificationTypeService {
 
     @Override
     public NotificationTypeDto findById(UUID notificationTypeId) {
-        if (notificationTypeRepository.existsById(notificationTypeId)) {
-            throw new PraxisIntercomException(ErrorCode.NOTIFICATION_TYPE_ALREADY_EXISTS);
-        }
+//        if (notificationTypeRepository.existsById(notificationTypeId)) {
+//            throw new PraxisIntercomException(ErrorCode.NOTIFICATION_TYPE_ALREADY_EXISTS);
+//        }
         return toNotificationTypeDto(findExisting(notificationTypeId));
     }
 
