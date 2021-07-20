@@ -42,4 +42,8 @@ public class NotificationType {
         clientConfigurations.add(clientConfiguration);
     }
 
+    public void removeClientConfiguration(ClientConfiguration clientConfiguration) {
+        clientConfigurations.remove(clientConfiguration);
+    }
+
 }
