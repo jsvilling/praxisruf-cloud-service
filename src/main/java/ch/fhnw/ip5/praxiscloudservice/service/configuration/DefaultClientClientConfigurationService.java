@@ -71,9 +71,12 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
     @Transactional
     public void deleteClientConfigurationById(UUID configurationId) {
         try {
+            ClientConfiguration clientConfiguration = clientConfigurationRepository.findById(configurationId).orElseThrow();
+            removeClientConfigurationFromRelatedNotificationType(clientConfiguration);
+            clientConfigurationRepository.save(clientConfiguration);
             Client client = clientRepository.findByClientConfiguration_ClientConfigurationId(configurationId).orElseThrow(() -> new PraxisIntercomException(ErrorCode.CLIENT_NOT_FOUND));
             client.setClientConfiguration(null);
-            clientRepository.saveAndFlush(client);
+            clientRepository.save(client);
             clientConfigurationRepository.deleteById(configurationId);
         } catch (IllegalArgumentException e) {
             log.info("Client Configuration with id {} was already deleted", configurationId);
@@ -110,12 +113,19 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
                 .notificationTypes(new HashSet<>(notificationTypes))
                 .build();
 
+        // TODO: This is Quick and dirty to prevent Transient errors during Creation
+        clientConfigurationRepository.save(updatedClientConfiguration);
+
         notificationTypes.forEach(nt -> nt.addClientConfiguration(updatedClientConfiguration));
         notificationTypeRepository.saveAll(notificationTypes);
 
         // TODO: Make sure Client : ClientConfiguration is always 1 : 1 after update
 
         return clientConfigurationRepository.saveAndFlush(updatedClientConfiguration);
+    }
+
+    private void removeClientConfigurationFromRelatedNotificationType(ClientConfiguration configuration){
+        configuration.getNotificationTypes().forEach(n -> n.removeClientConfiguration(configuration));
     }
 
 }
