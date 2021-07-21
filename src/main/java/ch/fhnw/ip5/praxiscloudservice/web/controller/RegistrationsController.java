@@ -18,13 +18,8 @@ public class RegistrationsController {
 
     private final RegistrationService registrationService;
 
-    @GetMapping("/tokens")
-    public Set<String> getAllKnownTokens() {
-        return registrationService.getAllKnownTokens();
-    }
-
     @PostMapping("/tokens")
-    public Set<RegistrationDto> findRelevantTokens(@RequestBody PraxisNotification notification) {
+    public Set<RegistrationDto> findRelevantRegistrations(@RequestBody PraxisNotification notification) {
         return registrationService.findAllRelevantRegistrations(notification);
     }
 
