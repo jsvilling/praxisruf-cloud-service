@@ -3,7 +3,10 @@ package ch.fhnw.ip5.praxiscloudservice.domain;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import java.util.UUID;
 
 import static org.hibernate.annotations.CascadeType.ALL;

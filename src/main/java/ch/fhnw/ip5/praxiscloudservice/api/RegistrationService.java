@@ -1,5 +1,6 @@
 package ch.fhnw.ip5.praxiscloudservice.api;
 
+import ch.fhnw.ip5.praxiscloudservice.api.dto.RegistrationDto;
 import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
 
 import java.util.Set;
@@ -38,9 +39,9 @@ public interface RegistrationService {
      * RuleEvaluator and RulesParameter.
      *
      * @param notification
-     * @return
+     * @return RegistrationDto
      */
-    Set<String> findAllRelevantTokens(PraxisNotification notification);
+    Set<RegistrationDto> findAllRelevantRegistrations(PraxisNotification notification);
 
     /**
      * Removes the Registration with the given clientId.

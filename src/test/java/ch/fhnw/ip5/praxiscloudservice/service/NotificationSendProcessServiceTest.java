@@ -1,5 +1,6 @@
 package ch.fhnw.ip5.praxiscloudservice.service;
 
+import ch.fhnw.ip5.praxiscloudservice.api.dto.RegistrationDto;
 import ch.fhnw.ip5.praxiscloudservice.persistence.NotificationSendProcessRepository;
 import ch.fhnw.ip5.praxiscloudservice.service.notification.NotificationSendProcessService;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.UUID;
 
+import static ch.fhnw.ip5.praxiscloudservice.util.DefaultTestData.createRegistrationDto;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
@@ -29,10 +31,10 @@ public class NotificationSendProcessServiceTest {
         // Given
         final UUID notificationId = UUID.randomUUID();
         final boolean success = false;
-        final String token = "TOKEN";
+        final RegistrationDto registration = createRegistrationDto();
 
         // When
-        notificationSendProcessService.createNotificationSendLogEntry(notificationId, success, token);
+        notificationSendProcessService.createNotificationSendLogEntry(notificationId, success, registration);
 
         // Then
         verify(notificationSendProcessRepository, times(1)).saveAndFlush(any());

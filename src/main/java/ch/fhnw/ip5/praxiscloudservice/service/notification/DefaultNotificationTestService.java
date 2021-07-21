@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 @Profile(ProfileRegistry.TEST)
 public class DefaultNotificationTestService implements NotificationTestService {
 
-    private static final String KEY = "Test Key";
-    private static final String DATA = "Test Data";
+    private static final String SENDER_KEY = "senderName";
+    private static final String SENDER_VALUE = "Test Sender";
 
     private final FcmIntegrationService fcmIntegrationService;
     private final ConfigurationWebClient configurationWebClient;
@@ -38,7 +38,7 @@ public class DefaultNotificationTestService implements NotificationTestService {
                 .build();
 
         final Message firebaseMessage = Message.builder()
-                .putData(KEY, DATA)
+                .putData(SENDER_KEY, SENDER_VALUE)
                 .setToken(token)
                 .setNotification(notification)
                 .build();

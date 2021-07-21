@@ -1,5 +1,6 @@
 package ch.fhnw.ip5.praxiscloudservice.service;
 
+import ch.fhnw.ip5.praxiscloudservice.api.dto.RegistrationDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationResponseDto;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
@@ -10,6 +11,7 @@ import ch.fhnw.ip5.praxiscloudservice.persistence.NotificationTypeRepository;
 import ch.fhnw.ip5.praxiscloudservice.service.notification.FcmIntegrationService;
 import ch.fhnw.ip5.praxiscloudservice.service.notification.FirebaseNotificationService;
 import ch.fhnw.ip5.praxiscloudservice.service.notification.NotificationSendProcessService;
+import ch.fhnw.ip5.praxiscloudservice.util.DefaultTestData;
 import ch.fhnw.ip5.praxiscloudservice.web.client.ConfigurationWebClient;
 import com.google.firebase.messaging.Message;
 import org.junit.jupiter.api.Nested;
@@ -50,7 +52,8 @@ public class FirebaseNotificationServiceTest {
     @InjectMocks
     private FirebaseNotificationService firebaseNotificationService;
 
-
+    private final RegistrationDto registration = DefaultTestData.createRegistrationDto();
+    
     @Nested
     class Send {
         @Test
@@ -59,7 +62,7 @@ public class FirebaseNotificationServiceTest {
             final SendPraxisNotificationDto notification = createSendNotificationDto();
             final NotificationType notificationType = createNotificationType();
             when(notificationTypeRepository.findById(any())).thenReturn(Optional.of(notificationType));
-            when(configurationWebClient.getAllRelevantFcmTokens(any())).thenReturn(Collections.emptyList());
+            when(configurationWebClient.getAllRelevantRegistrations(any())).thenReturn(Collections.emptyList());
             mockSaveNotificationWithGenerateId();
 
             // When
@@ -76,7 +79,7 @@ public class FirebaseNotificationServiceTest {
             final SendPraxisNotificationDto notification = createSendNotificationDto();
             final NotificationType notificationType = createNotificationType();
             when(notificationTypeRepository.findById(any())).thenReturn(Optional.of(notificationType));
-            when(configurationWebClient.getAllRelevantFcmTokens(any())).thenReturn(List.of(TOKEN));
+            when(configurationWebClient.getAllRelevantRegistrations(any())).thenReturn(List.of(registration));
             when(fcmIntegrationService.send(any(Message.class))).thenReturn(MESSAGE_ID);
             mockSaveNotificationWithGenerateId();
 
@@ -85,7 +88,7 @@ public class FirebaseNotificationServiceTest {
 
             // Then
             verify(fcmIntegrationService, times(1)).send(any(Message.class));
-            verify(notificationSendProcessService, times(1)).createNotificationSendLogEntry(any(UUID.class), eq(true), eq(TOKEN));
+            verify(notificationSendProcessService, times(1)).createNotificationSendLogEntry(any(UUID.class), eq(true), eq(registration));
         }
 
         @Test
@@ -94,7 +97,7 @@ public class FirebaseNotificationServiceTest {
             final SendPraxisNotificationDto notification = createSendNotificationDto();
             final NotificationType notificationType = createNotificationType();
             when(notificationTypeRepository.findById(any())).thenReturn(Optional.of(notificationType));
-            when(configurationWebClient.getAllRelevantFcmTokens(any())).thenReturn(List.of(TOKEN, TOKEN, TOKEN));
+            when(configurationWebClient.getAllRelevantRegistrations(any())).thenReturn(List.of(registration, registration, registration));
             when(fcmIntegrationService.send(any(Message.class))).thenReturn(MESSAGE_ID);
             mockSaveNotificationWithGenerateId();
 
@@ -103,7 +106,7 @@ public class FirebaseNotificationServiceTest {
 
             // Then
             verify(fcmIntegrationService, times(3)).send(any(Message.class));
-            verify(notificationSendProcessService, times(3)).createNotificationSendLogEntry(any(UUID.class), eq(true), eq(TOKEN));
+            verify(notificationSendProcessService, times(3)).createNotificationSendLogEntry(any(UUID.class), eq(true), eq(registration));
         }
 
         @Test
@@ -124,7 +127,7 @@ public class FirebaseNotificationServiceTest {
             final SendPraxisNotificationDto notification = createSendNotificationDto();
             final NotificationType notificationType = createNotificationType();
             when(notificationTypeRepository.findById(any())).thenReturn(Optional.of(notificationType));
-            when(configurationWebClient.getAllRelevantFcmTokens(any())).thenReturn(List.of(TOKEN));
+            when(configurationWebClient.getAllRelevantRegistrations(any())).thenReturn(List.of(registration));
             when(fcmIntegrationService.send(any(Message.class))).thenThrow(new RuntimeException());
             mockSaveNotificationWithGenerateId();
 
@@ -132,7 +135,7 @@ public class FirebaseNotificationServiceTest {
             // Then
             assertThatNoException().isThrownBy(() -> firebaseNotificationService.send(notification));
             verify(fcmIntegrationService, times(1)).send(any(Message.class));
-            verify(notificationSendProcessService, times(1)).createNotificationSendLogEntry(any(UUID.class), eq(false), eq(TOKEN));
+            verify(notificationSendProcessService, times(1)).createNotificationSendLogEntry(any(UUID.class), eq(false), eq(registration));
 
         }
     }
@@ -167,7 +170,7 @@ public class FirebaseNotificationServiceTest {
             final NotificationType notificationType = createNotificationType();
             when(notificationRepository.findById(notificationId)).thenReturn(Optional.of(notification));
             when(notificationTypeRepository.findById(any())).thenReturn(Optional.of(notificationType));
-            when(notificationSendProcessService.findAllFcmTokensForFailed(notificationId)).thenReturn(List.of(TOKEN));
+            when(notificationSendProcessService.findAllFcmTokensForFailed(notificationId)).thenReturn(List.of(registration));
 
             // When
             final SendPraxisNotificationResponseDto response = firebaseNotificationService.retry(notificationId);
@@ -187,7 +190,7 @@ public class FirebaseNotificationServiceTest {
             final NotificationType notificationType = createNotificationType();
             when(notificationRepository.findById(notificationId)).thenReturn(Optional.of(notification));
             when(notificationTypeRepository.findById(any())).thenReturn(Optional.of(notificationType));
-            when(notificationSendProcessService.findAllFcmTokensForFailed(notificationId)).thenReturn(List.of(TOKEN, TOKEN, TOKEN));
+            when(notificationSendProcessService.findAllFcmTokensForFailed(notificationId)).thenReturn(List.of(registration, registration, registration));
 
             // When
             final SendPraxisNotificationResponseDto response = firebaseNotificationService.retry(notificationId);
@@ -196,7 +199,7 @@ public class FirebaseNotificationServiceTest {
             assertThat(response.getNotificationId()).isEqualTo(notificationId);
             assertThat(response.isAllSuccess()).isTrue();
             verify(fcmIntegrationService, times(3)).send(any(Message.class));
-            verify(notificationSendProcessService, times(3)).createNotificationSendLogEntry(any(UUID.class), eq(true), eq(TOKEN));
+            verify(notificationSendProcessService, times(3)).createNotificationSendLogEntry(any(UUID.class), eq(true), eq(registration));
         }
 
         @Test
@@ -220,14 +223,14 @@ public class FirebaseNotificationServiceTest {
             final NotificationType notificationType = createNotificationType();
             when(notificationRepository.findById(notificationId)).thenReturn(Optional.of(notification));
             when(notificationTypeRepository.findById(any())).thenReturn(Optional.of(notificationType));
-            when(notificationSendProcessService.findAllFcmTokensForFailed(notificationId)).thenReturn(List.of(TOKEN));
+            when(notificationSendProcessService.findAllFcmTokensForFailed(notificationId)).thenReturn(List.of(registration));
             when(fcmIntegrationService.send(any(Message.class))).thenThrow(new RuntimeException());
 
             // When
             // Then
             assertThatNoException().isThrownBy(() -> firebaseNotificationService.retry(notificationId));
             verify(fcmIntegrationService, times(1)).send(any(Message.class));
-            verify(notificationSendProcessService, times(1)).createNotificationSendLogEntry(any(UUID.class), eq(false), eq(TOKEN));
+            verify(notificationSendProcessService, times(1)).createNotificationSendLogEntry(any(UUID.class), eq(false), eq(registration));
         }
     }
 

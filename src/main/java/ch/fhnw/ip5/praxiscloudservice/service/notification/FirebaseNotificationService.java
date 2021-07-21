@@ -1,6 +1,7 @@
 package ch.fhnw.ip5.praxiscloudservice.service.notification;
 
 import ch.fhnw.ip5.praxiscloudservice.api.NotificationService;
+import ch.fhnw.ip5.praxiscloudservice.api.dto.RegistrationDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationResponseDto;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode;
@@ -32,6 +33,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class FirebaseNotificationService implements NotificationService {
 
+    private static final String SENDER_NAME = "senderName";
+
     private final ConfigurationWebClient configurationWebClient;
     private final NotificationRepository notificationRepository;
     private final NotificationTypeRepository notificationTypeRepository;
@@ -49,8 +52,8 @@ public class FirebaseNotificationService implements NotificationService {
         final NotificationType notificationType = findExistingNotificationType(notificationDto.getNotificationTypeId());
         final PraxisNotification praxisNotification = createPraxisNotification(notificationDto);
         final Notification firebaseNotification = createFirebaseNotification(notificationType);
-        final List<String> allRelevantFcmTokens = configurationWebClient.getAllRelevantFcmTokens(praxisNotification);
-        return send(allRelevantFcmTokens, firebaseNotification, praxisNotification);
+        final List<RegistrationDto> registrations = configurationWebClient.getAllRelevantRegistrations(praxisNotification);
+        return send(registrations, firebaseNotification, praxisNotification);
     }
 
     @Override
@@ -58,7 +61,7 @@ public class FirebaseNotificationService implements NotificationService {
         final PraxisNotification praxisNotification = findExistingNotification(notificationId);
         final NotificationType notificationType = findExistingNotificationType(praxisNotification.getNotificationTypeId());
         final Notification firebaseNotification = createFirebaseNotification(notificationType);
-        final List<String> allRelevantFcmTokens = notificationSendProcessService.findAllFcmTokensForFailed(notificationId);
+        final List<RegistrationDto> allRelevantFcmTokens = notificationSendProcessService.findAllFcmTokensForFailed(notificationId);
         return send(allRelevantFcmTokens, firebaseNotification, praxisNotification);
     }
 
@@ -87,11 +90,12 @@ public class FirebaseNotificationService implements NotificationService {
                 .build();
     }
 
-    private SendPraxisNotificationResponseDto send(List<String> allRelevantFcmTokens, Notification firebaseNotification, PraxisNotification praxisNotification) {
+    private SendPraxisNotificationResponseDto send(List<RegistrationDto> registrations, Notification firebaseNotification, PraxisNotification praxisNotification) {
         boolean allSuccess = true;
-        for (String token : allRelevantFcmTokens) {
-            final boolean success = send(firebaseNotification, token);
-            notificationSendProcessService.createNotificationSendLogEntry(praxisNotification.getId(), success, token);
+        for (RegistrationDto registration : registrations) {
+            final Message message = toFirebaseMessage(firebaseNotification, registration);
+            final boolean success = send(message);
+            notificationSendProcessService.createNotificationSendLogEntry(praxisNotification.getId(), success, registration);
             allSuccess = allSuccess && success;
         }
         return SendPraxisNotificationResponseDto.builder()
@@ -100,21 +104,21 @@ public class FirebaseNotificationService implements NotificationService {
                 .build();
     }
 
-    private boolean send(Notification firebaseNotification, String token) {
+    private boolean send(Message message) {
         try {
-            Message message = toFirebaseMessage(firebaseNotification, token);
             fcmIntegrationService.send(message);
             return true;
         } catch (Exception e) {
-            log.error("Sending message {} to {} failed with exception {}", firebaseNotification, token, e);
+            log.error("Sending message {} failed with exception {}", message, e);
             return false;
         }
     }
 
-    private Message toFirebaseMessage(Notification firebaseNotification, String token) {
+    private Message toFirebaseMessage(Notification firebaseNotification, RegistrationDto registration) {
         return Message.builder()
-                .setToken(token)
+                .setToken(registration.getFcmToken())
                 .setNotification(firebaseNotification)
+                .putData(SENDER_NAME, registration.getClientName())
                 .build();
     }
 }
