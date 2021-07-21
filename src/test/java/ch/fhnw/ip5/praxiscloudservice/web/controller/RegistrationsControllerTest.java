@@ -23,15 +23,6 @@ public class RegistrationsControllerTest {
     private RegistrationsController registrationsController;
 
     @Test
-    void getAllTokens() {
-        // When
-        registrationsController.getAllKnownTokens();
-
-        // Then
-        verify(registrationService, times(1)).getAllKnownTokens();
-    }
-
-    @Test
     void findRelevantTokens() {
         // Given
         final PraxisNotification notification = createNotification();
