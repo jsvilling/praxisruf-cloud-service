@@ -1,5 +1,6 @@
 package ch.fhnw.ip5.praxiscloudservice.service.notification;
 
+import ch.fhnw.ip5.praxiscloudservice.api.dto.RegistrationDto;
 import ch.fhnw.ip5.praxiscloudservice.domain.NotificationSendProcess;
 import ch.fhnw.ip5.praxiscloudservice.persistence.NotificationSendProcessRepository;
 import lombok.AllArgsConstructor;
@@ -21,19 +22,27 @@ public class NotificationSendProcessService {
     private final NotificationSendProcessRepository notificationSendProcessRepository;
 
     @Transactional(propagation = REQUIRES_NEW)
-    public void createNotificationSendLogEntry(UUID notificationId, boolean success, String relevantToken) {
+    public void createNotificationSendLogEntry(UUID notificationId, boolean success, RegistrationDto registration) {
         final NotificationSendProcess logEntry = NotificationSendProcess.builder()
                 .notificationId(notificationId)
-                .relevantToken(relevantToken)
+                .relevantToken(registration.getFcmToken())
+                .clientName(registration.getClientName())
                 .success(success)
                 .build();
         notificationSendProcessRepository.saveAndFlush(logEntry);
     }
 
     @Transactional(readOnly = true)
-    public List<String> findAllFcmTokensForFailed(UUID notificationId) {
+    public List<RegistrationDto> findAllFcmTokensForFailed(UUID notificationId) {
         return notificationSendProcessRepository.findAllByNotificationIdAndSuccess(notificationId, false).stream()
-                .map(NotificationSendProcess::getRelevantToken)
+                .map(this::createRetryRegistration)
                 .collect(Collectors.toList());
+    }
+
+    private RegistrationDto createRetryRegistration(NotificationSendProcess process) {
+        return RegistrationDto.builder()
+                .fcmToken(process.getRelevantToken())
+                .clientName(process.getClientName())
+                .build();
     }
 }

@@ -40,7 +40,7 @@ public class RegistrationsControllerTest {
         registrationsController.findRelevantTokens(notification);
 
         // Then
-        verify(registrationService, times(1)).findAllRelevantTokens(eq(notification));
+        verify(registrationService, times(1)).findAllRelevantRegistrations(eq(notification));
     }
 
     @Test

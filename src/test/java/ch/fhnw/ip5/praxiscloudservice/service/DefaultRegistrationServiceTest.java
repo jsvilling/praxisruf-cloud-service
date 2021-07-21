@@ -1,12 +1,14 @@
 package ch.fhnw.ip5.praxiscloudservice.service;
 
 import ch.fhnw.ip5.praxiscloudservice.api.RulesEngine;
+import ch.fhnw.ip5.praxiscloudservice.api.dto.RegistrationDto;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
 import ch.fhnw.ip5.praxiscloudservice.domain.Client;
 import ch.fhnw.ip5.praxiscloudservice.domain.ClientConfiguration;
 import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
 import ch.fhnw.ip5.praxiscloudservice.domain.Registration;
 import ch.fhnw.ip5.praxiscloudservice.persistence.ClientConfigurationRepository;
+import ch.fhnw.ip5.praxiscloudservice.persistence.ClientRepository;
 import ch.fhnw.ip5.praxiscloudservice.persistence.RegistrationRepository;
 import ch.fhnw.ip5.praxiscloudservice.service.configuration.DefaultRegistrationService;
 import ch.fhnw.ip5.praxiscloudservice.util.DefaultTestData;
@@ -31,6 +33,9 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class DefaultRegistrationServiceTest {
+
+    @Mock
+    private ClientRepository clientRepository;
 
     @Mock
     private RegistrationRepository registrationRepository;
@@ -153,15 +158,16 @@ public class DefaultRegistrationServiceTest {
             final PraxisNotification notification = createNotification();
             final ClientConfiguration clientConfiguration = createClientConfiguration();
             final Client client = clientConfiguration.getClient();
+            when(clientRepository.findById(any())).thenReturn(Optional.of(DefaultTestData.createClient()));
             when(clientConfigurationRepository.findAll()).thenReturn(List.of(clientConfiguration));
             when(rulesEngine.isAnyRelevant(any(), eq(notification))).thenReturn(true);
             when(registrationRepository.findByClientId(client.getClientId())).thenReturn(Optional.of(registration));
 
             // When
-            final Set<String> allKnownTokens = registrationService.findAllRelevantTokens(notification);
+            final Set<RegistrationDto> allKnownTokens = registrationService.findAllRelevantRegistrations(notification);
 
             // Then
-            assertThat(allKnownTokens).containsExactly(registration.getFcmToken());
+            assertThat(allKnownTokens).extracting(RegistrationDto::getFcmToken).containsExactly(registration.getFcmToken());
         }
 
         @Test
@@ -173,7 +179,7 @@ public class DefaultRegistrationServiceTest {
             when(rulesEngine.isAnyRelevant(any(), eq(notification))).thenReturn(false);
 
             // When
-            final Set<String> allKnownTokens = registrationService.findAllRelevantTokens(notification);
+            final Set<RegistrationDto> allKnownTokens = registrationService.findAllRelevantRegistrations(notification);
 
             // Then
             assertThat(allKnownTokens).isEmpty();
@@ -186,7 +192,7 @@ public class DefaultRegistrationServiceTest {
             when(clientConfigurationRepository.findAll()).thenReturn(List.of());
 
             // When
-            final Set<String> allKnownTokens = registrationService.findAllRelevantTokens(notification);
+            final Set<RegistrationDto> allKnownTokens = registrationService.findAllRelevantRegistrations(notification);
 
             // Then
             assertThat(allKnownTokens).isEmpty();
@@ -204,7 +210,7 @@ public class DefaultRegistrationServiceTest {
             when(registrationRepository.findByClientId(client.getClientId())).thenReturn(Optional.empty());
 
             // When
-            final Set<String> allKnownTokens = registrationService.findAllRelevantTokens(notification);
+            final Set<RegistrationDto> allKnownTokens = registrationService.findAllRelevantRegistrations(notification);
 
             // Then
             assertThat(allKnownTokens).isEmpty();

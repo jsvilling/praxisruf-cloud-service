@@ -1,6 +1,7 @@
 package ch.fhnw.ip5.praxiscloudservice.service.notification;
 
 import ch.fhnw.ip5.praxiscloudservice.api.NotificationService;
+import ch.fhnw.ip5.praxiscloudservice.api.dto.RegistrationDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationResponseDto;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode;
@@ -51,8 +52,8 @@ public class FirebaseNotificationService implements NotificationService {
         final NotificationType notificationType = findExistingNotificationType(notificationDto.getNotificationTypeId());
         final PraxisNotification praxisNotification = createPraxisNotification(notificationDto);
         final Notification firebaseNotification = createFirebaseNotification(notificationType);
-        final List<String> allRelevantFcmTokens = configurationWebClient.getAllRelevantFcmTokens(praxisNotification);
-        return send(allRelevantFcmTokens, firebaseNotification, praxisNotification);
+        final List<RegistrationDto> registrations = configurationWebClient.getAllRelevantRegistrations(praxisNotification);
+        return send(registrations, firebaseNotification, praxisNotification);
     }
 
     @Override
@@ -60,7 +61,7 @@ public class FirebaseNotificationService implements NotificationService {
         final PraxisNotification praxisNotification = findExistingNotification(notificationId);
         final NotificationType notificationType = findExistingNotificationType(praxisNotification.getNotificationTypeId());
         final Notification firebaseNotification = createFirebaseNotification(notificationType);
-        final List<String> allRelevantFcmTokens = notificationSendProcessService.findAllFcmTokensForFailed(notificationId);
+        final List<RegistrationDto> allRelevantFcmTokens = notificationSendProcessService.findAllFcmTokensForFailed(notificationId);
         return send(allRelevantFcmTokens, firebaseNotification, praxisNotification);
     }
 
@@ -89,12 +90,12 @@ public class FirebaseNotificationService implements NotificationService {
                 .build();
     }
 
-    private SendPraxisNotificationResponseDto send(List<String> allRelevantFcmTokens, Notification firebaseNotification, PraxisNotification praxisNotification) {
+    private SendPraxisNotificationResponseDto send(List<RegistrationDto> registrations, Notification firebaseNotification, PraxisNotification praxisNotification) {
         boolean allSuccess = true;
-        for (String token : allRelevantFcmTokens) {
-            final Message message = toFirebaseMessage(firebaseNotification, token, praxisNotification.getSender());
+        for (RegistrationDto registration : registrations) {
+            final Message message = toFirebaseMessage(firebaseNotification, registration);
             final boolean success = send(message);
-            notificationSendProcessService.createNotificationSendLogEntry(praxisNotification.getId(), success, token);
+            notificationSendProcessService.createNotificationSendLogEntry(praxisNotification.getId(), success, registration);
             allSuccess = allSuccess && success;
         }
         return SendPraxisNotificationResponseDto.builder()
@@ -113,11 +114,11 @@ public class FirebaseNotificationService implements NotificationService {
         }
     }
 
-    private Message toFirebaseMessage(Notification firebaseNotification, String token, UUID senderId) {
+    private Message toFirebaseMessage(Notification firebaseNotification, RegistrationDto registration) {
         return Message.builder()
-                .setToken(token)
+                .setToken(registration.getFcmToken())
                 .setNotification(firebaseNotification)
-                .putData(SENDER_ID_KEY, senderId.toString())
+                .putData(SENDER_ID_KEY, registration.getClientName())
                 .build();
     }
 }

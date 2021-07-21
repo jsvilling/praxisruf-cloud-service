@@ -1,6 +1,7 @@
 package ch.fhnw.ip5.praxiscloudservice.web.controller;
 
 import ch.fhnw.ip5.praxiscloudservice.api.RegistrationService;
+import ch.fhnw.ip5.praxiscloudservice.api.dto.RegistrationDto;
 import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
@@ -23,8 +24,8 @@ public class RegistrationsController {
     }
 
     @PostMapping("/tokens")
-    public Set<String> findRelevantTokens(@RequestBody PraxisNotification notification) {
-        return registrationService.findAllRelevantTokens(notification);
+    public Set<RegistrationDto> findRelevantTokens(@RequestBody PraxisNotification notification) {
+        return registrationService.findAllRelevantRegistrations(notification);
     }
 
     @PostMapping

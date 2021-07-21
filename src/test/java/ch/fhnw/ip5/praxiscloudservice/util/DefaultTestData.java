@@ -1,6 +1,7 @@
 package ch.fhnw.ip5.praxiscloudservice.util;
 
 import ch.fhnw.ip5.praxiscloudservice.api.dto.NotificationTypeDto;
+import ch.fhnw.ip5.praxiscloudservice.api.dto.RegistrationDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationDto;
 import ch.fhnw.ip5.praxiscloudservice.domain.*;
 
@@ -92,6 +93,13 @@ public class DefaultTestData {
                 .ruleParametersId(randomUUID())
                 .type(RuleType.NOTIFICATION_TYPE)
                 .value("TYPE")
+                .build();
+    }
+
+    public static RegistrationDto createRegistrationDto() {
+        return RegistrationDto.builder()
+                .fcmToken(TOKEN)
+                .clientName(CLIENT_NAME)
                 .build();
     }
 

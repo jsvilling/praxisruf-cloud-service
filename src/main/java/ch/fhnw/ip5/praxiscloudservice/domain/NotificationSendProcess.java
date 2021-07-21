@@ -33,6 +33,8 @@ public class NotificationSendProcess {
 
     private boolean success;
 
+    private String clientName;
+
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
