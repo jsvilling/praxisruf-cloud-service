@@ -39,7 +39,4 @@ public class Client {
     @Cascade({ALL})
     private ClientConfiguration clientConfiguration;
 
-    @OneToOne(mappedBy = "client", orphanRemoval = true)
-    private Registration registration;
-
 }
