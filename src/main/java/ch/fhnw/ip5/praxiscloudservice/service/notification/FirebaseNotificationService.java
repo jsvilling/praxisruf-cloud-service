@@ -32,6 +32,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class FirebaseNotificationService implements NotificationService {
 
+    private static final String SENDER_ID_KEY = "senderId";
+
     private final ConfigurationWebClient configurationWebClient;
     private final NotificationRepository notificationRepository;
     private final NotificationTypeRepository notificationTypeRepository;
@@ -90,7 +92,8 @@ public class FirebaseNotificationService implements NotificationService {
     private SendPraxisNotificationResponseDto send(List<String> allRelevantFcmTokens, Notification firebaseNotification, PraxisNotification praxisNotification) {
         boolean allSuccess = true;
         for (String token : allRelevantFcmTokens) {
-            final boolean success = send(firebaseNotification, token);
+            final Message message = toFirebaseMessage(firebaseNotification, token, praxisNotification.getSender());
+            final boolean success = send(message);
             notificationSendProcessService.createNotificationSendLogEntry(praxisNotification.getId(), success, token);
             allSuccess = allSuccess && success;
         }
@@ -100,21 +103,21 @@ public class FirebaseNotificationService implements NotificationService {
                 .build();
     }
 
-    private boolean send(Notification firebaseNotification, String token) {
+    private boolean send(Message message) {
         try {
-            Message message = toFirebaseMessage(firebaseNotification, token);
             fcmIntegrationService.send(message);
             return true;
         } catch (Exception e) {
-            log.error("Sending message {} to {} failed with exception {}", firebaseNotification, token, e);
+            log.error("Sending message {} failed with exception {}", message, e);
             return false;
         }
     }
 
-    private Message toFirebaseMessage(Notification firebaseNotification, String token) {
+    private Message toFirebaseMessage(Notification firebaseNotification, String token, UUID senderId) {
         return Message.builder()
                 .setToken(token)
                 .setNotification(firebaseNotification)
+                .putData(SENDER_ID_KEY, senderId.toString())
                 .build();
     }
 }
