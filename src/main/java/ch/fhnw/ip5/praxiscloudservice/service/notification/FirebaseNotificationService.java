@@ -33,7 +33,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class FirebaseNotificationService implements NotificationService {
 
-    private static final String SENDER_ID_KEY = "senderId";
+    private static final String SENDER_NAME = "senderName";
 
     private final ConfigurationWebClient configurationWebClient;
     private final NotificationRepository notificationRepository;
@@ -118,7 +118,7 @@ public class FirebaseNotificationService implements NotificationService {
         return Message.builder()
                 .setToken(registration.getFcmToken())
                 .setNotification(firebaseNotification)
-                .putData(SENDER_ID_KEY, registration.getClientName())
+                .putData(SENDER_NAME, registration.getClientName())
                 .build();
     }
 }
