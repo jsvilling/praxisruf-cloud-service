@@ -13,6 +13,6 @@ spring:
 
 praxis-intercom:
   fcm:
-    credentials: ${FCM_CREDENTIALS_PATH}
+    credentials: ${FCM_CREDENTIALS}
   jwt:
     key: ${JWT_SECRET_KEY}

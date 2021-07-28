@@ -14,7 +14,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.Base64;
 
 /**
  * This Service initializes the connection to FireBaseMessaging.
@@ -36,8 +38,9 @@ public class FcmIntegrationService {
     }
 
     private GoogleCredentials getCredentialStream() throws Exception {
-        final InputStream credentialsInputStream = getClass().getClassLoader().getResourceAsStream(firebaseProperties.getCredentials());
-        return GoogleCredentials.fromStream(credentialsInputStream);
+        byte[] decodedBytes = Base64.getDecoder().decode(firebaseProperties.getCredentials());
+        final InputStream streamo = new ByteArrayInputStream(decodedBytes);
+        return GoogleCredentials.fromStream(streamo);
     }
 
     public String send(Message firebaseMessage) {
