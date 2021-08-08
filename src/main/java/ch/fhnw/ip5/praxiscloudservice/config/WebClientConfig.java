@@ -1,6 +1,6 @@
 package ch.fhnw.ip5.praxiscloudservice.config;
 
-import ch.fhnw.ip5.praxiscloudservice.web.client.ConfigurationWebClient;
+import ch.fhnw.ip5.praxiscloudservice.web.notification.client.ConfigurationWebClient;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;

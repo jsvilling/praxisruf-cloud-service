@@ -1,8 +1,8 @@
 package ch.fhnw.ip5.praxiscloudservice.service;
 
-import ch.fhnw.ip5.praxiscloudservice.domain.Client;
-import ch.fhnw.ip5.praxiscloudservice.persistence.ClientConfigurationRepository;
-import ch.fhnw.ip5.praxiscloudservice.persistence.ClientRepository;
+import ch.fhnw.ip5.praxiscloudservice.domain.configuration.Client;
+import ch.fhnw.ip5.praxiscloudservice.persistence.configuration.ClientConfigurationRepository;
+import ch.fhnw.ip5.praxiscloudservice.persistence.configuration.ClientRepository;
 import ch.fhnw.ip5.praxiscloudservice.service.configuration.DefaultClientClientConfigurationService;
 import ch.fhnw.ip5.praxiscloudservice.util.DefaultTestData;
 import org.junit.jupiter.api.Disabled;

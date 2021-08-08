@@ -1,7 +1,7 @@
 package ch.fhnw.ip5.praxiscloudservice.service.configuration.mapper;
 
 import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientConfigurationDto;
-import ch.fhnw.ip5.praxiscloudservice.domain.ClientConfiguration;
+import ch.fhnw.ip5.praxiscloudservice.domain.configuration.ClientConfiguration;
 
 import java.util.stream.Collectors;
 

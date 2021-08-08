@@ -1,7 +1,7 @@
 package ch.fhnw.ip5.praxiscloudservice.service;
 
 import ch.fhnw.ip5.praxiscloudservice.api.dto.RegistrationDto;
-import ch.fhnw.ip5.praxiscloudservice.persistence.NotificationSendProcessRepository;
+import ch.fhnw.ip5.praxiscloudservice.persistence.notification.NotificationSendProcessRepository;
 import ch.fhnw.ip5.praxiscloudservice.service.notification.NotificationSendProcessService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

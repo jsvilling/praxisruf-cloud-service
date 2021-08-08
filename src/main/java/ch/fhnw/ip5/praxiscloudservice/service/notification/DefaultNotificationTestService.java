@@ -1,8 +1,8 @@
 package ch.fhnw.ip5.praxiscloudservice.service.notification;
 
-import ch.fhnw.ip5.praxiscloudservice.api.NotificationTestService;
+import ch.fhnw.ip5.praxiscloudservice.api.notification.NotificationTestService;
 import ch.fhnw.ip5.praxiscloudservice.config.ProfileRegistry;
-import ch.fhnw.ip5.praxiscloudservice.web.client.ConfigurationWebClient;
+import ch.fhnw.ip5.praxiscloudservice.web.notification.client.ConfigurationWebClient;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 import lombok.AllArgsConstructor;

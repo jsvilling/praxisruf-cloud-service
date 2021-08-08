@@ -1,7 +1,7 @@
 package ch.fhnw.ip5.praxiscloudservice.service.configuration.mapper;
 
 import ch.fhnw.ip5.praxiscloudservice.api.dto.RuleParametersDto;
-import ch.fhnw.ip5.praxiscloudservice.domain.RuleParameters;
+import ch.fhnw.ip5.praxiscloudservice.domain.configuration.RuleParameters;
 
 import java.util.Collection;
 import java.util.List;

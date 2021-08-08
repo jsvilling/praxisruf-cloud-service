@@ -1,11 +1,11 @@
 package ch.fhnw.ip5.praxiscloudservice.service.configuration;
 
-import ch.fhnw.ip5.praxiscloudservice.api.ClientService;
+import ch.fhnw.ip5.praxiscloudservice.api.configuration.ClientService;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.MinimalClientDto;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
-import ch.fhnw.ip5.praxiscloudservice.domain.Client;
-import ch.fhnw.ip5.praxiscloudservice.persistence.ClientRepository;
+import ch.fhnw.ip5.praxiscloudservice.domain.configuration.Client;
+import ch.fhnw.ip5.praxiscloudservice.persistence.configuration.ClientRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

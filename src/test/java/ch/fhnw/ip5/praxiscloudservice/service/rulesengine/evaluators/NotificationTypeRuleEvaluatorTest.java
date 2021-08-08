@@ -1,8 +1,9 @@
 package ch.fhnw.ip5.praxiscloudservice.service.rulesengine.evaluators;
 
-import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
-import ch.fhnw.ip5.praxiscloudservice.domain.RuleParameters;
-import ch.fhnw.ip5.praxiscloudservice.domain.RuleType;
+import ch.fhnw.ip5.praxiscloudservice.domain.configuration.RuleParameters;
+import ch.fhnw.ip5.praxiscloudservice.domain.configuration.RuleType;
+import ch.fhnw.ip5.praxiscloudservice.domain.notification.PraxisNotification;
+import ch.fhnw.ip5.praxiscloudservice.service.configuration.rulesengine.evaluators.NotificationTypeRuleEvaluator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

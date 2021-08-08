@@ -1,16 +1,16 @@
 package ch.fhnw.ip5.praxiscloudservice.service.notification;
 
-import ch.fhnw.ip5.praxiscloudservice.api.NotificationService;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.RegistrationDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationResponseDto;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
-import ch.fhnw.ip5.praxiscloudservice.domain.NotificationType;
-import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
-import ch.fhnw.ip5.praxiscloudservice.persistence.NotificationRepository;
-import ch.fhnw.ip5.praxiscloudservice.persistence.NotificationTypeRepository;
-import ch.fhnw.ip5.praxiscloudservice.web.client.ConfigurationWebClient;
+import ch.fhnw.ip5.praxiscloudservice.api.notification.NotificationService;
+import ch.fhnw.ip5.praxiscloudservice.domain.configuration.NotificationType;
+import ch.fhnw.ip5.praxiscloudservice.domain.notification.PraxisNotification;
+import ch.fhnw.ip5.praxiscloudservice.persistence.configuration.NotificationTypeRepository;
+import ch.fhnw.ip5.praxiscloudservice.persistence.notification.NotificationRepository;
+import ch.fhnw.ip5.praxiscloudservice.web.notification.client.ConfigurationWebClient;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 import lombok.AllArgsConstructor;

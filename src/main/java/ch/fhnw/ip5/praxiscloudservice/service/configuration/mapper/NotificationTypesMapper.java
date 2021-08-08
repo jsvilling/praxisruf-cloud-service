@@ -1,7 +1,7 @@
 package ch.fhnw.ip5.praxiscloudservice.service.configuration.mapper;
 
 import ch.fhnw.ip5.praxiscloudservice.api.dto.NotificationTypeDto;
-import ch.fhnw.ip5.praxiscloudservice.domain.NotificationType;
+import ch.fhnw.ip5.praxiscloudservice.domain.configuration.NotificationType;
 
 import java.util.Collection;
 import java.util.Set;

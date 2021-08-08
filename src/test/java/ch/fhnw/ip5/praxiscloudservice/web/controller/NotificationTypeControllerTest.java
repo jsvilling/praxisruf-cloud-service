@@ -1,8 +1,9 @@
 package ch.fhnw.ip5.praxiscloudservice.web.controller;
 
-import ch.fhnw.ip5.praxiscloudservice.api.NotificationTypeService;
+import ch.fhnw.ip5.praxiscloudservice.api.configuration.NotificationTypeService;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.NotificationTypeDto;
 import ch.fhnw.ip5.praxiscloudservice.util.DefaultTestData;
+import ch.fhnw.ip5.praxiscloudservice.web.configuration.controller.NotificationTypeController;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

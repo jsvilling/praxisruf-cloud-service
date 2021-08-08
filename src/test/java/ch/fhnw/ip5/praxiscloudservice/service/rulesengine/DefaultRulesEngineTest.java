@@ -1,9 +1,11 @@
 package ch.fhnw.ip5.praxiscloudservice.service.rulesengine;
 
-import ch.fhnw.ip5.praxiscloudservice.api.RuleEvaluator;
-import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
-import ch.fhnw.ip5.praxiscloudservice.domain.RuleParameters;
-import ch.fhnw.ip5.praxiscloudservice.domain.RuleType;
+import ch.fhnw.ip5.praxiscloudservice.api.configuration.rulesengine.RuleEvaluator;
+import ch.fhnw.ip5.praxiscloudservice.domain.configuration.RuleParameters;
+import ch.fhnw.ip5.praxiscloudservice.domain.configuration.RuleType;
+import ch.fhnw.ip5.praxiscloudservice.domain.notification.PraxisNotification;
+import ch.fhnw.ip5.praxiscloudservice.service.configuration.rulesengine.DefaultRulesEngine;
+import ch.fhnw.ip5.praxiscloudservice.service.configuration.rulesengine.RuleEvaluatorFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

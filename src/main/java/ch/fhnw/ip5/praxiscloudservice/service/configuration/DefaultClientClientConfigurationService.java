@@ -1,16 +1,16 @@
 package ch.fhnw.ip5.praxiscloudservice.service.configuration;
 
-import ch.fhnw.ip5.praxiscloudservice.api.ClientConfigurationService;
+import ch.fhnw.ip5.praxiscloudservice.api.configuration.ClientConfigurationService;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientConfigurationDto;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
-import ch.fhnw.ip5.praxiscloudservice.domain.Client;
-import ch.fhnw.ip5.praxiscloudservice.domain.ClientConfiguration;
-import ch.fhnw.ip5.praxiscloudservice.domain.NotificationType;
-import ch.fhnw.ip5.praxiscloudservice.domain.RuleParameters;
-import ch.fhnw.ip5.praxiscloudservice.persistence.ClientConfigurationRepository;
-import ch.fhnw.ip5.praxiscloudservice.persistence.ClientRepository;
-import ch.fhnw.ip5.praxiscloudservice.persistence.NotificationTypeRepository;
+import ch.fhnw.ip5.praxiscloudservice.domain.configuration.Client;
+import ch.fhnw.ip5.praxiscloudservice.domain.configuration.ClientConfiguration;
+import ch.fhnw.ip5.praxiscloudservice.domain.configuration.NotificationType;
+import ch.fhnw.ip5.praxiscloudservice.domain.configuration.RuleParameters;
+import ch.fhnw.ip5.praxiscloudservice.persistence.configuration.ClientConfigurationRepository;
+import ch.fhnw.ip5.praxiscloudservice.persistence.configuration.ClientRepository;
+import ch.fhnw.ip5.praxiscloudservice.persistence.configuration.NotificationTypeRepository;
 import ch.fhnw.ip5.praxiscloudservice.service.configuration.mapper.ClientConfigurationMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,7 +1,8 @@
 package ch.fhnw.ip5.praxiscloudservice.web.controller;
 
-import ch.fhnw.ip5.praxiscloudservice.api.RegistrationService;
-import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
+import ch.fhnw.ip5.praxiscloudservice.api.configuration.RegistrationService;
+import ch.fhnw.ip5.praxiscloudservice.domain.notification.PraxisNotification;
+import ch.fhnw.ip5.praxiscloudservice.web.configuration.controller.RegistrationsController;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

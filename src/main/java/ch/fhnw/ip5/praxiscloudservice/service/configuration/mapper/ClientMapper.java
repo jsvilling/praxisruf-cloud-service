@@ -1,7 +1,7 @@
 package ch.fhnw.ip5.praxiscloudservice.service.configuration.mapper;
 
 import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientDto;
-import ch.fhnw.ip5.praxiscloudservice.domain.Client;
+import ch.fhnw.ip5.praxiscloudservice.domain.configuration.Client;
 
 public class ClientMapper {
 

@@ -1,11 +1,11 @@
 package ch.fhnw.ip5.praxiscloudservice.service.configuration;
 
-import ch.fhnw.ip5.praxiscloudservice.api.NotificationTypeService;
+import ch.fhnw.ip5.praxiscloudservice.api.configuration.NotificationTypeService;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.NotificationTypeDto;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
-import ch.fhnw.ip5.praxiscloudservice.domain.NotificationType;
-import ch.fhnw.ip5.praxiscloudservice.persistence.NotificationTypeRepository;
+import ch.fhnw.ip5.praxiscloudservice.domain.configuration.NotificationType;
+import ch.fhnw.ip5.praxiscloudservice.persistence.configuration.NotificationTypeRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

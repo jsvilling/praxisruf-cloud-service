@@ -1,8 +1,8 @@
 package ch.fhnw.ip5.praxiscloudservice.service.notification;
 
 import ch.fhnw.ip5.praxiscloudservice.api.dto.RegistrationDto;
-import ch.fhnw.ip5.praxiscloudservice.domain.NotificationSendProcess;
-import ch.fhnw.ip5.praxiscloudservice.persistence.NotificationSendProcessRepository;
+import ch.fhnw.ip5.praxiscloudservice.domain.notification.NotificationSendProcess;
+import ch.fhnw.ip5.praxiscloudservice.persistence.notification.NotificationSendProcessRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

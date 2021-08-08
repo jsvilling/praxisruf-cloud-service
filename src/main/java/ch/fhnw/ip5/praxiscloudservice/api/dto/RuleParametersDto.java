@@ -1,6 +1,6 @@
 package ch.fhnw.ip5.praxiscloudservice.api.dto;
 
-import ch.fhnw.ip5.praxiscloudservice.domain.RuleType;
+import ch.fhnw.ip5.praxiscloudservice.domain.configuration.RuleType;
 import lombok.Builder;
 import lombok.Getter;
 

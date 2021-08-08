@@ -1,16 +1,16 @@
 package ch.fhnw.ip5.praxiscloudservice.service.configuration;
 
-import ch.fhnw.ip5.praxiscloudservice.api.RegistrationService;
-import ch.fhnw.ip5.praxiscloudservice.api.RulesEngine;
+import ch.fhnw.ip5.praxiscloudservice.api.configuration.RegistrationService;
+import ch.fhnw.ip5.praxiscloudservice.api.configuration.rulesengine.RulesEngine;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.RegistrationDto;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
-import ch.fhnw.ip5.praxiscloudservice.domain.Client;
-import ch.fhnw.ip5.praxiscloudservice.domain.ClientConfiguration;
-import ch.fhnw.ip5.praxiscloudservice.domain.PraxisNotification;
-import ch.fhnw.ip5.praxiscloudservice.domain.Registration;
-import ch.fhnw.ip5.praxiscloudservice.persistence.ClientConfigurationRepository;
-import ch.fhnw.ip5.praxiscloudservice.persistence.ClientRepository;
-import ch.fhnw.ip5.praxiscloudservice.persistence.RegistrationRepository;
+import ch.fhnw.ip5.praxiscloudservice.domain.configuration.Client;
+import ch.fhnw.ip5.praxiscloudservice.domain.configuration.ClientConfiguration;
+import ch.fhnw.ip5.praxiscloudservice.domain.configuration.Registration;
+import ch.fhnw.ip5.praxiscloudservice.domain.notification.PraxisNotification;
+import ch.fhnw.ip5.praxiscloudservice.persistence.configuration.ClientConfigurationRepository;
+import ch.fhnw.ip5.praxiscloudservice.persistence.configuration.ClientRepository;
+import ch.fhnw.ip5.praxiscloudservice.persistence.configuration.RegistrationRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

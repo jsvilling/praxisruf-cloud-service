@@ -1,7 +1,8 @@
 package ch.fhnw.ip5.praxiscloudservice.web.controller;
 
-import ch.fhnw.ip5.praxiscloudservice.api.ClientService;
+import ch.fhnw.ip5.praxiscloudservice.api.configuration.ClientService;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientDto;
+import ch.fhnw.ip5.praxiscloudservice.web.configuration.controller.ClientsController;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

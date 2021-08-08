@@ -1,7 +1,8 @@
 package ch.fhnw.ip5.praxiscloudservice.service.rulesengine;
 
-import ch.fhnw.ip5.praxiscloudservice.api.RuleEvaluator;
-import ch.fhnw.ip5.praxiscloudservice.domain.RuleType;
+import ch.fhnw.ip5.praxiscloudservice.api.configuration.rulesengine.RuleEvaluator;
+import ch.fhnw.ip5.praxiscloudservice.domain.configuration.RuleType;
+import ch.fhnw.ip5.praxiscloudservice.service.configuration.rulesengine.RuleEvaluatorFactory;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
