@@ -36,7 +36,7 @@ public class ClientsControllerTest {
         clientsController.getAvailableClients();
 
         // Then
-        verify(configurationService, times(1)).findAvailableClients(eq(userId));
+        verify(configurationService, times(1)).findByUserId(eq(userId));
     }
 
     @Test
@@ -48,7 +48,7 @@ public class ClientsControllerTest {
         clientsController.createClient(dto);
 
         // Then
-        verify(configurationService, times(1)).createClient(eq(dto));
+        verify(configurationService, times(1)).create(eq(dto));
     }
 
 }

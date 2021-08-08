@@ -21,14 +21,7 @@ public interface ClientService {
      * @throws PraxisIntercomException - If the ClientDto is invalid
      * @return ClientDto
      */
-    ClientDto createClient(ClientDto clientDto);
-
-    /**
-     * Finds all Clients.
-     *
-     * @return Set<ClientDto>
-     */
-    Set<ClientDto> findAllClients();
+    ClientDto create(ClientDto clientDto);
 
     /**
      * Finds the client with the given Id.
@@ -37,7 +30,14 @@ public interface ClientService {
      * @throws PraxisIntercomException - If not client with the given id exists
      * @return ClientDto
      */
-    ClientDto findClientById(UUID clientId);
+    ClientDto findById(UUID clientId);
+
+    /**
+     * Finds all Clients.
+     *
+     * @return Set<ClientDto>
+     */
+    Set<ClientDto> findAll();
 
     /**
      * Finds all Clients that are registered for the given userId.
@@ -45,7 +45,7 @@ public interface ClientService {
      * @param userId
      * @return Set<MinimalClientDto>
      */
-    Set<MinimalClientDto> findAvailableClients(UUID userId);
+    Set<MinimalClientDto> findByUserId(UUID userId);
 
     /**
      * Creates a Client according to the given DTO.
@@ -56,7 +56,7 @@ public interface ClientService {
      * @throws PraxisIntercomException - If the ClientDto is invalid
      * @return ClientDto
      */
-    ClientDto updateClient(ClientDto clientDto);
+    ClientDto update(ClientDto clientDto);
 
     /**
      * Deletes the client with the given id.
@@ -66,7 +66,7 @@ public interface ClientService {
      *
      * @param id
      */
-    void deleteClientById(UUID id);
+    void deleteById(UUID id);
 
     /**
      * Deletes all Clients with any of the given clientIds.
@@ -76,6 +76,5 @@ public interface ClientService {
      * @param clientIds
      */
     void deleteAllById(List<UUID> clientIds);
-
 
 }

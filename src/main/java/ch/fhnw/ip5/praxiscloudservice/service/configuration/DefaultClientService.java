@@ -26,7 +26,7 @@ public class DefaultClientService implements ClientService {
     private final ClientRepository clientRepository;
 
     @Override
-    public ClientDto createClient(ClientDto clientDto) {
+    public ClientDto create(ClientDto clientDto) {
         final Client client = Client.builder()
                 .userId(clientDto.getUserId())
                 .name(clientDto.getName())
@@ -35,7 +35,7 @@ public class DefaultClientService implements ClientService {
     }
 
     @Override
-    public Set<ClientDto> findAllClients() {
+    public Set<ClientDto> findAll() {
         return clientRepository.findAll()
                 .stream()
                 .map(c -> ClientDto.builder().id(c.getClientId()).name(c.getName()).userId(c.getUserId())
@@ -44,13 +44,13 @@ public class DefaultClientService implements ClientService {
     }
 
     @Override
-    public ClientDto findClientById(UUID clientId) {
+    public ClientDto findById(UUID clientId) {
         return toClientDto(clientRepository.findById(clientId)
                 .orElseThrow(() -> new PraxisIntercomException(CLIENT_NOT_FOUND)));
     }
 
     @Override
-    public ClientDto updateClient(ClientDto clientDto) {
+    public ClientDto update(ClientDto clientDto) {
         if(!clientRepository.existsById(clientDto.getId())) {
             throw new PraxisIntercomException(CLIENT_NOT_FOUND);
         }
@@ -63,7 +63,7 @@ public class DefaultClientService implements ClientService {
     }
 
     @Override
-    public void deleteClientById(UUID id) {
+    public void deleteById(UUID id) {
         try {
             clientRepository.deleteById(id);
         } catch (IllegalArgumentException e) {
@@ -73,11 +73,11 @@ public class DefaultClientService implements ClientService {
 
     @Override
     public void deleteAllById(List<UUID> clientIds) {
-        clientIds.forEach(this::deleteClientById);
+        clientIds.forEach(this::deleteById);
     }
 
     @Override
-    public Set<MinimalClientDto> findAvailableClients(UUID userId) {
+    public Set<MinimalClientDto> findByUserId(UUID userId) {
         return clientRepository.findAllByUserId(userId)
                 .stream()
                 .map(c -> MinimalClientDto.builder().id(c.getClientId()).name(c.getName()).build())

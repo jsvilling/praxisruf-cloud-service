@@ -37,7 +37,7 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
 
     @Override
     @Transactional
-    public ClientConfigurationDto createClientConfiguration(ClientConfigurationDto configurationDto) {
+    public ClientConfigurationDto create(ClientConfigurationDto configurationDto) {
         if (clientConfigurationRepository.existsByClientConfigurationId(configurationDto.getId())) {
             throw new PraxisIntercomException(ErrorCode.CLIENT_CONFIG_ALREADY_EXISTS);
         }
@@ -46,13 +46,13 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
 
     @Override
     @Transactional(readOnly = true)
-    public ClientConfigurationDto findClientConfigurationById(UUID configurationId) {
+    public ClientConfigurationDto findById(UUID configurationId) {
         return toClientConfigurationDto(findExistingClientConfiguration(configurationId));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Set<ClientConfigurationDto> findAllClientConfigurations() {
+    public Set<ClientConfigurationDto> findAll() {
         return clientConfigurationRepository.findAll().stream()
                 .map(ClientConfigurationMapper::toClientConfigurationDto)
                 .collect(Collectors.toSet());
@@ -60,7 +60,7 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
 
     @Override
     @Transactional
-    public ClientConfigurationDto updateClientConfiguration(ClientConfigurationDto configurationDto) {
+    public ClientConfigurationDto update(ClientConfigurationDto configurationDto) {
         if (!clientConfigurationRepository.existsByClientConfigurationId(configurationDto.getId())) {
             throw new PraxisIntercomException(ErrorCode.CLIENT_CONFIG_NOT_FOUND);
         }
@@ -69,7 +69,7 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
 
     @Override
     @Transactional
-    public void deleteClientConfigurationById(UUID configurationId) {
+    public void deleteById(UUID configurationId) {
         try {
             ClientConfiguration clientConfiguration = clientConfigurationRepository.findById(configurationId).orElseThrow();
             removeClientConfigurationFromRelatedNotificationType(clientConfiguration);
@@ -85,8 +85,8 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
 
     @Override
     @Transactional
-    public void deleteAllClientConfigurationsById(List<UUID> clientConfigurationIds) {
-        clientConfigurationIds.forEach(this::deleteClientConfigurationById);
+    public void deleteAllById(List<UUID> clientConfigurationIds) {
+        clientConfigurationIds.forEach(this::deleteById);
     }
 
     private Client findExistingClient(UUID clientId) {

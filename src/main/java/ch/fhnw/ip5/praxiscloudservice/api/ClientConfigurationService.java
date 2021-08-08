@@ -20,7 +20,7 @@ public interface ClientConfigurationService {
      * @throws PraxisIntercomException - If the ClientConfigurationDto is invalid
      * @return ClientConfigurationDto
      */
-    ClientConfigurationDto createClientConfiguration(ClientConfigurationDto configuratinoDto);
+    ClientConfigurationDto create(ClientConfigurationDto configuratinoDto);
 
     /**
      * Finds the ClientConfiguration with the given Id.
@@ -29,14 +29,14 @@ public interface ClientConfigurationService {
      * @throws PraxisIntercomException - If no ClientConfiguration with the given id exists.
      * @return ClientConfigurationDto
      */
-    ClientConfigurationDto findClientConfigurationById(UUID configurationId);
+    ClientConfigurationDto findById(UUID configurationId);
 
     /**
      * Finds all ClientConfigurations.
      *
      * @return Set<ClientConfigurationDto>
      */
-    Set<ClientConfigurationDto> findAllClientConfigurations();
+    Set<ClientConfigurationDto> findAll();
 
     /**
      * Updates a ClientConfiguration according to the given DTO.
@@ -47,7 +47,7 @@ public interface ClientConfigurationService {
      * @throws PraxisIntercomException - If the ClientConfigurationDto is invalid.
      * @return ClientConfigurationDto
      */
-    ClientConfigurationDto updateClientConfiguration(ClientConfigurationDto configurationDto);
+    ClientConfigurationDto update(ClientConfigurationDto configurationDto);
 
     /**
      * Deletes the ClientConfiguration with the given id.
@@ -57,7 +57,7 @@ public interface ClientConfigurationService {
      *
      * @param configurationId
      */
-    void deleteClientConfigurationById(UUID configurationId);
+    void deleteById(UUID configurationId);
 
     /**
      * Deletes ClientConfigurations with any of the given ids.
@@ -67,5 +67,5 @@ public interface ClientConfigurationService {
      *
      * @param clientConfigurationIds
      */
-    void deleteAllClientConfigurationsById(List<UUID> clientConfigurationIds);
+    void deleteAllById(List<UUID> clientConfigurationIds);
 }

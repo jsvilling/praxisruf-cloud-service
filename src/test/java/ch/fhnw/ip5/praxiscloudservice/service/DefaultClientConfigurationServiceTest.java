@@ -47,7 +47,7 @@ public class DefaultClientConfigurationServiceTest {
             when(clientRepository.findByClientConfiguration_ClientConfigurationId(any())).thenReturn(Optional.of(client));
 
             // When
-            clientConfigurationService.deleteClientConfigurationById(id);
+            clientConfigurationService.deleteById(id);
 
             // Then
             verify(clientConfigurationRepository, times(1)).deleteById(id);
@@ -64,7 +64,7 @@ public class DefaultClientConfigurationServiceTest {
 
             // When
             // Then
-            assertThatNoException().isThrownBy(() -> clientConfigurationService.deleteClientConfigurationById(id));
+            assertThatNoException().isThrownBy(() -> clientConfigurationService.deleteById(id));
             verify(clientConfigurationRepository, times(1)).deleteById(id);
         }
 
@@ -80,7 +80,7 @@ public class DefaultClientConfigurationServiceTest {
 
             // When
             // Then
-            assertThatThrownBy(() -> clientConfigurationService.deleteClientConfigurationById(id))
+            assertThatThrownBy(() -> clientConfigurationService.deleteById(id))
                     .isSameAs(e);
             verify(clientConfigurationRepository, times(1)).deleteById(id);
         }
@@ -97,7 +97,7 @@ public class DefaultClientConfigurationServiceTest {
             when(clientRepository.findByClientConfiguration_ClientConfigurationId(any())).thenReturn(Optional.of(client));
 
             // When
-            clientConfigurationService.deleteAllClientConfigurationsById(ids);
+            clientConfigurationService.deleteAllById(ids);
 
             // Then
             verify(clientConfigurationRepository, times(3)).deleteById(any());
@@ -114,7 +114,7 @@ public class DefaultClientConfigurationServiceTest {
 
             // When
             // Then
-            assertThatNoException().isThrownBy(() -> clientConfigurationService.deleteAllClientConfigurationsById(ids));
+            assertThatNoException().isThrownBy(() -> clientConfigurationService.deleteAllById(ids));
             verify(clientConfigurationRepository, times(3)).deleteById(any());
         }
 
@@ -130,7 +130,7 @@ public class DefaultClientConfigurationServiceTest {
 
             // When
             // Then
-            assertThatThrownBy(() -> clientConfigurationService.deleteAllClientConfigurationsById(ids))
+            assertThatThrownBy(() -> clientConfigurationService.deleteAllById(ids))
                     .isSameAs(e);
             verify(clientConfigurationRepository, times(1)).deleteById(any());
         }

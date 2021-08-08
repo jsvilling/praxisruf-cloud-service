@@ -37,7 +37,7 @@ public class DefaultNotificationTypeService implements NotificationTypeService {
     }
 
     @Override
-    public Set<NotificationTypeDto> findNotificationTypesForClient(UUID clientId) {
+    public Set<NotificationTypeDto> findByClientId(UUID clientId) {
         final Set<NotificationType> notificationTypes = notificationTypeRepository.findByClientConfigurations_Client_ClientId(clientId);
         return toNotificationTypeDtos(notificationTypes);
     }
@@ -65,7 +65,7 @@ public class DefaultNotificationTypeService implements NotificationTypeService {
     }
 
     @Override
-    public void deleteManyById(Collection<UUID> notificationTypeIds) {
+    public void deleteAllById(Collection<UUID> notificationTypeIds) {
         notificationTypeIds.forEach(this::deleteById);
     }
 

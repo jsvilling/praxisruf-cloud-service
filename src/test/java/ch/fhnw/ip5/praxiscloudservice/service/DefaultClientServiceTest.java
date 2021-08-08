@@ -36,7 +36,7 @@ public class DefaultClientServiceTest {
             when(clientRepository.findAllByUserId(USER_ID)).thenReturn(Set.of(client));
 
             // When
-            final Set<MinimalClientDto> availableClients = clientService.findAvailableClients(USER_ID);
+            final Set<MinimalClientDto> availableClients = clientService.findByUserId(USER_ID);
 
             // Then
             final MinimalClientDto expected = MinimalClientDto.builder()
@@ -52,7 +52,7 @@ public class DefaultClientServiceTest {
             when(clientRepository.findAllByUserId(USER_ID)).thenReturn(Set.of());
 
             // When
-            final Set<MinimalClientDto> availableClients = clientService.findAvailableClients(USER_ID);
+            final Set<MinimalClientDto> availableClients = clientService.findByUserId(USER_ID);
 
             // Then
             assertThat(availableClients).isEmpty();

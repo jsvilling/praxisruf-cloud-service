@@ -22,34 +22,34 @@ public class ClientConfigurationController {
     // ###### Admin CRUD Operations
     @GetMapping("/{id}")
     public ClientConfigurationDto getConfigurationById(@PathVariable("id") UUID configurationId){
-        return clientConfigurationService.findClientConfigurationById(configurationId);
+        return clientConfigurationService.findById(configurationId);
     }
 
     @GetMapping()
     public Set<ClientConfigurationDto> getAllConfigurations(){
-        return clientConfigurationService.findAllClientConfigurations();
+        return clientConfigurationService.findAll();
     }
 
     @PostMapping()
     @Operation(description = "Create a new client configuration")
     public ClientConfigurationDto createClientConfiguration(@RequestBody ClientConfigurationDto configurationDto) {
-        return clientConfigurationService.createClientConfiguration(configurationDto);
+        return clientConfigurationService.create(configurationDto);
     }
 
     @PutMapping()
     @Operation(description = "Update an existing client configuration")
     public ClientConfigurationDto updateClientConfiguration(@RequestBody ClientConfigurationDto configurationDto) {
-        return clientConfigurationService.updateClientConfiguration(configurationDto);
+        return clientConfigurationService.update(configurationDto);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") UUID configurationId){
-        clientConfigurationService.deleteClientConfigurationById(configurationId);
+        clientConfigurationService.deleteById(configurationId);
     }
 
     @DeleteMapping("/many/{filter}")
     public void deleteMany(@PathVariable List<UUID> filter) {
-        clientConfigurationService.deleteAllClientConfigurationsById(filter);
+        clientConfigurationService.deleteAllById(filter);
     }
 
 }

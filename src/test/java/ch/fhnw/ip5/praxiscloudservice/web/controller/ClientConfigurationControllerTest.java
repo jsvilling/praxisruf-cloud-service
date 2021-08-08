@@ -40,6 +40,6 @@ public class ClientConfigurationControllerTest {
         clientConfigurationController.createClientConfiguration(clientConfigurationDto);
 
         // Then
-        verify(clientConfigurationService, times(1)).createClientConfiguration(eq(clientConfigurationDto));
+        verify(clientConfigurationService, times(1)).create(eq(clientConfigurationDto));
     }
 }

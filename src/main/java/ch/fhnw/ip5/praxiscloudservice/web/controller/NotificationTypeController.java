@@ -32,7 +32,7 @@ public class NotificationTypeController {
     @GetMapping("/search")
     @Operation(description = "Find the active configuration for an existing client")
     public Set<NotificationTypeDto> findNotificationTypesForClient(@RequestParam(value = "clientId") UUID clientId) {
-        return notificationTypeService.findNotificationTypesForClient(clientId);
+        return notificationTypeService.findByClientId(clientId);
     }
 
     @PostMapping()
@@ -54,7 +54,7 @@ public class NotificationTypeController {
 
     @DeleteMapping("/many/{filter}")
     public void deleteMany(@PathVariable List<UUID> filter) {
-        notificationTypeService.deleteManyById(filter);
+        notificationTypeService.deleteAllById(filter);
     }
     
 }

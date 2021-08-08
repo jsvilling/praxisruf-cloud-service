@@ -23,13 +23,6 @@ public interface NotificationTypeService {
     NotificationTypeDto create(NotificationTypeDto notificationTypeDto);
 
     /**
-     * Finds all Clients.
-     *
-     * @return Set<ClientDto>
-     */
-    Set<NotificationTypeDto> findAll();
-
-    /**
      * Finds the client with the given Id.
      *
      * @param notificationTypeId
@@ -38,13 +31,21 @@ public interface NotificationTypeService {
      */
     NotificationTypeDto findById(UUID notificationTypeId);
 
+
+    /**
+     * Finds all Clients.
+     *
+     * @return Set<ClientDto>
+     */
+    Set<NotificationTypeDto> findAll();
+
     /**
      * Finds all NotificationType that are configured for the client with the given id.
      *
      * @param clientId
      * @return
      */
-    Set<NotificationTypeDto> findNotificationTypesForClient(UUID clientId);
+    Set<NotificationTypeDto> findByClientId(UUID clientId);
 
 
     /**
@@ -76,6 +77,6 @@ public interface NotificationTypeService {
      * is re-thrown.
      * @param notificationTypeIds
      */
-    void deleteManyById(Collection<UUID> notificationTypeIds);
+    void deleteAllById(Collection<UUID> notificationTypeIds);
 
 }

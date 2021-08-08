@@ -93,7 +93,7 @@ public class NotificationTypeControllerTest {
         notificationTypeController.deleteMany(ids);
 
         // Then
-        verify(notificationTypeService, times(1)).deleteManyById(eq(ids));
+        verify(notificationTypeService, times(1)).deleteAllById(eq(ids));
     }
 
     @Test
@@ -105,7 +105,7 @@ public class NotificationTypeControllerTest {
         notificationTypeController.findNotificationTypesForClient(clientId);
 
         // Then
-        verify(notificationTypeService, times(1)).findNotificationTypesForClient(eq(clientId));
+        verify(notificationTypeService, times(1)).findByClientId(eq(clientId));
     }
 
 }

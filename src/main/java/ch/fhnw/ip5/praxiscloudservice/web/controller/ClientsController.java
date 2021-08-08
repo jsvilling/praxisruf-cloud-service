@@ -25,27 +25,27 @@ public class ClientsController {
     // ###### Admin CRUD Operations
     @GetMapping("/{id}")
     public ClientDto getClientById(@PathVariable("id") UUID clientId) {
-        return clientService.findClientById(clientId);
+        return clientService.findById(clientId);
     }
 
     @GetMapping()
     public Set<ClientDto> getAllClients() {
-        return clientService.findAllClients();
+        return clientService.findAll();
     }
 
     @PostMapping
     public ClientDto createClient(@RequestBody ClientDto clientDto) {
-        return clientService.createClient(clientDto);
+        return clientService.create(clientDto);
     }
 
     @PutMapping
     public ClientDto updateClient(@RequestBody ClientDto clientDto){
-        return clientService.updateClient(clientDto);
+        return clientService.update(clientDto);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable UUID id){
-        clientService.deleteClientById(id);}
+        clientService.deleteById(id);}
 
     @DeleteMapping("/many/{filter}")
     public void deleteMany(@PathVariable List<UUID> filter){
@@ -61,7 +61,7 @@ public class ClientsController {
     @Operation(description = "Find all available clients for a given user")
     public Set<MinimalClientDto> getAvailableClients() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return clientService.findAvailableClients((UUID) auth.getDetails());
+        return clientService.findByUserId((UUID) auth.getDetails());
     }
 
 }

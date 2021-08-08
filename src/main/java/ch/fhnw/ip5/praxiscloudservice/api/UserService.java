@@ -19,14 +19,7 @@ public interface UserService {
      * @throws PraxisIntercomException - If the given UserDto is invalid
      * @return UserDto
      */
-    UserDto register(UserDto userDto);
-
-    /**
-     * Finds all registered Users.
-     *
-     * @return List<UserDto>
-     */
-    List<UserDto> findAllUsers();
+    UserDto create(UserDto userDto);
 
     /**
      * Finds the PraxisIntercomUser with the given userId
@@ -35,7 +28,14 @@ public interface UserService {
      * @throws PraxisIntercomException - If no User with the given id exists.
      * @return
      */
-    UserDto findUserById(UUID id);
+    UserDto findById(UUID id);
+
+    /**
+     * Finds all registered Users.
+     *
+     * @return List<UserDto>
+     */
+    List<UserDto> findAll();
 
     /**
      * Updates a PraxisIntercomUser according to the given UserDto.
@@ -46,8 +46,7 @@ public interface UserService {
      * @throws PraxisIntercomException - If the given UserDto is invalid
      * @return UserDto
      */
-    UserDto updateUser(UserDto userDto);
-
+    UserDto update(UserDto userDto);
 
     /**
      * Deletes the PraxisIntercomUser with the given id.

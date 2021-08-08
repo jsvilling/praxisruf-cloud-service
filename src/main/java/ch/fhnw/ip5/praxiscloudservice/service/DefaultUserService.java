@@ -34,7 +34,7 @@ public class DefaultUserService implements UserService, UserDetailsService, Auth
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDto register(UserDto userDto) {
+    public UserDto create(UserDto userDto) {
         final PraxisIntercomUser user = PraxisIntercomUser
                 .builder()
                 .id(UUID.randomUUID())
@@ -47,7 +47,7 @@ public class DefaultUserService implements UserService, UserDetailsService, Auth
     }
 
     @Override
-    public List<UserDto> findAllUsers() {
+    public List<UserDto> findAll() {
         return userRepository.findAll()
                              .stream().map(user ->
                                                    UserDto.builder()
@@ -60,7 +60,7 @@ public class DefaultUserService implements UserService, UserDetailsService, Auth
     }
 
     @Override
-    public UserDto updateUser(UserDto userDto) {
+    public UserDto update(UserDto userDto) {
         PraxisIntercomUser user = userRepository.findById(userDto.getId()).orElseThrow(
                 () -> new PraxisIntercomException(ErrorCode.USER_NOT_FOUND));
         String password = userDto.getPassword() == null ? user.getPassword() : userDto.getPassword();
@@ -79,7 +79,7 @@ public class DefaultUserService implements UserService, UserDetailsService, Auth
     }
 
     @Override
-    public UserDto findUserById(UUID id) {
+    public UserDto findById(UUID id) {
         PraxisIntercomUser user = userRepository.findById(id).orElseThrow(
                 () -> new PraxisIntercomException(ErrorCode.USER_NOT_FOUND));
         return UserDto.builder().userName(user.getUsername()).password(user.getPassword()).role(user.getRole().name()).id(user.getId()).build();
