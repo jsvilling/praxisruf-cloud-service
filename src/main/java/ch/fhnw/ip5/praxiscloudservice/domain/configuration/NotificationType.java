@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -36,14 +37,16 @@ public class NotificationType {
     private String type;
 
     @ManyToMany
-    private Set<ClientConfiguration> clientConfigurations;
+    private Set<ClientConfiguration> clientConfigurations = new HashSet<>();
 
     public void addClientConfiguration(ClientConfiguration clientConfiguration) {
         clientConfigurations.add(clientConfiguration);
     }
 
     public void removeClientConfiguration(ClientConfiguration clientConfiguration) {
-        clientConfigurations.remove(clientConfiguration);
+        if (clientConfigurations != null && clientConfiguration != null) {
+            clientConfigurations.remove(clientConfiguration);
+        }
     }
 
 }
