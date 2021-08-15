@@ -3,8 +3,7 @@ package ch.fhnw.ip5.praxiscloudservice.service.notification;
 import ch.fhnw.ip5.praxiscloudservice.api.notification.NotificationTestService;
 import ch.fhnw.ip5.praxiscloudservice.config.ProfileRegistry;
 import ch.fhnw.ip5.praxiscloudservice.web.notification.client.ConfigurationWebClient;
-import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.Notification;
+import com.google.firebase.messaging.*;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -32,6 +31,24 @@ public class DefaultNotificationTestService implements NotificationTestService {
     @Override
     public void sendTestNotification(String token) {
 
+        // for iOS
+        Aps aps = Aps.builder()
+                .setSound("default")
+                .build();
+
+        ApnsConfig apnsConfig = ApnsConfig.builder()
+                .setAps(aps)
+                .build();
+
+        // for Android
+        AndroidNotification androidNofi = AndroidNotification.builder()
+                .setSound("default")
+                .build();
+
+        AndroidConfig androidConfig = AndroidConfig.builder()
+                .setNotification(androidNofi)
+                .build();
+
         final Notification notification = Notification.builder()
                 .setTitle("Notification Title")
                 .setBody("This notification was sent from the cloud service using Firebase Messaging")
@@ -41,6 +58,8 @@ public class DefaultNotificationTestService implements NotificationTestService {
                 .putData(SENDER_KEY, SENDER_VALUE)
                 .setToken(token)
                 .setNotification(notification)
+                .setApnsConfig(apnsConfig)
+                .setAndroidConfig(androidConfig)
                 .build();
 
         fcmIntegrationService.send(firebaseMessage);

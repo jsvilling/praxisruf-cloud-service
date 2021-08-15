@@ -11,8 +11,7 @@ import ch.fhnw.ip5.praxiscloudservice.domain.notification.PraxisNotification;
 import ch.fhnw.ip5.praxiscloudservice.persistence.configuration.NotificationTypeRepository;
 import ch.fhnw.ip5.praxiscloudservice.persistence.notification.NotificationRepository;
 import ch.fhnw.ip5.praxiscloudservice.web.notification.client.ConfigurationWebClient;
-import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.Notification;
+import com.google.firebase.messaging.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -115,10 +114,30 @@ public class FirebaseNotificationService implements NotificationService {
     }
 
     private Message toFirebaseMessage(Notification firebaseNotification, RegistrationDto registration) {
+        // for iOS
+        Aps aps = Aps.builder()
+                .setSound("default")
+                .build();
+
+        ApnsConfig apnsConfig = ApnsConfig.builder()
+                .setAps(aps)
+                .build();
+
+        // for Android
+        AndroidNotification androidNofi = AndroidNotification.builder()
+                .setSound("default")
+                .build();
+
+        AndroidConfig androidConfig = AndroidConfig.builder()
+                .setNotification(androidNofi)
+                .build();
+
         return Message.builder()
                 .setToken(registration.getFcmToken())
                 .setNotification(firebaseNotification)
                 .putData(SENDER_NAME, registration.getClientName())
+                .setApnsConfig(apnsConfig)
+                .setAndroidConfig(androidConfig)
                 .build();
     }
 }
