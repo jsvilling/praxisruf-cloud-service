@@ -1,5 +1,6 @@
 package ch.fhnw.ip5.praxiscloudservice.util;
 
+import ch.fhnw.ip5.praxiscloudservice.api.dto.ClientDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.NotificationTypeDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.RegistrationDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationDto;
@@ -78,6 +79,14 @@ public class DefaultTestData {
                 .name(CLIENT_NAME)
                 .userId(USER_ID)
                 .clientConfiguration(null)
+                .build();
+    }
+
+    public static ClientDto createClientDto() {
+        return ClientDto.builder()
+                .id(CLIENT_ID)
+                .name(CLIENT_NAME)
+                .userId(USER_ID)
                 .build();
     }
 

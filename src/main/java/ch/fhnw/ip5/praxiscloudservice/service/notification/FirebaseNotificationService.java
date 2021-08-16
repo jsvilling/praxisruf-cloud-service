@@ -1,14 +1,13 @@
 package ch.fhnw.ip5.praxiscloudservice.service.notification;
 
+import ch.fhnw.ip5.praxiscloudservice.api.dto.NotificationTypeDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.RegistrationDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationResponseDto;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
 import ch.fhnw.ip5.praxiscloudservice.api.notification.NotificationService;
-import ch.fhnw.ip5.praxiscloudservice.domain.configuration.NotificationType;
 import ch.fhnw.ip5.praxiscloudservice.domain.notification.PraxisNotification;
-import ch.fhnw.ip5.praxiscloudservice.persistence.configuration.NotificationTypeRepository;
 import ch.fhnw.ip5.praxiscloudservice.persistence.notification.NotificationRepository;
 import ch.fhnw.ip5.praxiscloudservice.web.notification.client.ConfigurationWebClient;
 import com.google.firebase.messaging.*;
@@ -18,6 +17,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+
+import static ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode.CLIENT_NOT_FOUND;
 
 /**
  * This service implements the NotificationService interface and is used to send Messages to client devices.
@@ -36,7 +37,6 @@ public class FirebaseNotificationService implements NotificationService {
 
     private final ConfigurationWebClient configurationWebClient;
     private final NotificationRepository notificationRepository;
-    private final NotificationTypeRepository notificationTypeRepository;
     private final FcmIntegrationService fcmIntegrationService;
     private final NotificationSendProcessService notificationSendProcessService;
 
@@ -48,7 +48,7 @@ public class FirebaseNotificationService implements NotificationService {
      */
     @Override
     public SendPraxisNotificationResponseDto send(SendPraxisNotificationDto notificationDto) {
-        final NotificationType notificationType = findExistingNotificationType(notificationDto.getNotificationTypeId());
+        final NotificationTypeDto notificationType = findExistingNotificationTypeDto(notificationDto.getNotificationTypeId());
         final PraxisNotification praxisNotification = createPraxisNotification(notificationDto);
         final Notification firebaseNotification = createFirebaseNotification(notificationType);
         final List<RegistrationDto> registrations = configurationWebClient.getAllRelevantRegistrations(praxisNotification);
@@ -58,20 +58,23 @@ public class FirebaseNotificationService implements NotificationService {
     @Override
     public SendPraxisNotificationResponseDto retry(UUID notificationId) {
         final PraxisNotification praxisNotification = findExistingNotification(notificationId);
-        final NotificationType notificationType = findExistingNotificationType(praxisNotification.getNotificationTypeId());
+        final NotificationTypeDto notificationType = findExistingNotificationTypeDto(praxisNotification.getNotificationTypeId());
         final Notification firebaseNotification = createFirebaseNotification(notificationType);
         final List<RegistrationDto> allRelevantFcmTokens = notificationSendProcessService.findAllFcmTokensForFailed(notificationId);
         return send(allRelevantFcmTokens, firebaseNotification, praxisNotification);
     }
 
-    private NotificationType findExistingNotificationType(UUID notificationTypeId) {
-        return notificationTypeRepository.findById(notificationTypeId)
-                .orElseThrow(() -> new PraxisIntercomException(ErrorCode.INVALID_NOTIFICATION_TYPE));
-    }
-
     private PraxisNotification findExistingNotification(UUID notificationId) {
         return notificationRepository.findById(notificationId)
                 .orElseThrow(() -> new PraxisIntercomException(ErrorCode.NOTIFICATION_NOT_FOUND));
+    }
+
+    private NotificationTypeDto findExistingNotificationTypeDto(UUID notificationTypeId) {
+        final NotificationTypeDto notificationType = configurationWebClient.findExistingNotificationType(notificationTypeId);
+        if (notificationType == null) {
+            throw new PraxisIntercomException(ErrorCode.NOTIFICATION_TYPE_NOT_FOUND);
+        }
+        return notificationType;
     }
 
     private PraxisNotification createPraxisNotification(SendPraxisNotificationDto notificationDto) {
@@ -82,7 +85,7 @@ public class FirebaseNotificationService implements NotificationService {
         return notificationRepository.save(notification);
     }
 
-    private Notification createFirebaseNotification(NotificationType notificationType) {
+    private Notification createFirebaseNotification(NotificationTypeDto notificationType) {
         return Notification.builder()
                 .setTitle(notificationType.getTitle())
                 .setBody(notificationType.getBody())
@@ -91,8 +94,9 @@ public class FirebaseNotificationService implements NotificationService {
 
     private SendPraxisNotificationResponseDto send(List<RegistrationDto> registrations, Notification firebaseNotification, PraxisNotification praxisNotification) {
         boolean allSuccess = true;
+        final String senderName = findSenderName(praxisNotification);
         for (RegistrationDto registration : registrations) {
-            final Message message = toFirebaseMessage(firebaseNotification, registration);
+            final Message message = toFirebaseMessage(firebaseNotification, registration, senderName);
             final boolean success = send(message);
             notificationSendProcessService.createNotificationSendLogEntry(praxisNotification.getId(), success, registration);
             allSuccess = allSuccess && success;
@@ -101,6 +105,14 @@ public class FirebaseNotificationService implements NotificationService {
                 .notificationId(praxisNotification.getId())
                 .allSuccess(allSuccess)
                 .build();
+    }
+
+    private String findSenderName(PraxisNotification praxisNotification) {
+        try {
+            return configurationWebClient.findExistingClient(praxisNotification.getSender()).getName();
+        } catch (Exception e) {
+            throw new PraxisIntercomException(CLIENT_NOT_FOUND, e);
+        }
     }
 
     private boolean send(Message message) {
@@ -113,7 +125,7 @@ public class FirebaseNotificationService implements NotificationService {
         }
     }
 
-    private Message toFirebaseMessage(Notification firebaseNotification, RegistrationDto registration) {
+    private Message toFirebaseMessage(Notification firebaseNotification, RegistrationDto registration, String senderName) {
         // for iOS
         Aps aps = Aps.builder()
                 .setSound("default")
@@ -135,7 +147,7 @@ public class FirebaseNotificationService implements NotificationService {
         return Message.builder()
                 .setToken(registration.getFcmToken())
                 .setNotification(firebaseNotification)
-                .putData(SENDER_NAME, registration.getClientName())
+                .putData(SENDER_NAME, senderName)
                 .setApnsConfig(apnsConfig)
                 .setAndroidConfig(androidConfig)
                 .build();
