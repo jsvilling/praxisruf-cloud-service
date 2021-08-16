@@ -28,8 +28,8 @@ public class RegistrationsController {
         registrationService.register(clientId, fcmToken);
     }
 
-    @DeleteMapping
-    public void unregister(UUID clientId) {
+    @DeleteMapping("/{id}")
+    public void unregister(@PathVariable("id") UUID clientId) {
         registrationService.unregister(clientId);
     }
 
