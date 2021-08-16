@@ -47,7 +47,7 @@ public class ConfigurationWebClient {
 
     public ClientDto findExistingClient(UUID clientId) {
         return webClient.get()
-                .uri(uriBuilder -> uriBuilder.path("/api/" + clientId).build())
+                .uri(uriBuilder -> uriBuilder.path("/clients/" + clientId).build())
                 .retrieve()
                 .bodyToMono(ClientDto.class)
                 .block();
