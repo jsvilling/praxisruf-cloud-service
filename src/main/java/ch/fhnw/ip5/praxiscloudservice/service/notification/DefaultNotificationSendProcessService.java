@@ -35,8 +35,18 @@ public class DefaultNotificationSendProcessService implements NotificationSendPr
 
     @Transactional(readOnly = true)
     public List<RegistrationDto> findAllRegistrationsForFailed(UUID notificationId) {
-        return notificationSendProcessRepository.findAllByNotificationIdAndSuccess(notificationId, false).stream()
+        final List<String> succeededTokens = findSucceededTokens(notificationId);
+        return notificationSendProcessRepository.findAllByNotificationIdAndSuccess(notificationId, false)
+                .stream()
+                .filter(p -> !succeededTokens.contains(p.getRelevantToken()))
                 .map(this::createRetryRegistration)
+                .collect(Collectors.toList());
+    }
+
+    private List<String> findSucceededTokens(UUID notificationId) {
+        return notificationSendProcessRepository.findAllByNotificationIdAndSuccess(notificationId, true)
+                .stream()
+                .map(NotificationSendProcess::getRelevantToken)
                 .collect(Collectors.toList());
     }
 
