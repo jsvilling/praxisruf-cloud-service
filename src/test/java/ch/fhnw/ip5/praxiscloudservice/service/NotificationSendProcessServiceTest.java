@@ -1,6 +1,7 @@
 package ch.fhnw.ip5.praxiscloudservice.service;
 
 import ch.fhnw.ip5.praxiscloudservice.api.dto.RegistrationDto;
+import ch.fhnw.ip5.praxiscloudservice.domain.notification.NotificationSendProcess;
 import ch.fhnw.ip5.praxiscloudservice.persistence.notification.NotificationSendProcessRepository;
 import ch.fhnw.ip5.praxiscloudservice.service.notification.NotificationSendProcessService;
 import org.junit.jupiter.api.Test;
@@ -9,13 +10,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.UUID;
 
+import static ch.fhnw.ip5.praxiscloudservice.util.DefaultTestData.createNotificationSendProcess;
 import static ch.fhnw.ip5.praxiscloudservice.util.DefaultTestData.createRegistrationDto;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class NotificationSendProcessServiceTest {
@@ -44,12 +46,15 @@ public class NotificationSendProcessServiceTest {
     void findAllFcmTokensForFailed() {
         // Given
         final UUID notificationId = UUID.randomUUID();
+        final NotificationSendProcess process = createNotificationSendProcess();
+        when(notificationSendProcessRepository.findAllByNotificationIdAndSuccess(notificationId, false)).thenReturn(List.of(process));
 
         // When
-        notificationSendProcessService.findAllFcmTokensForFailed(notificationId);
+        List<RegistrationDto> registrations = notificationSendProcessService.findAllRegistrationsForFailed(notificationId);
 
         // Then
-        verify(notificationSendProcessRepository, times(1)).findAllByNotificationIdAndSuccess(eq(notificationId), eq(false));
+        assertThat(registrations).hasSize(1);
+        assertThat(registrations.get(0).getFcmToken()).isEqualTo(process.getRelevantToken());
     }
 
 

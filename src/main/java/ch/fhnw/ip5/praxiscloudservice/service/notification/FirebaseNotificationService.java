@@ -60,8 +60,8 @@ public class FirebaseNotificationService implements NotificationService {
         final PraxisNotification praxisNotification = findExistingNotification(notificationId);
         final NotificationTypeDto notificationType = findExistingNotificationTypeDto(praxisNotification.getNotificationTypeId());
         final Notification firebaseNotification = createFirebaseNotification(notificationType);
-        final List<RegistrationDto> allRelevantFcmTokens = notificationSendProcessService.findAllFcmTokensForFailed(notificationId);
-        return send(allRelevantFcmTokens, firebaseNotification, praxisNotification);
+        final List<RegistrationDto> registrations = notificationSendProcessService.findAllRegistrationsForFailed(notificationId);
+        return send(registrations, firebaseNotification, praxisNotification);
     }
 
     private PraxisNotification findExistingNotification(UUID notificationId) {

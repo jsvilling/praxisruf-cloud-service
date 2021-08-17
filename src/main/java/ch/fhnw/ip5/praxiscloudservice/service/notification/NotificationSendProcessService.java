@@ -33,7 +33,7 @@ public class NotificationSendProcessService {
     }
 
     @Transactional(readOnly = true)
-    public List<RegistrationDto> findAllFcmTokensForFailed(UUID notificationId) {
+    public List<RegistrationDto> findAllRegistrationsForFailed(UUID notificationId) {
         return notificationSendProcessRepository.findAllByNotificationIdAndSuccess(notificationId, false).stream()
                 .map(this::createRetryRegistration)
                 .collect(Collectors.toList());

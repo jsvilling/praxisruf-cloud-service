@@ -153,7 +153,7 @@ public class FirebaseNotificationServiceTest {
             when(configurationWebClient.findExistingClient(any())).thenReturn(clientDto);
             when(notificationRepository.findById(notificationId)).thenReturn(Optional.of(notification));
             when(configurationWebClient.findExistingNotificationType(any())).thenReturn(notificationType);
-            when(notificationSendProcessService.findAllFcmTokensForFailed(notificationId)).thenReturn(Collections.emptyList());
+            when(notificationSendProcessService.findAllRegistrationsForFailed(notificationId)).thenReturn(Collections.emptyList());
 
             // When
             final SendPraxisNotificationResponseDto response = firebaseNotificationService.retry(notificationId);
@@ -175,7 +175,7 @@ public class FirebaseNotificationServiceTest {
             when(configurationWebClient.findExistingClient(any())).thenReturn(clientDto);
             when(notificationRepository.findById(notificationId)).thenReturn(Optional.of(notification));
             when(configurationWebClient.findExistingNotificationType(any())).thenReturn(notificationType);
-            when(notificationSendProcessService.findAllFcmTokensForFailed(notificationId)).thenReturn(List.of(registration));
+            when(notificationSendProcessService.findAllRegistrationsForFailed(notificationId)).thenReturn(List.of(registration));
 
             // When
             final SendPraxisNotificationResponseDto response = firebaseNotificationService.retry(notificationId);
@@ -197,7 +197,7 @@ public class FirebaseNotificationServiceTest {
             when(configurationWebClient.findExistingClient(any())).thenReturn(clientDto);
             when(notificationRepository.findById(notificationId)).thenReturn(Optional.of(notification));
             when(configurationWebClient.findExistingNotificationType(any())).thenReturn(notificationType);
-            when(notificationSendProcessService.findAllFcmTokensForFailed(notificationId)).thenReturn(List.of(registration, registration, registration));
+            when(notificationSendProcessService.findAllRegistrationsForFailed(notificationId)).thenReturn(List.of(registration, registration, registration));
 
             // When
             final SendPraxisNotificationResponseDto response = firebaseNotificationService.retry(notificationId);
@@ -231,7 +231,7 @@ public class FirebaseNotificationServiceTest {
             when(configurationWebClient.findExistingClient(any())).thenReturn(clientDto);
             when(notificationRepository.findById(notificationId)).thenReturn(Optional.of(notification));
             when(configurationWebClient.findExistingNotificationType(any())).thenReturn(notificationType);
-            when(notificationSendProcessService.findAllFcmTokensForFailed(notificationId)).thenReturn(List.of(registration));
+            when(notificationSendProcessService.findAllRegistrationsForFailed(notificationId)).thenReturn(List.of(registration));
             when(fcmIntegrationService.send(any(Message.class))).thenThrow(new RuntimeException());
 
             // When

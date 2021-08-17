@@ -5,6 +5,7 @@ import ch.fhnw.ip5.praxiscloudservice.api.dto.NotificationTypeDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.RegistrationDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationDto;
 import ch.fhnw.ip5.praxiscloudservice.domain.configuration.*;
+import ch.fhnw.ip5.praxiscloudservice.domain.notification.NotificationSendProcess;
 import ch.fhnw.ip5.praxiscloudservice.domain.notification.PraxisNotification;
 
 import java.util.Set;
@@ -110,6 +111,16 @@ public class DefaultTestData {
         return RegistrationDto.builder()
                 .fcmToken(TOKEN)
                 .clientName(CLIENT_NAME)
+                .build();
+    }
+
+    public static NotificationSendProcess createNotificationSendProcess() {
+        return NotificationSendProcess.builder()
+                .id(CLIENT_ID)
+                .clientName(CLIENT_NAME)
+                .notificationId(UUID.randomUUID())
+                .relevantToken(TOKEN)
+                .success(false)
                 .build();
     }
 
