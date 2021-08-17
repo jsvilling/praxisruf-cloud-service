@@ -113,14 +113,9 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
                 .notificationTypes(new HashSet<>(notificationTypes))
                 .build();
 
-        // TODO: This is Quick and dirty to prevent Transient errors during Creation
         clientConfigurationRepository.save(updatedClientConfiguration);
-
         notificationTypes.forEach(nt -> nt.addClientConfiguration(updatedClientConfiguration));
         notificationTypeRepository.saveAll(notificationTypes);
-
-        // TODO: Make sure Client : ClientConfiguration is always 1 : 1 after update
-
         return clientConfigurationRepository.saveAndFlush(updatedClientConfiguration);
     }
 
