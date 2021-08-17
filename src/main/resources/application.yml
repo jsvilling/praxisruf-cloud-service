@@ -16,3 +16,5 @@ praxis-intercom:
     credentials: ${FCM_CREDENTIALS}
   jwt:
     key: ${JWT_SECRET_KEY}
+  api:
+    admin-origin: ${ADMIN_ORIGIN}

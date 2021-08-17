@@ -2,6 +2,8 @@ package ch.fhnw.ip5.praxiscloudservice.config.security;
 
 import ch.fhnw.ip5.praxiscloudservice.config.security.filter.JWTTokenGeneratorFilter;
 import ch.fhnw.ip5.praxiscloudservice.config.security.filter.JWTTokenValidatorFilter;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,15 +17,20 @@ import org.springframework.web.cors.CorsConfiguration;
 import java.util.Collections;
 import java.util.List;
 
+
 @Configuration
+@ConfigurationProperties(prefix = "praxis-intercom.api")
+@Setter
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private String adminOrigin;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
         .cors().configurationSource(request -> {
             CorsConfiguration config = new CorsConfiguration();
-            config.setAllowedOrigins(List.of("https://admin.praxisruf.ch","http://localhost:3000"));
+            config.setAllowedOrigins(List.of(adminOrigin));
             config.setAllowedMethods(Collections.singletonList("*"));
             config.setAllowCredentials(true);
             config.setAllowedHeaders(Collections.singletonList("*"));
@@ -37,12 +44,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/swagger-ui.html").permitAll()
                 .antMatchers("/api/users/login").authenticated()
                 .antMatchers("/api/users").authenticated()
-                .antMatchers("/api/clients/all").hasAnyRole("ADMIN","USER")//TODO: authorize endpoints by Role
+                .antMatchers("/api/clients/all").hasAnyRole("ADMIN","USER")
                 .and().httpBasic();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-    @Bean JWTProperties jwtProperties() {return new JWTProperties();}
+    @Bean
+    JWTProperties jwtProperties() {
+        return new JWTProperties();
+    }
 }

@@ -7,3 +7,5 @@ spring:
 praxis-intercom:
   web:
     configurationClientUrl: "http://localhost:5000/praxis-intercom/api"
+  api:
+    admin-origin: "http://localhost:3000"
