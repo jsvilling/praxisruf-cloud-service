@@ -1,6 +1,7 @@
 package ch.fhnw.ip5.praxiscloudservice.service.notification;
 
 import ch.fhnw.ip5.praxiscloudservice.api.dto.RegistrationDto;
+import ch.fhnw.ip5.praxiscloudservice.api.notification.NotificationSendProcessService;
 import ch.fhnw.ip5.praxiscloudservice.domain.notification.NotificationSendProcess;
 import ch.fhnw.ip5.praxiscloudservice.persistence.notification.NotificationSendProcessRepository;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,7 @@ import static org.springframework.transaction.annotation.Propagation.REQUIRES_NE
 @Service
 @Slf4j
 @AllArgsConstructor
-public class NotificationSendProcessService {
+public class DefaultNotificationSendProcessService implements NotificationSendProcessService {
 
     private final NotificationSendProcessRepository notificationSendProcessRepository;
 

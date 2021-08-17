@@ -4,9 +4,9 @@ import ch.fhnw.ip5.praxiscloudservice.api.dto.*;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
 import ch.fhnw.ip5.praxiscloudservice.domain.notification.PraxisNotification;
 import ch.fhnw.ip5.praxiscloudservice.persistence.notification.NotificationRepository;
+import ch.fhnw.ip5.praxiscloudservice.service.notification.DefaultNotificationSendProcessService;
 import ch.fhnw.ip5.praxiscloudservice.service.notification.FcmIntegrationService;
 import ch.fhnw.ip5.praxiscloudservice.service.notification.FirebaseNotificationService;
-import ch.fhnw.ip5.praxiscloudservice.service.notification.NotificationSendProcessService;
 import ch.fhnw.ip5.praxiscloudservice.util.DefaultTestData;
 import ch.fhnw.ip5.praxiscloudservice.web.notification.client.ConfigurationWebClient;
 import com.google.firebase.messaging.Message;
@@ -37,7 +37,7 @@ public class FirebaseNotificationServiceTest {
     private NotificationRepository notificationRepository;
 
     @Mock
-    private NotificationSendProcessService notificationSendProcessService;
+    private DefaultNotificationSendProcessService notificationSendProcessService;
 
     @Mock
     private FcmIntegrationService fcmIntegrationService;

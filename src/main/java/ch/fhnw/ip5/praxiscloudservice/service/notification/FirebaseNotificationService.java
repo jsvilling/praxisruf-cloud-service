@@ -6,6 +6,7 @@ import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationDto;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.SendPraxisNotificationResponseDto;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
+import ch.fhnw.ip5.praxiscloudservice.api.notification.NotificationSendProcessService;
 import ch.fhnw.ip5.praxiscloudservice.api.notification.NotificationService;
 import ch.fhnw.ip5.praxiscloudservice.domain.notification.PraxisNotification;
 import ch.fhnw.ip5.praxiscloudservice.persistence.notification.NotificationRepository;

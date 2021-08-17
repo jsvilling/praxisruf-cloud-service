@@ -3,7 +3,7 @@ package ch.fhnw.ip5.praxiscloudservice.service;
 import ch.fhnw.ip5.praxiscloudservice.api.dto.RegistrationDto;
 import ch.fhnw.ip5.praxiscloudservice.domain.notification.NotificationSendProcess;
 import ch.fhnw.ip5.praxiscloudservice.persistence.notification.NotificationSendProcessRepository;
-import ch.fhnw.ip5.praxiscloudservice.service.notification.NotificationSendProcessService;
+import ch.fhnw.ip5.praxiscloudservice.service.notification.DefaultNotificationSendProcessService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,13 +20,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class NotificationSendProcessServiceTest {
+public class DefaultNotificationSendProcessServiceTest {
 
     @Mock
     private NotificationSendProcessRepository notificationSendProcessRepository;
 
     @InjectMocks
-    private NotificationSendProcessService notificationSendProcessService;
+    private DefaultNotificationSendProcessService notificationSendProcessService;
 
     @Test
     void createNotificationSendLogEntry() {
