@@ -47,6 +47,7 @@ public class DefaultNotificationSendProcessServiceTest {
         // Given
         final UUID notificationId = UUID.randomUUID();
         final NotificationSendProcess process = createNotificationSendProcess();
+        when(notificationSendProcessRepository.findAllByNotificationIdAndSuccess(notificationId, true)).thenReturn(List.of());
         when(notificationSendProcessRepository.findAllByNotificationIdAndSuccess(notificationId, false)).thenReturn(List.of(process));
 
         // When
