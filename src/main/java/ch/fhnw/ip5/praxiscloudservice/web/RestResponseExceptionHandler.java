@@ -2,6 +2,7 @@ package ch.fhnw.ip5.praxiscloudservice.web;
 
 import ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode;
 import ch.fhnw.ip5.praxiscloudservice.api.exception.PraxisIntercomException;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import static ch.fhnw.ip5.praxiscloudservice.api.exception.ErrorCode.*;
 import static org.springframework.http.HttpStatus.*;
 
 @ControllerAdvice
+@Slf4j
 public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final Map<ErrorCode, HttpStatus> ERROR_CODE_HTTP_STATUS_MAP = new EnumMap<ErrorCode, HttpStatus>(ErrorCode.class);
@@ -40,6 +42,7 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(PraxisIntercomException.class)
     protected ResponseEntity<Object> handleIntercomException(PraxisIntercomException e, WebRequest w) {
         final HttpStatus status = determineResponseStatus(e.getErrorCode());
+        log.error("Request failed with Error Code {} - StatusCode {} will be returned", e.getErrorCode(), status)
         return handleExceptionInternal(e, e.getMessage(), new HttpHeaders(), status, w);
     }
 
