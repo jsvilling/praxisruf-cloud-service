@@ -42,7 +42,7 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(PraxisIntercomException.class)
     protected ResponseEntity<Object> handleIntercomException(PraxisIntercomException e, WebRequest w) {
         final HttpStatus status = determineResponseStatus(e.getErrorCode());
-        log.error("Request failed with Error Code {} - StatusCode {} will be returned", e.getErrorCode(), status)
+        log.error("Request failed with Error Code {} - StatusCode {} will be returned", e.getErrorCode(), status);
         return handleExceptionInternal(e, e.getMessage(), new HttpHeaders(), status, w);
     }
 
