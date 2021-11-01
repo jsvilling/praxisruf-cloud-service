@@ -27,6 +27,10 @@ dependencies {
     // Firebase
     implementation 'com.google.firebase:firebase-admin:7.1.1'
 
+    // AWS Polly
+    implementation 'com.amazonaws:aws-java-sdk-polly:1.11.77'
+    implementation 'com.googlecode.soundlibs:jlayer:1.0.1-1'
+
     // Swagger
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
     implementation 'io.springfox:springfox-swagger-ui:2.9.2'
