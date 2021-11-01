@@ -29,7 +29,6 @@ dependencies {
 
     // AWS Polly
     implementation 'com.amazonaws:aws-java-sdk-polly:1.11.77'
-    implementation 'com.googlecode.soundlibs:jlayer:1.0.1-1'
 
     // Swagger
     implementation 'io.springfox:springfox-boot-starter:3.0.0'

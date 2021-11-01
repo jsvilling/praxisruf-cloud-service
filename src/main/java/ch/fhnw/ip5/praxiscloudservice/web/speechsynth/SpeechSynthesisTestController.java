@@ -7,8 +7,6 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.polly.AmazonPollyClient;
 import com.amazonaws.services.polly.model.*;
 import io.swagger.annotations.Api;
-import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.advanced.AdvancedPlayer;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.InputStream;
-
-import static javazoom.jl.player.FactoryRegistry.systemRegistry;
 
 @RestController
 @RequestMapping("/api/speechsynthesis")
@@ -37,7 +33,7 @@ public class SpeechSynthesisTestController {
         voice = describeVoicesResult.getVoices().stream().filter(v -> v.getLanguageName().equals("German")).findFirst().get();
     }
 
-    @GetMapping
+    @GetMapping(produces = "audio/mp3")
     public ResponseEntity synthesizeTestAudio() {
         final SynthesizeSpeechRequest synthReq = new SynthesizeSpeechRequest()
                 .withText(SAMPLE)
@@ -47,23 +43,7 @@ public class SpeechSynthesisTestController {
         final SynthesizeSpeechResult synthRes = polly.synthesizeSpeech(synthReq);
         final InputStream inputStream = synthRes.getAudioStream();
         InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
-        playAudio(inputStream);
-
         return new ResponseEntity(inputStreamResource, HttpStatus.OK);
-    }
-
-    /**
-     * This is only for local testing.
-     *
-     * @param inputStream
-     * @throws JavaLayerException
-     */
-    private void playAudio(InputStream inputStream) {
-        try {
-            new AdvancedPlayer(inputStream, systemRegistry().createAudioDevice()).play();
-        } catch (Exception e) {
-            System.out.println("Could not play audio");
-        }
     }
 
 }
