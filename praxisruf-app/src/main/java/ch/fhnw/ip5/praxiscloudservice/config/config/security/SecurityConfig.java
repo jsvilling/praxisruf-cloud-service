@@ -49,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/users").hasAnyRole("ADMIN")
                 .antMatchers("/api/notifications").hasAnyRole("ADMIN","USER")
                 .antMatchers("/api/registrations").hasAnyRole("ADMIN","USER")
+                .antMatchers("/api/speechsynthesis").hasAnyRole("ADMIN","USER")
                 .and().httpBasic();
     }
 
