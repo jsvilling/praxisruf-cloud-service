@@ -1,6 +1,8 @@
-rootProject.name = 'praxis-intercom-cloud-service'
-include 'praxis-intercom-cloud-app'
-include 'praxis-intercom-cloud-web'
-include 'praxis-intercom-cloud-notification'
-include 'praxis-intercom-cloud-configuration'
+rootProject.name = 'praxisruf-cloud-service'
+
+include 'praxisruf-commons'
+include 'praxisruf-configuration'
+include 'praxisruf-notification'
+include 'praxisruf-speech-synthesis'
+include 'praxisruf-app'
 

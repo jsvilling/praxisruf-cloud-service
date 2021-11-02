@@ -1,26 +1,23 @@
 plugins {
-    id 'org.springframework.boot' version '2.4.3'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id "io.freefair.lombok" version "6.0.0-m2"
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+    id "io.freefair.lombok"
     id 'java'
 }
 
-group = 'ch.fhnw.ip5.praxis.intercom'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+group 'ch.fhnw.ip5.praxis.intercom'
+version '0.0.1-SNAPSHOT'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-
     // Internal
-    implementation project(':praxisruf-commons')
-    implementation project(':praxisruf-configuration')
-    implementation project(':praxisruf-notification')
-    implementation project(':praxisruf-speech-synthesis')
-    implementation project(':praxisruf-app')
+    implementation runtimeOnly(project(':praxisruf-commons'))
+    implementation runtimeOnly(project(':praxisruf-configuration'))
+    implementation runtimeOnly(project(':praxisruf-notification'))
+    implementation runtimeOnly(project(':praxisruf-speech-synthesis'))
 
     // Spring
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -57,10 +54,6 @@ test {
 }
 
 bootJar {
-    enabled = false
-}
-
-// Do package everything as a jar
-jar {
     enabled = true
 }
+
