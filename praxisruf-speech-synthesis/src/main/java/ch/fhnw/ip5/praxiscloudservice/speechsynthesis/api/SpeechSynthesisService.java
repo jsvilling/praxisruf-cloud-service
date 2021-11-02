@@ -1,4 +1,4 @@
-package ch.fhnw.ip5.praxiscloudservice.commons.speechsynthesis.api;
+package ch.fhnw.ip5.praxiscloudservice.speechsynthesis.api;
 
 import org.springframework.core.io.InputStreamResource;
 

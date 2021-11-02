@@ -1,6 +1,6 @@
-package ch.fhnw.ip5.praxiscloudservice.commons.speechsynthesis.service;
+package ch.fhnw.ip5.praxiscloudservice.speechsynthesis.service;
 
-import ch.fhnw.ip5.praxiscloudservice.commons.speechsynthesis.api.SpeechSynthesisService;
+import ch.fhnw.ip5.praxiscloudservice.speechsynthesis.api.SpeechSynthesisService;
 import com.amazonaws.services.polly.AmazonPollyClient;
 import com.amazonaws.services.polly.model.OutputFormat;
 import com.amazonaws.services.polly.model.SynthesizeSpeechRequest;

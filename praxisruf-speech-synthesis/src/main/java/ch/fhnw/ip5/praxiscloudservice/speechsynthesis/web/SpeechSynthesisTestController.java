@@ -1,6 +1,6 @@
-package ch.fhnw.ip5.praxiscloudservice.commons.speechsynthesis.web;
+package ch.fhnw.ip5.praxiscloudservice.speechsynthesis.web;
 
-import ch.fhnw.ip5.praxiscloudservice.commons.speechsynthesis.api.SpeechSynthesisService;
+import ch.fhnw.ip5.praxiscloudservice.speechsynthesis.api.SpeechSynthesisService;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.InputStreamResource;

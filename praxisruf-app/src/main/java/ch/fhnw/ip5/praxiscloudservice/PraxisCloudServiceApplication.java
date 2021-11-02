@@ -1,8 +1,8 @@
 package ch.fhnw.ip5.praxiscloudservice;
 
-import ch.fhnw.ip5.praxiscloudservice.commons.speechsynthesis.config.AwsConfiguration;
 import ch.fhnw.ip5.praxiscloudservice.config.config.security.JWTProperties;
 import ch.fhnw.ip5.praxiscloudservice.notification.config.FirebaseProperties;
+import ch.fhnw.ip5.praxiscloudservice.speechsynthesis.config.AwsConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

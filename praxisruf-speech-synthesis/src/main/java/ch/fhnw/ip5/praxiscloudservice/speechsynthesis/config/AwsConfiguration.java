@@ -1,4 +1,4 @@
-package ch.fhnw.ip5.praxiscloudservice.commons.speechsynthesis.config;
+package ch.fhnw.ip5.praxiscloudservice.speechsynthesis.config;
 
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
