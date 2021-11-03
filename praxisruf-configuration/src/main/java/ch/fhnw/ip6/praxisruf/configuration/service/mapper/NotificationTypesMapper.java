@@ -21,6 +21,7 @@ public class NotificationTypesMapper {
                 .title(notificationType.getTitle())
                 .description(notificationType.getTitle())
                 .displayText(notificationType.getDisplayText())
+                .version(notificationType.getVersion())
                 .build();
     }
 

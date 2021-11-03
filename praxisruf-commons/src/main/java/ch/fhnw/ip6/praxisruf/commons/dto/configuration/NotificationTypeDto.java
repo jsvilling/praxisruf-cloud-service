@@ -13,4 +13,5 @@ public class NotificationTypeDto {
     private String title;
     private String body;
     private String description;
+    private Long version;
 }

@@ -2,10 +2,7 @@ package ch.fhnw.ip6.praxisruf.configuration.domain;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -38,6 +35,9 @@ public class NotificationType {
 
     @ManyToMany
     private Set<ClientConfiguration> clientConfigurations = new HashSet<>();
+
+    @Version
+    private Long version;
 
     public void addClientConfiguration(ClientConfiguration clientConfiguration) {
         clientConfigurations.add(clientConfiguration);

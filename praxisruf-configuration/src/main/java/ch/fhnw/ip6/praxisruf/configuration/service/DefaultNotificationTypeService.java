@@ -77,7 +77,6 @@ public class DefaultNotificationTypeService implements NotificationTypeService {
 
     private NotificationType createOrUpdate(NotificationTypeDto notificationTypeDto) {
         final NotificationType updatedNotificationType = NotificationTypesMapper.toNotificationType(notificationTypeDto);
-        final NotificationType persistedNotificationType = notificationTypeRepository.saveAndFlush(updatedNotificationType);
-        return persistedNotificationType;
+        return notificationTypeRepository.saveAndFlush(updatedNotificationType);
     }
 }
