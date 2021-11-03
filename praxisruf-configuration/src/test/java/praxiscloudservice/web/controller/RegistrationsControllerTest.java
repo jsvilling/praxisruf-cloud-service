@@ -1,8 +1,8 @@
 package praxiscloudservice.web.controller;
 
-import ch.fhnw.ip5.praxiscloudservice.commons.dto.notification.SendPraxisNotificationDto;
-import ch.fhnw.ip5.praxiscloudservice.configuration.api.RegistrationService;
-import ch.fhnw.ip5.praxiscloudservice.configuration.web.controller.RegistrationsController;
+import ch.fhnw.ip6.praxisruf.commons.dto.notification.SendPraxisNotificationDto;
+import ch.fhnw.ip6.praxisruf.configuration.api.RegistrationService;
+import ch.fhnw.ip6.praxisruf.configuration.web.controller.RegistrationsController;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

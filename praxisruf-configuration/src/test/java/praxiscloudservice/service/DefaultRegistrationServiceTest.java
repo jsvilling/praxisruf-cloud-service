@@ -1,16 +1,16 @@
 package praxiscloudservice.service;
 
-import ch.fhnw.ip5.praxiscloudservice.commons.dto.configuration.RegistrationDto;
-import ch.fhnw.ip5.praxiscloudservice.commons.dto.notification.SendPraxisNotificationDto;
-import ch.fhnw.ip5.praxiscloudservice.commons.exception.PraxisIntercomException;
-import ch.fhnw.ip5.praxiscloudservice.configuration.api.rulesengine.RulesEngine;
-import ch.fhnw.ip5.praxiscloudservice.configuration.domain.Client;
-import ch.fhnw.ip5.praxiscloudservice.configuration.domain.ClientConfiguration;
-import ch.fhnw.ip5.praxiscloudservice.configuration.domain.Registration;
-import ch.fhnw.ip5.praxiscloudservice.configuration.persistence.ClientConfigurationRepository;
-import ch.fhnw.ip5.praxiscloudservice.configuration.persistence.ClientRepository;
-import ch.fhnw.ip5.praxiscloudservice.configuration.persistence.RegistrationRepository;
-import ch.fhnw.ip5.praxiscloudservice.configuration.service.DefaultRegistrationService;
+import ch.fhnw.ip6.praxisruf.commons.dto.configuration.RegistrationDto;
+import ch.fhnw.ip6.praxisruf.commons.dto.notification.SendPraxisNotificationDto;
+import ch.fhnw.ip6.praxisruf.commons.exception.PraxisIntercomException;
+import ch.fhnw.ip6.praxisruf.configuration.api.rulesengine.RulesEngine;
+import ch.fhnw.ip6.praxisruf.configuration.domain.Client;
+import ch.fhnw.ip6.praxisruf.configuration.domain.ClientConfiguration;
+import ch.fhnw.ip6.praxisruf.configuration.domain.Registration;
+import ch.fhnw.ip6.praxisruf.configuration.persistence.ClientConfigurationRepository;
+import ch.fhnw.ip6.praxisruf.configuration.persistence.ClientRepository;
+import ch.fhnw.ip6.praxisruf.configuration.persistence.RegistrationRepository;
+import ch.fhnw.ip6.praxisruf.configuration.service.DefaultRegistrationService;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

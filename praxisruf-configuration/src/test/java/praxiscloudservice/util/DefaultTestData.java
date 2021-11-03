@@ -1,8 +1,8 @@
 package praxiscloudservice.util;
 
-import ch.fhnw.ip5.praxiscloudservice.commons.dto.configuration.NotificationTypeDto;
-import ch.fhnw.ip5.praxiscloudservice.commons.dto.notification.SendPraxisNotificationDto;
-import ch.fhnw.ip5.praxiscloudservice.configuration.domain.*;
+import ch.fhnw.ip6.praxisruf.commons.dto.configuration.NotificationTypeDto;
+import ch.fhnw.ip6.praxisruf.commons.dto.notification.SendPraxisNotificationDto;
+import ch.fhnw.ip6.praxisruf.configuration.domain.*;
 
 import java.util.Set;
 import java.util.UUID;

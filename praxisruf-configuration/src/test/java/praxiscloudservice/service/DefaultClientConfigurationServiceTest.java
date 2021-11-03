@@ -1,10 +1,10 @@
 package praxiscloudservice.service;
 
-import ch.fhnw.ip5.praxiscloudservice.configuration.domain.Client;
-import ch.fhnw.ip5.praxiscloudservice.configuration.domain.ClientConfiguration;
-import ch.fhnw.ip5.praxiscloudservice.configuration.persistence.ClientConfigurationRepository;
-import ch.fhnw.ip5.praxiscloudservice.configuration.persistence.ClientRepository;
-import ch.fhnw.ip5.praxiscloudservice.configuration.service.DefaultClientClientConfigurationService;
+import ch.fhnw.ip6.praxisruf.configuration.domain.Client;
+import ch.fhnw.ip6.praxisruf.configuration.domain.ClientConfiguration;
+import ch.fhnw.ip6.praxisruf.configuration.persistence.ClientConfigurationRepository;
+import ch.fhnw.ip6.praxisruf.configuration.persistence.ClientRepository;
+import ch.fhnw.ip6.praxisruf.configuration.service.DefaultClientClientConfigurationService;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
