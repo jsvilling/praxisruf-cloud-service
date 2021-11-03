@@ -34,6 +34,8 @@ public class FirebaseNotificationService implements NotificationService {
 
     private static final String SENDER_NAME = "senderName";
     private static final String TEXT_TO_SPEECH_FLAG = "isTextToSpeech";
+    private static final String VERSION = "version";
+    private static final String NOTIFICATION_TYPE = "notificationType";
 
     private final ConfigurationWebClient configurationWebClient;
     private final NotificationRepository notificationRepository;
@@ -150,8 +152,11 @@ public class FirebaseNotificationService implements NotificationService {
                 .setNotification(firebaseNotification)
                 .putData(SENDER_NAME, senderName)
                 .putData(TEXT_TO_SPEECH_FLAG, "true")
+                .putData(VERSION, "0")
+                .putData(NOTIFICATION_TYPE, UUID.randomUUID().toString())
                 .setApnsConfig(apnsConfig)
                 .setAndroidConfig(androidConfig)
                 .build();
     }
+
 }
