@@ -52,18 +52,16 @@ public class FirebaseNotificationService implements NotificationService {
     public SendPraxisNotificationResponseDto send(SendPraxisNotificationDto notificationDto) {
         final NotificationTypeDto notificationType = findExistingNotificationTypeDto(notificationDto.getNotificationTypeId());
         final PraxisNotification praxisNotification = createPraxisNotification(notificationDto);
-        final Notification firebaseNotification = createFirebaseNotification(notificationType);
         final List<RegistrationDto> registrations = configurationWebClient.getAllRelevantRegistrations(praxisNotification);
-        return send(registrations, firebaseNotification, praxisNotification);
+        return send(registrations, notificationType, praxisNotification);
     }
 
     @Override
     public SendPraxisNotificationResponseDto retry(UUID notificationId) {
         final PraxisNotification praxisNotification = findExistingNotification(notificationId);
         final NotificationTypeDto notificationType = findExistingNotificationTypeDto(praxisNotification.getNotificationTypeId());
-        final Notification firebaseNotification = createFirebaseNotification(notificationType);
         final List<RegistrationDto> registrations = notificationSendProcessService.findAllRegistrationsForFailed(notificationId);
-        return send(registrations, firebaseNotification, praxisNotification);
+        return send(registrations, notificationType, praxisNotification);
     }
 
     private PraxisNotification findExistingNotification(UUID notificationId) {
@@ -94,11 +92,12 @@ public class FirebaseNotificationService implements NotificationService {
                 .build();
     }
 
-    private SendPraxisNotificationResponseDto send(List<RegistrationDto> registrations, Notification firebaseNotification, PraxisNotification praxisNotification) {
+    private SendPraxisNotificationResponseDto send(List<RegistrationDto> registrations, NotificationTypeDto notificationType, PraxisNotification praxisNotification) {
         boolean allSuccess = true;
+        final Notification firebaseNotification = createFirebaseNotification(notificationType);
         final String senderName = findSenderName(praxisNotification);
         for (RegistrationDto registration : registrations) {
-            final Message message = toFirebaseMessage(firebaseNotification, registration, senderName);
+            final Message message = createFirebaseMessage(firebaseNotification, registration, senderName, notificationType);
             final boolean success = send(message);
             notificationSendProcessService.createNotificationSendLogEntry(praxisNotification.getId(), success, registration);
             allSuccess = allSuccess && success;
@@ -127,7 +126,7 @@ public class FirebaseNotificationService implements NotificationService {
         }
     }
 
-    private Message toFirebaseMessage(Notification firebaseNotification, RegistrationDto registration, String senderName) {
+    private Message createFirebaseMessage(Notification firebaseNotification, RegistrationDto registration, String senderName, NotificationTypeDto notificationTypeDto) {
         // for iOS
         Aps aps = Aps.builder()
                 .setSound("default")
@@ -151,9 +150,9 @@ public class FirebaseNotificationService implements NotificationService {
                 .setToken(registration.getFcmToken())
                 .setNotification(firebaseNotification)
                 .putData(SENDER_NAME, senderName)
-                .putData(TEXT_TO_SPEECH_FLAG, "true")
-                .putData(VERSION, "0")
-                .putData(NOTIFICATION_TYPE, UUID.randomUUID().toString())
+                .putData(TEXT_TO_SPEECH_FLAG, notificationTypeDto.getTextToSpeech().toString())
+                .putData(VERSION, notificationTypeDto.getVersion().toString())
+                .putData(NOTIFICATION_TYPE, notificationTypeDto.getId().toString())
                 .setApnsConfig(apnsConfig)
                 .setAndroidConfig(androidConfig)
                 .build();

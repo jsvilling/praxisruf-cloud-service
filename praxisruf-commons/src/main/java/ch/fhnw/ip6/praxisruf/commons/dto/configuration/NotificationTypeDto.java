@@ -14,4 +14,5 @@ public class NotificationTypeDto {
     private String body;
     private String description;
     private Long version;
+    private Boolean textToSpeech;
 }

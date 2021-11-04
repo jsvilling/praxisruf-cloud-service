@@ -16,12 +16,14 @@ public class NotificationTypesMapper {
     }
 
     public static NotificationTypeDto toNotificationTypeDto(NotificationType notificationType) {
-        return NotificationTypeDto.builder().id(notificationType.getId())
+        return NotificationTypeDto.builder()
+                .id(notificationType.getId())
                 .body(notificationType.getBody())
                 .title(notificationType.getTitle())
                 .description(notificationType.getTitle())
                 .displayText(notificationType.getDisplayText())
                 .version(notificationType.getVersion())
+                .textToSpeech(true)
                 .build();
     }
 
