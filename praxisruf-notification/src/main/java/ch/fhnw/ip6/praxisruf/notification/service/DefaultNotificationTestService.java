@@ -1,8 +1,8 @@
 package ch.fhnw.ip6.praxisruf.notification.service;
 
 import ch.fhnw.ip6.praxisruf.commons.config.ProfileRegistry;
+import ch.fhnw.ip6.praxisruf.commons.web.client.ConfigurationWebClient;
 import ch.fhnw.ip6.praxisruf.notification.api.NotificationTestService;
-import ch.fhnw.ip6.praxisruf.notification.web.client.ConfigurationWebClient;
 import com.google.firebase.messaging.*;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Profile;

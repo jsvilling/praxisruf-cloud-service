@@ -1,6 +1,6 @@
-package ch.fhnw.ip6.praxisruf.notification.config;
+package ch.fhnw.ip6.praxisruf.commons.config;
 
-import ch.fhnw.ip6.praxisruf.notification.web.client.ConfigurationWebClient;
+import ch.fhnw.ip6.praxisruf.commons.web.client.ConfigurationWebClient;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;

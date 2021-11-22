@@ -1,5 +1,7 @@
 package ch.fhnw.ip6.praxisruf.speechsynthesis.service;
 
+import ch.fhnw.ip6.praxisruf.commons.dto.configuration.NotificationTypeDto;
+import ch.fhnw.ip6.praxisruf.commons.web.client.ConfigurationWebClient;
 import ch.fhnw.ip6.praxisruf.speechsynthesis.api.SpeechSynthesisService;
 import com.amazonaws.services.polly.AmazonPollyClient;
 import com.amazonaws.services.polly.model.OutputFormat;
@@ -11,6 +13,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -19,10 +22,23 @@ public class AwsPollySpeechSynthesisService implements SpeechSynthesisService {
     private static final String SAMPLE = "Benachrichtigung empfangen";
     private final AmazonPollyClient polly;
     private final Voice voice;
+    private final ConfigurationWebClient configurationWebClient;
 
-    public InputStreamResource test() {
+    @Override
+    public InputStreamResource synthesize() {
+        return synthesize(SAMPLE);
+    }
+
+    @Override
+    public InputStreamResource synthesize(UUID notificationTypeId) {
+        final NotificationTypeDto notificationType = configurationWebClient.findExistingNotificationType(notificationTypeId);
+        final String content = notificationType.getTitle();
+        return synthesize(content);
+    }
+
+    private InputStreamResource synthesize(String content) {
         final SynthesizeSpeechRequest synthReq = new SynthesizeSpeechRequest()
-                .withText(SAMPLE)
+                .withText(content)
                 .withVoiceId(voice.getId())
                 .withOutputFormat(OutputFormat.Mp3);
 

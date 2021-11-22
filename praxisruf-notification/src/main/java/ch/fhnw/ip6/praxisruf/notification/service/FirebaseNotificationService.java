@@ -6,11 +6,11 @@ import ch.fhnw.ip6.praxisruf.commons.dto.notification.SendPraxisNotificationDto;
 import ch.fhnw.ip6.praxisruf.commons.dto.notification.SendPraxisNotificationResponseDto;
 import ch.fhnw.ip6.praxisruf.commons.exception.ErrorCode;
 import ch.fhnw.ip6.praxisruf.commons.exception.PraxisIntercomException;
+import ch.fhnw.ip6.praxisruf.commons.web.client.ConfigurationWebClient;
 import ch.fhnw.ip6.praxisruf.notification.api.NotificationSendProcessService;
 import ch.fhnw.ip6.praxisruf.notification.api.NotificationService;
 import ch.fhnw.ip6.praxisruf.notification.domain.PraxisNotification;
 import ch.fhnw.ip6.praxisruf.notification.persistence.NotificationRepository;
-import ch.fhnw.ip6.praxisruf.notification.web.client.ConfigurationWebClient;
 import com.google.firebase.messaging.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +52,7 @@ public class FirebaseNotificationService implements NotificationService {
     public SendPraxisNotificationResponseDto send(SendPraxisNotificationDto notificationDto) {
         final NotificationTypeDto notificationType = findExistingNotificationTypeDto(notificationDto.getNotificationTypeId());
         final PraxisNotification praxisNotification = createPraxisNotification(notificationDto);
-        final List<RegistrationDto> registrations = configurationWebClient.getAllRelevantRegistrations(praxisNotification);
+        final List<RegistrationDto> registrations = configurationWebClient.getAllRelevantRegistrations(notificationDto);
         return send(registrations, notificationType, praxisNotification);
     }
 

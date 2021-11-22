@@ -1,9 +1,9 @@
-package ch.fhnw.ip6.praxisruf.notification.web.client;
+package ch.fhnw.ip6.praxisruf.commons.web.client;
 
 import ch.fhnw.ip6.praxisruf.commons.dto.configuration.ClientDto;
 import ch.fhnw.ip6.praxisruf.commons.dto.configuration.NotificationTypeDto;
 import ch.fhnw.ip6.praxisruf.commons.dto.configuration.RegistrationDto;
-import ch.fhnw.ip6.praxisruf.notification.domain.PraxisNotification;
+import ch.fhnw.ip6.praxisruf.commons.dto.notification.SendPraxisNotificationDto;
 import lombok.AllArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -28,7 +28,7 @@ public class ConfigurationWebClient {
                 .block();
     }
 
-    public List<RegistrationDto> getAllRelevantRegistrations(PraxisNotification notification) {
+    public List<RegistrationDto> getAllRelevantRegistrations(SendPraxisNotificationDto notification) {
         return webClient.post()
                 .uri(uriBuilder -> uriBuilder.path("/registrations/tokens/").build())
                 .bodyValue(notification)

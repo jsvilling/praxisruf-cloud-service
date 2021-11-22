@@ -1,8 +1,10 @@
-package ch.fhnw.ip6.praxisruf.speechsynthesis.web;
+package ch.fhnw.ip6.praxisruf.speechsynthesis.web.controller;
 
+import ch.fhnw.ip6.praxisruf.commons.config.ProfileRegistry;
 import ch.fhnw.ip6.praxisruf.speechsynthesis.api.SpeechSynthesisService;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/speechsynthesis")
-@Api(tags = "Speech Synthesis Test")
+@Api(tags = "Test")
+@Profile(ProfileRegistry.TEST)
 @AllArgsConstructor
 public class SpeechSynthesisTestController {
 
@@ -20,7 +23,7 @@ public class SpeechSynthesisTestController {
 
     @GetMapping(produces = "audio/mp3")
     public ResponseEntity synthesizeTestAudio() {
-        InputStreamResource inputStreamResource = speechSynthesisService.test();
+        InputStreamResource inputStreamResource = speechSynthesisService.synthesize();
         return new ResponseEntity(inputStreamResource, HttpStatus.OK);
     }
 
