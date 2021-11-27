@@ -18,6 +18,8 @@ public class DefaultTestData {
     public static final UUID CLIENT_ID = randomUUID();
     public static final String CLIENT_NAME = "name";
     public static final String MESSAGE_ID = randomUUID().toString();
+    public static final Long VERSION = 0L;
+    public static final Boolean T2S_ENABLED = true;
 
     public static NotificationTypeDto createNotificationTypeDto() {
         return NotificationTypeDto.builder()
@@ -26,6 +28,8 @@ public class DefaultTestData {
                 .body("")
                 .title("")
                 .displayText("")
+                .version(VERSION)
+                .textToSpeech(T2S_ENABLED)
                 .build();
     }
 
