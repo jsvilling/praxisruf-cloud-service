@@ -45,7 +45,6 @@ public class DefaultNotificationTypeService implements NotificationTypeService {
 
     @Override
     public NotificationTypeDto update(NotificationTypeDto notificationTypeDto) {
-        findExisting(notificationTypeDto.getId());
         return NotificationTypesMapper.toNotificationTypeDto(createOrUpdate(notificationTypeDto));
     }
 

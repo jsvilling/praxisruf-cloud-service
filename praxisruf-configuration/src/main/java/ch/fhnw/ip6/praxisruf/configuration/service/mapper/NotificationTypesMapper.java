@@ -41,6 +41,7 @@ public class NotificationTypesMapper {
                 .title(dto.getTitle())
                 .displayText(dto.getDisplayText())
                 .textToSpeech(dto.getTextToSpeech())
+                .version(dto.getVersion())
                 .build();
     }
 
