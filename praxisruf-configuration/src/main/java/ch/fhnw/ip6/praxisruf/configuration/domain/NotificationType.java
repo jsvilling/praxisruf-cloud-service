@@ -39,6 +39,8 @@ public class NotificationType {
     @Version
     private Long version;
 
+    private boolean textToSpeech;
+
     public void addClientConfiguration(ClientConfiguration clientConfiguration) {
         clientConfigurations.add(clientConfiguration);
     }
