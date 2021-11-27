@@ -19,15 +19,9 @@ import java.util.UUID;
 @AllArgsConstructor
 public class AwsPollySpeechSynthesisService implements SpeechSynthesisService {
 
-    private static final String SAMPLE = "Benachrichtigung empfangen";
     private final AmazonPollyClient polly;
     private final Voice voice;
     private final ConfigurationWebClient configurationWebClient;
-
-    @Override
-    public InputStreamResource synthesize() {
-        return synthesize(SAMPLE);
-    }
 
     @Override
     public InputStreamResource synthesize(UUID notificationTypeId) {
@@ -36,7 +30,8 @@ public class AwsPollySpeechSynthesisService implements SpeechSynthesisService {
         return synthesize(content);
     }
 
-    private InputStreamResource synthesize(String content) {
+    @Override
+    public InputStreamResource synthesize(String content) {
         final SynthesizeSpeechRequest synthReq = new SynthesizeSpeechRequest()
                 .withText(content)
                 .withVoiceId(voice.getId())

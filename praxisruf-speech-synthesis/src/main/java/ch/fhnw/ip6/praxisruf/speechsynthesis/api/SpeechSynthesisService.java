@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public interface SpeechSynthesisService {
 
-    InputStreamResource synthesize();
+    InputStreamResource synthesize(String message);
 
     InputStreamResource synthesize(UUID notificationTypeId);
 

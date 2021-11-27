@@ -19,11 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class SpeechSynthesisTestController {
 
+    private static final String SAMPLE = "Benachrichtigung empfangen";
+
     private final SpeechSynthesisService speechSynthesisService;
 
     @GetMapping(produces = "audio/mp3")
     public ResponseEntity synthesizeTestAudio() {
-        InputStreamResource inputStreamResource = speechSynthesisService.synthesize();
+        InputStreamResource inputStreamResource = speechSynthesisService.synthesize(SAMPLE);
         return new ResponseEntity(inputStreamResource, HttpStatus.OK);
     }
 
