@@ -33,7 +33,7 @@ public class NotificationType {
 
     private String type;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "notificationTypes")
     private Set<ClientConfiguration> clientConfigurations = new HashSet<>();
 
     @Version
