@@ -24,7 +24,7 @@ public class SpeechSynthesisTestController {
     private final SpeechSynthesisService speechSynthesisService;
 
     @GetMapping(produces = "audio/mp3")
-    public ResponseEntity synthesizeTestAudio() {
+    public ResponseEntity<InputStreamResource> synthesizeTestAudio() {
         InputStreamResource inputStreamResource = speechSynthesisService.synthesize(SAMPLE);
         return new ResponseEntity(inputStreamResource, HttpStatus.OK);
     }
