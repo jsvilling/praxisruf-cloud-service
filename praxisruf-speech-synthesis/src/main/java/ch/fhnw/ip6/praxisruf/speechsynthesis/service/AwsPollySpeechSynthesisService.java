@@ -19,6 +19,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class AwsPollySpeechSynthesisService implements SpeechSynthesisService {
 
+    private static final String SAMPLE = "Ich bin echt froh, dass die Anbindung an AWS Polly funktioniert. Leider funktioniert die Weiterleitung der Daten nicht mehr.";
     private final AmazonPollyClient polly;
     private final Voice voice;
     private final ConfigurationWebClient configurationWebClient;
@@ -39,6 +40,7 @@ public class AwsPollySpeechSynthesisService implements SpeechSynthesisService {
 
         final SynthesizeSpeechResult synthRes = polly.synthesizeSpeech(synthReq);
         final InputStream inputStream = synthRes.getAudioStream();
+
         return new InputStreamResource(inputStream);
     }
 
