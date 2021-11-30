@@ -11,6 +11,7 @@ import ch.fhnw.ip6.praxisruf.configuration.service.mapper.ClientMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 @Slf4j
+@Transactional
 public class DefaultClientService implements ClientService {
 
     private final ClientRepository clientRepository;
@@ -34,6 +36,7 @@ public class DefaultClientService implements ClientService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Set<ClientDto> findAll() {
         return clientRepository.findAll()
                 .stream()
@@ -43,6 +46,7 @@ public class DefaultClientService implements ClientService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ClientDto findById(UUID clientId) {
         return ClientMapper.toClientDto(clientRepository.findById(clientId)
                 .orElseThrow(() -> new PraxisIntercomException(ErrorCode.CLIENT_NOT_FOUND)));

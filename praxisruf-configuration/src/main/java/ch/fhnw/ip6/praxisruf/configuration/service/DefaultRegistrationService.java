@@ -15,6 +15,7 @@ import ch.fhnw.ip6.praxisruf.configuration.persistence.RegistrationRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.Set;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 @Slf4j
+@Transactional
 public class DefaultRegistrationService implements RegistrationService {
 
     private static final String UNKNOWN_CLIENT_NAME = "Unknown Client";
@@ -53,6 +55,7 @@ public class DefaultRegistrationService implements RegistrationService {
         }
     }
 
+    @Transactional(readOnly = true)
     public Set<String> getAllKnownTokens() {
         return registrationRepository.findAll()
                 .stream()
@@ -60,6 +63,7 @@ public class DefaultRegistrationService implements RegistrationService {
                 .collect(Collectors.toSet());
     }
 
+    @Transactional(readOnly = true)
     public Set<RegistrationDto> findAllRelevantRegistrations(SendPraxisNotificationDto notification) {
         return clientConfigurationRepository.findAll()
                 .stream().filter(c -> rulesEngine.isAnyRelevant(c.getRules(), notification))

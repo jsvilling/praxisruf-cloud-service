@@ -10,6 +10,7 @@ import ch.fhnw.ip6.praxisruf.configuration.service.mapper.NotificationTypesMappe
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Set;
@@ -18,16 +19,19 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 @Slf4j
+@Transactional
 public class DefaultNotificationTypeService implements NotificationTypeService {
 
     private final NotificationTypeRepository notificationTypeRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public NotificationTypeDto findById(UUID notificationTypeId) {
         return NotificationTypesMapper.toNotificationTypeDto(findExisting(notificationTypeId));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Set<NotificationTypeDto> findAll() {
         return NotificationTypesMapper.toNotificationTypeDtos(notificationTypeRepository.findAll());
     }

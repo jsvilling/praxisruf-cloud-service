@@ -20,6 +20,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder.BCryptVersion;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -28,6 +29,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 @Slf4j
+@Transactional
 public class DefaultUserService implements UserService, UserDetailsService, AuthenticationProvider {
 
     private final UserRepository userRepository;
@@ -47,6 +49,7 @@ public class DefaultUserService implements UserService, UserDetailsService, Auth
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserDto> findAll() {
         return userRepository.findAll()
                              .stream().map(user ->
@@ -79,6 +82,7 @@ public class DefaultUserService implements UserService, UserDetailsService, Auth
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDto findById(UUID id) {
         PraxisIntercomUser user = userRepository.findById(id).orElseThrow(
                 () -> new PraxisIntercomException(ErrorCode.USER_NOT_FOUND));

@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 @Slf4j
+@Transactional
 public class DefaultClientClientConfigurationService implements ClientConfigurationService {
 
     private final ClientRepository clientRepository;
@@ -34,7 +35,6 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
     private final NotificationTypeRepository notificationTypeRepository;
 
     @Override
-    @Transactional
     public ClientConfigurationDto create(ClientConfigurationDto configurationDto) {
         if (clientConfigurationRepository.existsByClientConfigurationId(configurationDto.getId())) {
             throw new PraxisIntercomException(ErrorCode.CLIENT_CONFIG_ALREADY_EXISTS);
@@ -57,7 +57,6 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
     }
 
     @Override
-    @Transactional
     public ClientConfigurationDto update(ClientConfigurationDto configurationDto) {
         if (!clientConfigurationRepository.existsByClientConfigurationId(configurationDto.getId())) {
             throw new PraxisIntercomException(ErrorCode.CLIENT_CONFIG_NOT_FOUND);
@@ -66,7 +65,6 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
     }
 
     @Override
-    @Transactional
     public void deleteById(UUID configurationId) {
         try {
             ClientConfiguration clientConfiguration = clientConfigurationRepository.findById(configurationId).orElseThrow();
@@ -82,7 +80,6 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
     }
 
     @Override
-    @Transactional
     public void deleteAllById(List<UUID> clientConfigurationIds) {
         clientConfigurationIds.forEach(this::deleteById);
     }
