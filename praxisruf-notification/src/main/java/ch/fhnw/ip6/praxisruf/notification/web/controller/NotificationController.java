@@ -33,7 +33,7 @@ public class NotificationController {
 
     @PostMapping("/retry")
     @Operation(description = "Retry all failed send for the given notification")
-    public SendPraxisNotificationResponseDto retryNotification(@RequestParam(value="clientId") UUID notificationId) {
+    public SendPraxisNotificationResponseDto retryNotification(@RequestParam(value="notificationId") UUID notificationId) {
         return notificationService.retry(notificationId);
     }
 }
