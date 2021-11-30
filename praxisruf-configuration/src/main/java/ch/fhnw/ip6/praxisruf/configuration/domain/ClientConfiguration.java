@@ -39,8 +39,11 @@ public class ClientConfiguration {
     @JoinColumn(name = "client_configuration_id")
     private Set<RuleParameters> rules;
 
-    @ManyToMany()
+    @ManyToMany
     private Set<NotificationType> notificationTypes = new HashSet<>();
+
+    @ManyToMany
+    private Set<CallType> callTypes = new HashSet<>();
 
     public void removeNotificationType(NotificationType notificationType) {
         notificationTypes.remove(notificationType);

@@ -1,6 +1,9 @@
 package ch.fhnw.ip6.praxisruf.commons.exception;
 
 public enum ErrorCode {
+    CALL_GROUP_ALREADY_EXISTS,
+    CALL_GROUP_NOT_FOUND,
+    CALL_TYPE_NOT_FOUND,
     CLIENT_NOT_FOUND,
     CLIENT_CONFIG_NOT_FOUND,
     CLIENT_CONFIG_ALREADY_EXISTS,
