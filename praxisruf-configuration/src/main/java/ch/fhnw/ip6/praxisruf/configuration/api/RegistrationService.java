@@ -9,7 +9,7 @@ import java.util.UUID;
 /**
  * This interface specifies interactions with Client entities.
  *
- * @author J. Villing & K. Zellweger
+ * @author J. Villing
  */
 public interface RegistrationService {
 
