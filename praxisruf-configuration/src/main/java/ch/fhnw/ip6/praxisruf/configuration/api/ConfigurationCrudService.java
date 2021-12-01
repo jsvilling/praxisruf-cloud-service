@@ -5,7 +5,7 @@ import java.util.Set;
 
 public interface ConfigurationCrudService<T, I> {
 
-    T create(I dto);
+    T create(T dto);
 
     T findById(I id);
 
