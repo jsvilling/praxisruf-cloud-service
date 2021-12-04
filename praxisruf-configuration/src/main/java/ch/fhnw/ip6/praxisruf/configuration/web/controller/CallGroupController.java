@@ -29,11 +29,11 @@ public class CallGroupController {
         return callGroupService.findAll();
     }
 
-    @GetMapping(params = "clientId")
-    @Operation(description = "Find the active configuration for an existing client")
-    public Set<CallGroupDto> findByClientId(@RequestParam(value = "clientId") UUID clientId) {
-        return callGroupService.findByClientId(clientId);
-    }
+//    @GetMapping(params = "clientId")
+//    @Operation(description = "Find the active configuration for an existing client")
+//    public Set<CallGroupDto> findByClientId(@RequestParam(value = "clientId") UUID clientId) {
+//        return callGroupService.findById(clientId);
+//    }
 
     @PostMapping
     @Operation(description = "Create a new client configuration")

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -31,7 +32,7 @@ public class UsersController {
     }
 
     @GetMapping
-    public List<UserDto> getAllUsers(){
+    public Set<UserDto> getAllUsers(){
         return userService.findAll();
     }
 

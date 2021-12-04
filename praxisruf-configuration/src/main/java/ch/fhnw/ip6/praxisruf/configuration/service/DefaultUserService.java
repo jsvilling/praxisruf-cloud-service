@@ -22,7 +22,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -50,7 +51,7 @@ public class DefaultUserService implements UserService, UserDetailsService, Auth
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserDto> findAll() {
+    public Set<UserDto> findAll() {
         return userRepository.findAll()
                              .stream().map(user ->
                                                    UserDto.builder()
@@ -59,7 +60,7 @@ public class DefaultUserService implements UserService, UserDetailsService, Auth
                                                           .password(user.getPassword())
                                                           .userName(user.getUsername())
                                                           .build())
-                             .collect(Collectors.toList());
+                             .collect(Collectors.toSet());
     }
 
     @Override
@@ -95,7 +96,7 @@ public class DefaultUserService implements UserService, UserDetailsService, Auth
     }
 
     @Override
-    public void deleteAllById(List<UUID> ids) {
+    public void deleteAllById(Collection<UUID> ids) {
         ids.forEach(this::deleteById);
     }
 

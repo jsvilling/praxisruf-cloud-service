@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -75,7 +75,7 @@ public class DefaultClientService implements ClientService {
     }
 
     @Override
-    public void deleteAllById(List<UUID> clientIds) {
+    public void deleteAllById(Collection<UUID> clientIds) {
         clientIds.forEach(this::deleteById);
     }
 
