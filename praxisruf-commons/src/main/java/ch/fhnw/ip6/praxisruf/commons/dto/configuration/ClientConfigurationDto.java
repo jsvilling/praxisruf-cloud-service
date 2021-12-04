@@ -21,4 +21,6 @@ public class ClientConfigurationDto {
 
     private Set<UUID> notificationTypes;
 
+    private Set<UUID> callTypes;
+
 }

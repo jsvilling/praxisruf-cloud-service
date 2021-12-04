@@ -4,10 +4,8 @@ import ch.fhnw.ip6.praxisruf.commons.dto.configuration.ClientConfigurationDto;
 import ch.fhnw.ip6.praxisruf.commons.exception.ErrorCode;
 import ch.fhnw.ip6.praxisruf.commons.exception.PraxisIntercomException;
 import ch.fhnw.ip6.praxisruf.configuration.api.ClientConfigurationService;
-import ch.fhnw.ip6.praxisruf.configuration.domain.Client;
-import ch.fhnw.ip6.praxisruf.configuration.domain.ClientConfiguration;
-import ch.fhnw.ip6.praxisruf.configuration.domain.NotificationType;
-import ch.fhnw.ip6.praxisruf.configuration.domain.RuleParameters;
+import ch.fhnw.ip6.praxisruf.configuration.domain.*;
+import ch.fhnw.ip6.praxisruf.configuration.persistence.CallTypeRepository;
 import ch.fhnw.ip6.praxisruf.configuration.persistence.ClientConfigurationRepository;
 import ch.fhnw.ip6.praxisruf.configuration.persistence.ClientRepository;
 import ch.fhnw.ip6.praxisruf.configuration.persistence.NotificationTypeRepository;
@@ -30,6 +28,7 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
     private final ClientRepository clientRepository;
     private final ClientConfigurationRepository clientConfigurationRepository;
     private final NotificationTypeRepository notificationTypeRepository;
+    private final CallTypeRepository callTypeRepository;
 
     @Override
     public ClientConfigurationDto create(ClientConfigurationDto configurationDto) {
@@ -96,6 +95,7 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
         final Client client = findExistingClient(configurationDto.getClientId());
         final Set<RuleParameters> ruleParameters = RulesParametersMapper.toRuleParameters(configurationDto.getRuleParameters());
         final List<NotificationType> notificationTypes = notificationTypeRepository.findAllById(configurationDto.getNotificationTypes());
+        final List<CallType> callTypes = callTypeRepository.findAllById(configurationDto.getCallTypes());
 
         final ClientConfiguration updatedClientConfiguration = ClientConfiguration.builder()
                 .clientConfigurationId(configurationDto.getId())
@@ -103,6 +103,7 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
                 .client(client)
                 .rules(ruleParameters)
                 .notificationTypes(new HashSet<>(notificationTypes))
+                .callTypes(new HashSet<>(callTypes))
                 .build();
 
         clientConfigurationRepository.save(updatedClientConfiguration);
