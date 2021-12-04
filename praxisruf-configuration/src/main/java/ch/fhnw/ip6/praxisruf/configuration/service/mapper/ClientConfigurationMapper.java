@@ -1,6 +1,8 @@
 package ch.fhnw.ip6.praxisruf.configuration.service.mapper;
 
+import ch.fhnw.ip6.praxisruf.commons.dto.configuration.CallTypeDto;
 import ch.fhnw.ip6.praxisruf.commons.dto.configuration.ClientConfigurationDto;
+import ch.fhnw.ip6.praxisruf.commons.dto.configuration.DisplayClientConfigurationDto;
 import ch.fhnw.ip6.praxisruf.configuration.domain.CallType;
 import ch.fhnw.ip6.praxisruf.configuration.domain.ClientConfiguration;
 import ch.fhnw.ip6.praxisruf.configuration.domain.NotificationType;
@@ -17,6 +19,21 @@ public class ClientConfigurationMapper {
                 .notificationTypes(configuration.getNotificationTypes().stream().map(NotificationType::getId).collect(Collectors.toSet()))
                 .ruleParameters(RulesParametersMapper.toRuleParameterDtos(configuration.getRules()))
                 .callTypes(configuration.getCallTypes().stream().map(CallType::getId).collect(Collectors.toSet()))
+                .build();
+    }
+
+    public static DisplayClientConfigurationDto toDisplayClientConfigurationDto(ClientConfiguration configuration) {
+        return DisplayClientConfigurationDto.builder()
+                .notificationTypes(configuration.getNotificationTypes().stream().map(NotificationTypesMapper::toNotificationTypeDto).collect(Collectors.toSet()))
+                .callTypes(configuration.getCallTypes().stream().map(ClientConfigurationMapper::toCallTypeDto).collect(Collectors.toSet()))
+                .build();
+    }
+
+    private static CallTypeDto toCallTypeDto(CallType callType) {
+        return CallTypeDto.builder()
+                .id(callType.getId())
+                .displayText(callType.getDisplayText())
+                .callGroup(callType.getCallGroup().getId())
                 .build();
     }
 }

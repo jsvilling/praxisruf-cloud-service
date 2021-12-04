@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Getter
 @Builder
-public class MinimalClientConfigurationDto {
+public class DisplayClientConfigurationDto {
 
     private Set<NotificationTypeDto> notificationTypes;
 

@@ -1,6 +1,7 @@
 package ch.fhnw.ip6.praxisruf.configuration.service;
 
 import ch.fhnw.ip6.praxisruf.commons.dto.configuration.ClientConfigurationDto;
+import ch.fhnw.ip6.praxisruf.commons.dto.configuration.DisplayClientConfigurationDto;
 import ch.fhnw.ip6.praxisruf.commons.exception.ErrorCode;
 import ch.fhnw.ip6.praxisruf.commons.exception.PraxisIntercomException;
 import ch.fhnw.ip6.praxisruf.configuration.api.ClientConfigurationService;
@@ -117,7 +118,9 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
     }
 
     @Override
-    public Set<ClientConfigurationDto> findByClientId(UUID clientId) {
-        return Collections.emptySet();
+    public DisplayClientConfigurationDto findByClientId(UUID clientId) {
+        final ClientConfiguration configuration = clientConfigurationRepository.findByClient_ClientId(clientId)
+                .orElseThrow(() -> new PraxisIntercomException(ErrorCode.CLIENT_CONFIG_NOT_FOUND));
+        return ClientConfigurationMapper.toDisplayClientConfigurationDto(configuration);
     }
 }

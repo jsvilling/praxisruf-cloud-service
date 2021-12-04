@@ -1,6 +1,7 @@
 package ch.fhnw.ip6.praxisruf.configuration.web.controller;
 
 import ch.fhnw.ip6.praxisruf.commons.dto.configuration.ClientConfigurationDto;
+import ch.fhnw.ip6.praxisruf.commons.dto.configuration.DisplayClientConfigurationDto;
 import ch.fhnw.ip6.praxisruf.configuration.api.ClientConfigurationService;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,8 +25,8 @@ public class ClientConfigurationController {
         return clientConfigurationService.findById(configurationId);
     }
 
-    @GetMapping(params = {"minimal", "clientId"})
-    public Set<ClientConfigurationDto> findByClientId(@RequestParam("clientId") UUID clientId) {
+    @GetMapping(params = {"display", "clientId"})
+    public DisplayClientConfigurationDto findByClientId(@RequestParam("clientId") UUID clientId) {
         return clientConfigurationService.findByClientId(clientId);
     }
 
