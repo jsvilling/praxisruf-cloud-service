@@ -2,6 +2,7 @@ package ch.fhnw.ip6.praxisruf.configuration.api;
 
 import ch.fhnw.ip6.praxisruf.commons.dto.configuration.ClientConfigurationDto;
 
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -10,5 +11,7 @@ import java.util.UUID;
  * @author J. Villing
  */
 public interface ClientConfigurationService extends ConfigurationCrudService<ClientConfigurationDto, UUID> {
+
+    Set<ClientConfigurationDto> findByClientId(UUID clientId);
 
 }

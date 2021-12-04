@@ -19,24 +19,28 @@ public class ClientConfigurationController {
 
     private final ClientConfigurationService clientConfigurationService;
 
-    // ###### Admin CRUD Operations
     @GetMapping("/{id}")
     public ClientConfigurationDto getConfigurationById(@PathVariable("id") UUID configurationId){
         return clientConfigurationService.findById(configurationId);
     }
 
-    @GetMapping()
+    @GetMapping(params = {"minimal", "clientId"})
+    public Set<ClientConfigurationDto> findByClientId(@RequestParam("clientId") UUID clientId) {
+        return clientConfigurationService.findByClientId(clientId);
+    }
+
+    @GetMapping
     public Set<ClientConfigurationDto> getAllConfigurations(){
         return clientConfigurationService.findAll();
     }
 
-    @PostMapping()
+    @PostMapping
     @Operation(description = "Create a new client configuration")
     public ClientConfigurationDto createClientConfiguration(@RequestBody ClientConfigurationDto configurationDto) {
         return clientConfigurationService.create(configurationDto);
     }
 
-    @PutMapping()
+    @PutMapping
     @Operation(description = "Update an existing client configuration")
     public ClientConfigurationDto updateClientConfiguration(@RequestBody ClientConfigurationDto configurationDto) {
         return clientConfigurationService.update(configurationDto);

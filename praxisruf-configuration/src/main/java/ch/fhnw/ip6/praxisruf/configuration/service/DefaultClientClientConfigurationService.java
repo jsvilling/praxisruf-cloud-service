@@ -115,4 +115,8 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
         configuration.getNotificationTypes().forEach(n -> n.removeClientConfiguration(configuration));
     }
 
+    @Override
+    public Set<ClientConfigurationDto> findByClientId(UUID clientId) {
+        return Collections.emptySet();
+    }
 }
