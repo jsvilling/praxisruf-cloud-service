@@ -25,7 +25,7 @@ public class DefaultCallTypeService implements CallTypeService {
 
     @Override
     public CallTypeDto create(CallTypeDto dto) {
-        final CallGroup callGroup = callGroupRepository.findById(dto.getCallGroupId())
+        final CallGroup callGroup = callGroupRepository.findById(dto.getCallGroup())
                 .orElseThrow(() -> new PraxisIntercomException(ErrorCode.CALL_GROUP_NOT_FOUND));
 
         CallType callType = CallType.builder()
@@ -53,7 +53,7 @@ public class DefaultCallTypeService implements CallTypeService {
     @Override
     public CallTypeDto update(CallTypeDto dto) {
         final CallType callType = findExisting(dto.getId());
-        final CallGroup callGroup = callGroupRepository.findById(dto.getCallGroupId())
+        final CallGroup callGroup = callGroupRepository.findById(dto.getCallGroup())
                 .orElseThrow(() -> new PraxisIntercomException(ErrorCode.CALL_GROUP_NOT_FOUND));
 
         callType.setCallGroup(callGroup);

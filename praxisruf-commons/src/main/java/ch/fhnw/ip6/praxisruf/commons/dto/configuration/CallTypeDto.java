@@ -13,6 +13,6 @@ public class CallTypeDto {
 
     private String displayText;
 
-    private UUID callGroupId;
+    private UUID callGroup;
 
 }

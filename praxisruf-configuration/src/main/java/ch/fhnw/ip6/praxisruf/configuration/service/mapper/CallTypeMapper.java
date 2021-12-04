@@ -15,7 +15,7 @@ public class CallTypeMapper {
         return CallTypeDto.builder()
                 .id(callType.getId())
                 .displayText(callType.getDisplayText())
-                .callGroupId(callType.getCallGroup().getId())
+                .callGroup(callType.getCallGroup().getId())
                 .build();
     }
 
