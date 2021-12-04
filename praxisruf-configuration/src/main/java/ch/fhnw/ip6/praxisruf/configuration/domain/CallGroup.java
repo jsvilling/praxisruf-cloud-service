@@ -2,13 +2,8 @@ package ch.fhnw.ip6.praxisruf.configuration.domain;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import javax.persistence.*;
+import java.util.*;
 
 @Entity
 @AllArgsConstructor(access = AccessLevel.PRIVATE) // for Builder
@@ -24,9 +19,10 @@ public class CallGroup {
 
     private String name;
 
-    @OneToMany(mappedBy = "callType")
-    private List<CallGroup> callGroups;
+    @OneToMany(mappedBy = "callGroup")
+    private Set<CallType> callGroups = new HashSet<>();
 
-    private Set<UUID> participants;
+    @ManyToMany
+    private List<Client> participants = new ArrayList<>();
 
 }

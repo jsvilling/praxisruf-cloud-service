@@ -4,7 +4,9 @@ import ch.fhnw.ip6.praxisruf.commons.dto.configuration.CallGroupDto;
 import ch.fhnw.ip6.praxisruf.commons.exception.PraxisIntercomException;
 import ch.fhnw.ip6.praxisruf.configuration.api.CallGroupService;
 import ch.fhnw.ip6.praxisruf.configuration.domain.CallGroup;
+import ch.fhnw.ip6.praxisruf.configuration.domain.Client;
 import ch.fhnw.ip6.praxisruf.configuration.persistence.CallGroupRepository;
+import ch.fhnw.ip6.praxisruf.configuration.persistence.ClientRepository;
 import ch.fhnw.ip6.praxisruf.configuration.service.mapper.CallGroupMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,12 +27,14 @@ import static ch.fhnw.ip6.praxisruf.commons.exception.ErrorCode.CALL_GROUP_NOT_F
 public class DefaultCallGroupService implements CallGroupService {
 
     private final CallGroupRepository callGroupRepository;
+    private final ClientRepository clientRepository;
 
     @Override
     public CallGroupDto create(CallGroupDto callGroupDto) {
+        List<Client> clients = findExistingClient(callGroupDto.getParticipants());
         CallGroup callGroup = CallGroup.builder()
                 .name(callGroupDto.getName())
-                .participants(callGroupDto.getParticipants())
+                .participants(clients)
                 .build();
         callGroup = callGroupRepository.save(callGroup);
         return CallGroupMapper.toCalLGroupDto(callGroup);
@@ -52,9 +56,10 @@ public class DefaultCallGroupService implements CallGroupService {
 
     @Override
     public CallGroupDto update(CallGroupDto callGroupDto) {
+        final List<Client> clients = findExistingClient(callGroupDto.getParticipants());
         final CallGroup callGroup = findExisting(callGroupDto.getId());
         callGroup.setName(callGroupDto.getName());
-        callGroup.setParticipants(callGroupDto.getParticipants());
+        callGroup.setParticipants(clients);
         return callGroupDto;
     }
 
@@ -74,5 +79,9 @@ public class DefaultCallGroupService implements CallGroupService {
 
     private CallGroup findExisting(UUID id) {
         return callGroupRepository.findById(id).orElseThrow(() -> new PraxisIntercomException(CALL_GROUP_NOT_FOUND));
+    }
+
+    private List<Client> findExistingClient(Iterable<UUID> ids) {
+        return clientRepository.findAllById(ids);
     }
 }

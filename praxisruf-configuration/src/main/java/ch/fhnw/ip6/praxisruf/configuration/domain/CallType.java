@@ -24,7 +24,7 @@ public class CallType {
     @ManyToOne
     private CallGroup callGroup;
 
-    @ManyToMany(mappedBy = "callTypes")
+    @ManyToMany(mappedBy = "callTypes", cascade = CascadeType.DETACH)
     private Set<ClientConfiguration> clientConfigurations = new HashSet<>();
 
 }
