@@ -25,13 +25,13 @@ public class NotificationController {
 
     private final NotificationService notificationService;
 
-    @PostMapping("/send")
+    @PostMapping
     @Operation(description = "Send the given Notification to all relevant clients")
     public SendPraxisNotificationResponseDto sendNotification(@RequestBody SendPraxisNotificationDto notification) {
         return notificationService.send(notification);
     }
 
-    @PostMapping("/retry")
+    @PostMapping(params = "notificationId")
     @Operation(description = "Retry all failed send for the given notification")
     public SendPraxisNotificationResponseDto retryNotification(@RequestParam(value="notificationId") UUID notificationId) {
         return notificationService.retry(notificationId);

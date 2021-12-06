@@ -60,7 +60,7 @@ public class ClientsController {
     @GetMapping("/byUser")
     @Operation(description = "Find all available clients for a given user")
     public Set<MinimalClientDto> getAvailableClients() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return clientService.findByUserId((UUID) auth.getDetails());
     }
 
