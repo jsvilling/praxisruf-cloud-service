@@ -68,7 +68,7 @@ public class DefaultRegistrationService implements RegistrationService {
         return clientConfigurationRepository.findAll()
                 .stream().filter(c -> rulesEngine.isAnyRelevant(c.getRules(), notification))
                 .map(ClientConfiguration::getClient)
-                .map(Client::getClientId)
+                .map(Client::getId)
                 .map(registrationRepository::findByClientId)
                 .flatMap(Optional::stream)
                 .map(this::createRegistrationDto)

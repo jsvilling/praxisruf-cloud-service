@@ -15,7 +15,7 @@ public class CallGroupMapper {
 
     public static CallGroupDto toCalLGroupDto(CallGroup callGroup) {
         Set<UUID> participants = callGroup.getParticipants().stream()
-                .map(Client::getClientId)
+                .map(Client::getId)
                 .collect(Collectors.toSet());
 
         return CallGroupDto.builder()

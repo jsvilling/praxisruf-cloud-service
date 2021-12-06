@@ -1,5 +1,6 @@
 package praxiscloudservice.util;
 
+import ch.fhnw.ip6.praxisruf.commons.dto.configuration.ClientDto;
 import ch.fhnw.ip6.praxisruf.commons.dto.configuration.NotificationTypeDto;
 import ch.fhnw.ip6.praxisruf.commons.dto.notification.SendPraxisNotificationDto;
 import ch.fhnw.ip6.praxisruf.configuration.domain.*;
@@ -49,10 +50,18 @@ public class DefaultTestData {
 
     public static Client createClient() {
         return Client.builder()
-                .clientId(CLIENT_ID)
+                .id(CLIENT_ID)
                 .name(CLIENT_NAME)
                 .userId(USER_ID)
                 .clientConfiguration(null)
+                .build();
+    }
+
+    public static ClientDto createClientDto() {
+        return ClientDto.builder()
+                .id(CLIENT_ID)
+                .name(CLIENT_NAME)
+                .userId(USER_ID)
                 .build();
     }
 

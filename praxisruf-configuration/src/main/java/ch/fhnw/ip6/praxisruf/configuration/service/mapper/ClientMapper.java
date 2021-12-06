@@ -12,7 +12,7 @@ public class ClientMapper {
 
     public static MinimalClientDto toMinimalClientDto(Client client) {
         return MinimalClientDto.builder()
-                .id(client.getClientId())
+                .id(client.getId())
                 .name(client.getName())
                 .build();
     }
@@ -25,7 +25,7 @@ public class ClientMapper {
 
     public static Client toClient(ClientDto dto) {
         return Client.builder()
-                .clientId(dto.getId())
+                .id(dto.getId())
                 .userId(dto.getUserId())
                 .name(dto.getName())
                 .build();
@@ -39,7 +39,7 @@ public class ClientMapper {
 
     public static ClientDto toClientDto(Client client) {
         return ClientDto.builder()
-                .id(client.getClientId())
+                .id(client.getId())
                 .userId(client.getUserId())
                 .name(client.getName())
                 .build();

@@ -28,7 +28,7 @@ public class Client {
 
     @Id
     @GeneratedValue
-    private UUID clientId;
+    private UUID id;
 
     private String name;
 

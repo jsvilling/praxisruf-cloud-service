@@ -160,7 +160,7 @@ public class DefaultRegistrationServiceTest {
             when(clientRepository.findById(any())).thenReturn(Optional.of(createClient()));
             when(clientConfigurationRepository.findAll()).thenReturn(List.of(clientConfiguration));
             when(rulesEngine.isAnyRelevant(any(), eq(notification))).thenReturn(true);
-            when(registrationRepository.findByClientId(client.getClientId())).thenReturn(Optional.of(registration));
+            when(registrationRepository.findByClientId(client.getId())).thenReturn(Optional.of(registration));
 
             // When
             final Set<RegistrationDto> allKnownTokens = registrationService.findAllRelevantRegistrations(notification);
@@ -206,7 +206,7 @@ public class DefaultRegistrationServiceTest {
             final Client client = clientConfiguration.getClient();
             when(clientConfigurationRepository.findAll()).thenReturn(List.of(clientConfiguration));
             when(rulesEngine.isAnyRelevant(any(), eq(notification))).thenReturn(true);
-            when(registrationRepository.findByClientId(client.getClientId())).thenReturn(Optional.empty());
+            when(registrationRepository.findByClientId(client.getId())).thenReturn(Optional.empty());
 
             // When
             final Set<RegistrationDto> allKnownTokens = registrationService.findAllRelevantRegistrations(notification);
