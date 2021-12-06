@@ -4,6 +4,7 @@ import ch.fhnw.ip6.praxisruf.commons.dto.configuration.NotificationTypeDto;
 import ch.fhnw.ip6.praxisruf.commons.dto.notification.SendPraxisNotificationDto;
 import ch.fhnw.ip6.praxisruf.configuration.domain.*;
 
+import java.util.Collections;
 import java.util.Set;
 import java.util.UUID;
 
@@ -16,6 +17,7 @@ public class DefaultTestData {
     public static final UUID CLIENT_ID = randomUUID();
     public static final UUID RECIPIENT_CLIENT_ID = randomUUID();
     public static final String CLIENT_NAME = "name";
+    public static final UUID NOTIFICATION_TYPE_ID = randomUUID();
 
     public static Registration createRegistration() {
         return Registration.builder()
@@ -26,11 +28,12 @@ public class DefaultTestData {
 
     public static NotificationType createNotificationType() {
         return NotificationType.builder()
-                .id(randomUUID())
+                .id(NOTIFICATION_TYPE_ID)
                 .type("")
                 .body("")
                 .title("")
                 .displayText("")
+                .clientConfigurations(Collections.emptySet())
                 .build();
     }
 
@@ -78,11 +81,12 @@ public class DefaultTestData {
 
     public static NotificationTypeDto createNotificationTypeDto() {
         return NotificationTypeDto.builder()
-                .id(randomUUID())
+                .id(NOTIFICATION_TYPE_ID)
                 .description("")
                 .body("")
                 .title("")
                 .displayText("")
+                .textToSpeech(false)
                 .build();
     }
 
