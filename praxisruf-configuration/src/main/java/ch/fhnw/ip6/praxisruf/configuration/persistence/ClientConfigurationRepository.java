@@ -10,7 +10,7 @@ import java.util.UUID;
 @Repository
 public interface ClientConfigurationRepository extends JpaRepository<ClientConfiguration, UUID> {
 
-    Optional<ClientConfiguration> findByClient_ClientId(UUID clientId);
+    Optional<ClientConfiguration> findByClient_Id(UUID clientId);
 
     boolean existsByClientConfigurationId(UUID clientConfigurationId);
 

@@ -121,7 +121,7 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
 
     @Override
     public DisplayClientConfigurationDto findByClientId(UUID clientId) {
-        final ClientConfiguration configuration = clientConfigurationRepository.findByClient_ClientId(clientId)
+        final ClientConfiguration configuration = clientConfigurationRepository.findByClient_Id(clientId)
                 .orElseThrow(() -> new PraxisIntercomException(ErrorCode.CLIENT_CONFIG_NOT_FOUND));
         return ClientConfigurationMapper.toDisplayClientConfigurationDto(configuration);
     }
