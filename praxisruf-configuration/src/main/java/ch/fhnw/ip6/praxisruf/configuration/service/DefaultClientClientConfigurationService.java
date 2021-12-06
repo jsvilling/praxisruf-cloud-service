@@ -18,7 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
+
+import static ch.fhnw.ip6.praxisruf.configuration.service.mapper.ClientConfigurationMapper.toClientConfigurationDto;
+import static ch.fhnw.ip6.praxisruf.configuration.service.mapper.ClientConfigurationMapper.toClientConfigurationDtos;
 
 @Service
 @AllArgsConstructor
@@ -36,21 +38,21 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
         if (clientConfigurationRepository.existsByClientConfigurationId(configurationDto.getId())) {
             throw new PraxisIntercomException(ErrorCode.CLIENT_CONFIG_ALREADY_EXISTS);
         }
-        return ClientConfigurationMapper.toClientConfigurationDto(createOrUpdate(configurationDto));
+        return toClientConfigurationDto(createOrUpdate(configurationDto));
     }
 
     @Override
     @Transactional(readOnly = true)
     public ClientConfigurationDto findById(UUID configurationId) {
-        return ClientConfigurationMapper.toClientConfigurationDto(findExistingClientConfiguration(configurationId));
+        final ClientConfiguration clientConfiguration = findExistingClientConfiguration(configurationId);
+        return toClientConfigurationDto(clientConfiguration);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Set<ClientConfigurationDto> findAll() {
-        return clientConfigurationRepository.findAll().stream()
-                .map(ClientConfigurationMapper::toClientConfigurationDto)
-                .collect(Collectors.toSet());
+        final List<ClientConfiguration> configurations = clientConfigurationRepository.findAll();
+        return toClientConfigurationDtos(configurations);
     }
 
     @Override
@@ -58,7 +60,7 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
         if (!clientConfigurationRepository.existsByClientConfigurationId(configurationDto.getId())) {
             throw new PraxisIntercomException(ErrorCode.CLIENT_CONFIG_NOT_FOUND);
         }
-        return ClientConfigurationMapper.toClientConfigurationDto(createOrUpdate(configurationDto));
+        return toClientConfigurationDto(createOrUpdate(configurationDto));
     }
 
     @Override

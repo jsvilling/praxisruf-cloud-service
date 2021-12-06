@@ -7,6 +7,8 @@ import ch.fhnw.ip6.praxisruf.configuration.domain.CallType;
 import ch.fhnw.ip6.praxisruf.configuration.domain.ClientConfiguration;
 import ch.fhnw.ip6.praxisruf.configuration.domain.NotificationType;
 
+import java.util.Collection;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ClientConfigurationMapper {
@@ -20,6 +22,12 @@ public class ClientConfigurationMapper {
                 .ruleParameters(RulesParametersMapper.toRuleParameterDtos(configuration.getRules()))
                 .callTypes(configuration.getCallTypes().stream().map(CallType::getId).collect(Collectors.toSet()))
                 .build();
+    }
+
+    public static Set<ClientConfigurationDto> toClientConfigurationDtos(Collection<ClientConfiguration> configurations) {
+        return configurations.stream()
+                .map(ClientConfigurationMapper::toClientConfigurationDto)
+                .collect(Collectors.toSet());
     }
 
     public static DisplayClientConfigurationDto toDisplayClientConfigurationDto(ClientConfiguration configuration) {
