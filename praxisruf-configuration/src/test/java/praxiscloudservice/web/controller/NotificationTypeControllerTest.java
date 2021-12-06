@@ -96,17 +96,4 @@ public class NotificationTypeControllerTest {
         // Then
         verify(notificationTypeService, times(1)).deleteAllById(eq(ids));
     }
-
-    @Test
-    void findNotificationTypesForClient() {
-        // Given
-        final UUID clientId = UUID.randomUUID();
-
-        // When
-        notificationTypeController.findNotificationTypesForClient(clientId);
-
-        // Then
-        verify(notificationTypeService, times(1)).findByClientId(eq(clientId));
-    }
-
 }

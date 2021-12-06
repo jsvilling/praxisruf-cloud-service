@@ -7,16 +7,17 @@ import ch.fhnw.ip6.praxisruf.commons.exception.PraxisIntercomException;
 import ch.fhnw.ip6.praxisruf.configuration.api.ClientService;
 import ch.fhnw.ip6.praxisruf.configuration.domain.Client;
 import ch.fhnw.ip6.praxisruf.configuration.persistence.ClientRepository;
-import ch.fhnw.ip6.praxisruf.configuration.service.mapper.ClientMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
+
+import static ch.fhnw.ip6.praxisruf.configuration.service.mapper.ClientMapper.*;
 
 @Service
 @AllArgsConstructor
@@ -32,37 +33,29 @@ public class DefaultClientService implements ClientService {
                 .userId(clientDto.getUserId())
                 .name(clientDto.getName())
                 .build();
-        return ClientMapper.toClientDto(clientRepository.saveAndFlush(client));
+        return toClientDto(clientRepository.saveAndFlush(client));
     }
 
     @Override
     @Transactional(readOnly = true)
     public Set<ClientDto> findAll() {
-        return clientRepository.findAll()
-                .stream()
-                .map(c -> ClientDto.builder().id(c.getClientId()).name(c.getName()).userId(c.getUserId())
-                        .build())
-                .collect(Collectors.toSet());
+        final List<Client> clients = clientRepository.findAll();
+        return toClientDtos(clients);
     }
 
     @Override
     @Transactional(readOnly = true)
     public ClientDto findById(UUID clientId) {
-        return ClientMapper.toClientDto(clientRepository.findById(clientId)
-                .orElseThrow(() -> new PraxisIntercomException(ErrorCode.CLIENT_NOT_FOUND)));
+        final Client client = findExisting(clientId);
+        return toClientDto(client);
     }
 
     @Override
     public ClientDto update(ClientDto clientDto) {
-        if(!clientRepository.existsById(clientDto.getId())) {
-            throw new PraxisIntercomException(ErrorCode.CLIENT_NOT_FOUND);
-        }
-        final Client client = Client.builder()
-                .clientId(clientDto.getId())
-                .name(clientDto.getName())
-                .userId(clientDto.getUserId())
-                .build();
-        return (ClientMapper.toClientDto(clientRepository.save(client)));
+        final Client client = findExisting(clientDto.getId());
+        client.setName(clientDto.getName());
+        client.setUserId(clientDto.getUserId());
+        return (toClientDto(client));
     }
 
     @Override
@@ -81,13 +74,11 @@ public class DefaultClientService implements ClientService {
 
     @Override
     public Set<MinimalClientDto> findByUserId(UUID userId) {
-        return clientRepository.findAllByUserId(userId)
-                .stream()
-                .map(c -> MinimalClientDto.builder().id(c.getClientId()).name(c.getName()).build())
-                .collect(Collectors.toSet());
+        final Set<Client> clients = clientRepository.findAllByUserId(userId);
+        return toMinimalClientDtos(clients);
     }
 
-    private Client findExistingClient(UUID clientId) {
+    private Client findExisting(UUID clientId) {
         return clientRepository.findById(clientId)
                 .orElseThrow(() -> new PraxisIntercomException(ErrorCode.CLIENT_NOT_FOUND));
     }
