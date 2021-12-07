@@ -72,7 +72,7 @@ public class NotificationTypeRuleEvaluatorTest {
         // Given
         final SendPraxisNotificationDto notification = createSendNotificationDto();
         final RuleParameters ruleParameters = RuleParameters.builder()
-                .ruleParametersId(randomUUID())
+                .id(randomUUID())
                 .type(RuleType.NOTIFICATION_TYPE)
                 .value(notification.getNotificationTypeId().toString())
                 .build();

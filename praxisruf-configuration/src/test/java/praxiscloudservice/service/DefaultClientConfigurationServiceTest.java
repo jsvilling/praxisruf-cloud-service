@@ -45,7 +45,7 @@ public class DefaultClientConfigurationServiceTest {
             final ClientConfiguration configuration = DefaultTestData.createClientConfiguration();
             final Client client = configuration.getClient();
             when(clientConfigurationRepository.findById(any())).thenReturn(Optional.of(configuration));
-            when(clientRepository.findByClientConfiguration_ClientConfigurationId(any())).thenReturn(Optional.of(client));
+            when(clientRepository.findByClientConfiguration_Id(any())).thenReturn(Optional.of(client));
 
             // When
             clientConfigurationService.deleteById(id);
@@ -61,7 +61,7 @@ public class DefaultClientConfigurationServiceTest {
             final ClientConfiguration configuration = DefaultTestData.createClientConfiguration();
             final Client client = configuration.getClient();
             when(clientConfigurationRepository.findById(any())).thenReturn(Optional.of(configuration));
-            when(clientRepository.findByClientConfiguration_ClientConfigurationId(any())).thenReturn(Optional.of(client));
+            when(clientRepository.findByClientConfiguration_Id(any())).thenReturn(Optional.of(client));
             doThrow(new IllegalArgumentException()).when(clientConfigurationRepository).deleteById(any());
 
             // When
@@ -78,7 +78,7 @@ public class DefaultClientConfigurationServiceTest {
             final ClientConfiguration configuration = DefaultTestData.createClientConfiguration();
             final Client client = configuration.getClient();
             when(clientConfigurationRepository.findById(any())).thenReturn(Optional.of(configuration));
-            when(clientRepository.findByClientConfiguration_ClientConfigurationId(any())).thenReturn(Optional.of(client));
+            when(clientRepository.findByClientConfiguration_Id(any())).thenReturn(Optional.of(client));
             doThrow(e).when(clientConfigurationRepository).deleteById(any());
 
             // When
@@ -98,7 +98,7 @@ public class DefaultClientConfigurationServiceTest {
             final ClientConfiguration configuration = DefaultTestData.createClientConfiguration();
             final Client client = configuration.getClient();
             when(clientConfigurationRepository.findById(any())).thenReturn(Optional.of(configuration));
-            when(clientRepository.findByClientConfiguration_ClientConfigurationId(any())).thenReturn(Optional.of(client));
+            when(clientRepository.findByClientConfiguration_Id(any())).thenReturn(Optional.of(client));
 
             // When
             clientConfigurationService.deleteAllById(ids);
@@ -115,7 +115,7 @@ public class DefaultClientConfigurationServiceTest {
             final ClientConfiguration configuration = DefaultTestData.createClientConfiguration();
             final Client client = configuration.getClient();
             when(clientConfigurationRepository.findById(any())).thenReturn(Optional.of(configuration));
-            when(clientRepository.findByClientConfiguration_ClientConfigurationId(any())).thenReturn(Optional.of(client));
+            when(clientRepository.findByClientConfiguration_Id(any())).thenReturn(Optional.of(client));
 
             // When
             // Then
@@ -132,7 +132,7 @@ public class DefaultClientConfigurationServiceTest {
             final ClientConfiguration configuration = DefaultTestData.createClientConfiguration();
             final Client client = configuration.getClient();
             when(clientConfigurationRepository.findById(any())).thenReturn(Optional.of(configuration));
-            when(clientRepository.findByClientConfiguration_ClientConfigurationId(any())).thenReturn(Optional.of(client));
+            when(clientRepository.findByClientConfiguration_Id(any())).thenReturn(Optional.of(client));
 
             // When
             // Then

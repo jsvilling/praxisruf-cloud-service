@@ -35,7 +35,7 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
 
     @Override
     public ClientConfigurationDto create(ClientConfigurationDto configurationDto) {
-        if (clientConfigurationRepository.existsByClientConfigurationId(configurationDto.getId())) {
+        if (clientConfigurationRepository.existsById(configurationDto.getId())) {
             throw new PraxisIntercomException(ErrorCode.CLIENT_CONFIG_ALREADY_EXISTS);
         }
         return toClientConfigurationDto(createOrUpdate(configurationDto));
@@ -57,7 +57,7 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
 
     @Override
     public ClientConfigurationDto update(ClientConfigurationDto configurationDto) {
-        if (!clientConfigurationRepository.existsByClientConfigurationId(configurationDto.getId())) {
+        if (!clientConfigurationRepository.existsById(configurationDto.getId())) {
             throw new PraxisIntercomException(ErrorCode.CLIENT_CONFIG_NOT_FOUND);
         }
         return toClientConfigurationDto(createOrUpdate(configurationDto));
@@ -69,7 +69,7 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
             ClientConfiguration clientConfiguration = clientConfigurationRepository.findById(configurationId).orElseThrow();
             removeClientConfigurationFromRelatedNotificationType(clientConfiguration);
             clientConfigurationRepository.save(clientConfiguration);
-            Client client = clientRepository.findByClientConfiguration_ClientConfigurationId(configurationId).orElseThrow(() -> new PraxisIntercomException(ErrorCode.CLIENT_NOT_FOUND));
+            Client client = clientRepository.findByClientConfiguration_Id(configurationId).orElseThrow(() -> new PraxisIntercomException(ErrorCode.CLIENT_NOT_FOUND));
             client.setClientConfiguration(null);
             clientRepository.save(client);
             clientConfigurationRepository.deleteById(configurationId);
@@ -101,7 +101,7 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
         final List<CallType> callTypes = callTypeRepository.findAllById(configurationDto.getCallTypes());
 
         final ClientConfiguration updatedClientConfiguration = ClientConfiguration.builder()
-                .clientConfigurationId(configurationDto.getId())
+                .id(configurationDto.getId())
                 .name(configurationDto.getName())
                 .client(client)
                 .rules(ruleParameters)

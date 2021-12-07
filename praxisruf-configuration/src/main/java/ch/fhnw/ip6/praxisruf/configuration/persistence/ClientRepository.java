@@ -13,5 +13,5 @@ public interface ClientRepository extends JpaRepository<Client, UUID> {
 
     Set<Client> findAllByUserId(UUID userId);
 
-    Optional<Client> findByClientConfiguration_ClientConfigurationId(UUID configurationId);
+    Optional<Client> findByClientConfiguration_Id(UUID configurationId);
 }

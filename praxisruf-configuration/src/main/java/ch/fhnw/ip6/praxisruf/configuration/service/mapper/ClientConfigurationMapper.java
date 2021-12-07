@@ -16,7 +16,7 @@ public class ClientConfigurationMapper {
 
     public static ClientConfigurationDto toClientConfigurationDto(ClientConfiguration configuration) {
         return ClientConfigurationDto.builder()
-                .id(configuration.getClientConfigurationId())
+                .id(configuration.getId())
                 .clientId(configuration.getClient().getId())
                 .name(configuration.getName())
                 .notificationTypes(configuration.getNotificationTypes().stream().map(NotificationType::getId).collect(Collectors.toSet()))

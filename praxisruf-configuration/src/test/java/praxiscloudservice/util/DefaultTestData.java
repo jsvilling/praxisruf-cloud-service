@@ -40,7 +40,7 @@ public class DefaultTestData {
 
     public static ClientConfiguration createClientConfiguration() {
         return ClientConfiguration.builder()
-                .clientConfigurationId(randomUUID())
+                .id(randomUUID())
                 .name("ClientConfiguration")
                 .client(createClient())
                 .rules(Set.of(createSenderRuleParameters()))
@@ -67,7 +67,7 @@ public class DefaultTestData {
 
     public static RuleParameters createSenderRuleParameters() {
         return RuleParameters.builder()
-                .ruleParametersId(randomUUID())
+                .id(randomUUID())
                 .type(RuleType.SENDER)
                 .value(RECIPIENT_CLIENT_ID.toString())
                 .build();
@@ -75,7 +75,7 @@ public class DefaultTestData {
 
     public static RuleParameters createNotificationTypeRuleParameters() {
         return RuleParameters.builder()
-                .ruleParametersId(randomUUID())
+                .id(randomUUID())
                 .type(RuleType.NOTIFICATION_TYPE)
                 .value("TYPE")
                 .build();

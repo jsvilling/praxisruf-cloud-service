@@ -19,7 +19,7 @@ public class RulesParametersMapper {
 
     public static RuleParametersDto toRuleParameterDto(RuleParameters ruleParameters) {
         return RuleParametersDto.builder()
-                .id(ruleParameters.getRuleParametersId())
+                .id(ruleParameters.getId())
                 .ruleType(ruleParameters.getType().name())
                 .value(ruleParameters.getValue())
                 .build();

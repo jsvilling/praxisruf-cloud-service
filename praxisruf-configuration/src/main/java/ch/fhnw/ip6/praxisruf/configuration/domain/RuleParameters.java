@@ -22,7 +22,7 @@ public class RuleParameters {
 
     @Id
     @GeneratedValue
-    private UUID ruleParametersId;
+    private UUID id;
 
     @Enumerated(EnumType.STRING)
     private RuleType type;

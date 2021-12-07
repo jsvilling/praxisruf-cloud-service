@@ -96,7 +96,7 @@ public class TestDataProvider {
 
     public ClientConfiguration createClientConfiguration(Client client, Set<NotificationType> notificationTypes, Set<RuleParameters> rules, Set<CallType> calls) {
         return ClientConfiguration.builder()
-                .clientConfigurationId(randomUUID())
+                .id(randomUUID())
                 .name(client.getName())
                 .client(client)
                 .notificationTypes(notificationTypes)
