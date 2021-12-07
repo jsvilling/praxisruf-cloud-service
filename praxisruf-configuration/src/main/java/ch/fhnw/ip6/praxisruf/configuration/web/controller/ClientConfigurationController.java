@@ -25,7 +25,7 @@ public class ClientConfigurationController {
         return clientConfigurationService.findById(configurationId);
     }
 
-    @GetMapping(params = {"display", "clientId"})
+    @GetMapping("/types")
     public DisplayClientConfigurationDto findByClientId(@RequestParam("clientId") UUID clientId) {
         return clientConfigurationService.findByClientId(clientId);
     }
