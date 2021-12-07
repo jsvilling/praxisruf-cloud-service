@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -44,9 +45,14 @@ public class TestDataProvider {
         Client steri = createClient("Steri");
         clientRepository.saveAll(Set.of(empfang, behandlungszimmer, steri));
 
-        ClientConfiguration empfangConfig = createClientConfiguration(empfang, Set.of(alarm, nextPatient), Set.of(alarmRule));
-        ClientConfiguration behandlungszimmerConfig = createClientConfiguration(behandlungszimmer, Set.of(alarm, materialNeeded), Set.of(alarmRule));
-        ClientConfiguration steriConfig = createClientConfiguration(steri, Set.of(alarm, materialReady), Set.of(alarmRule));
+        CallType allRoomsCall = createCallType("Alle Zimmer", List.of(empfang, behandlungszimmer, steri));
+        CallType empfangCall = createCallType("Empfang", List.of(behandlungszimmer));
+        CallType steriCall = createCallType("Steri", List.of(steri));
+        callTypeRepository.saveAll(Set.of(allRoomsCall, empfangCall, steriCall));
+
+        ClientConfiguration empfangConfig = createClientConfiguration(empfang, Set.of(alarm, nextPatient), Set.of(alarmRule), Set.of(allRoomsCall, steriCall));
+        ClientConfiguration behandlungszimmerConfig = createClientConfiguration(behandlungszimmer, Set.of(alarm, materialNeeded), Set.of(alarmRule), Set.of(allRoomsCall, empfangCall, steriCall));
+        ClientConfiguration steriConfig = createClientConfiguration(steri, Set.of(alarm, materialReady), Set.of(alarmRule), Set.of(allRoomsCall));
         clientConfigurationRepository.saveAll(Set.of(empfangConfig, behandlungszimmerConfig, steriConfig));
     }
 
@@ -55,6 +61,13 @@ public class TestDataProvider {
         notificationTypeRepository.deleteAll();
         clientConfigurationRepository.deleteAll();
         clientRepository.deleteAll();
+    }
+
+    private CallType createCallType(String display, List<Client> participants) {
+        return CallType.builder()
+                .displayText(display)
+                .participants(participants)
+                .build();
     }
 
     private NotificationType createNotificationTypes(String title, String body, String display) {
@@ -81,13 +94,14 @@ public class TestDataProvider {
                 .build();
     }
 
-    public ClientConfiguration createClientConfiguration(Client client, Set<NotificationType> notificationTypes, Set<RuleParameters> rules) {
+    public ClientConfiguration createClientConfiguration(Client client, Set<NotificationType> notificationTypes, Set<RuleParameters> rules, Set<CallType> calls) {
         return ClientConfiguration.builder()
                 .clientConfigurationId(randomUUID())
                 .name(client.getName())
                 .client(client)
                 .notificationTypes(notificationTypes)
                 .rules(rules)
+                .callTypes(calls)
                 .build();
     }
 
