@@ -18,11 +18,11 @@ public interface RegistrationService {
      *
      * If a registration for the given clientId exists already, the fcmToken of that Registration is updated.
      * Otherwise a new Registration with the given clientId and fcmToken is created.
-     *
-     * @param clientId
+     *  @param clientId
      * @param fcmToken
+     * @return
      */
-    void register(UUID clientId, String fcmToken);
+    RegistrationDto register(UUID clientId, String fcmToken);
 
     /**
      * Finds all fcmTokens that are part of an existing Registration.

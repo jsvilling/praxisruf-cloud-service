@@ -24,8 +24,8 @@ public class RegistrationsController {
     }
 
     @PostMapping
-    public void register(@RequestParam(value="clientId") UUID clientId, @RequestParam(value ="fcmToken")  String fcmToken) {
-        registrationService.register(clientId, fcmToken);
+    public RegistrationDto register(@RequestParam(value="clientId") UUID clientId, @RequestParam(value ="fcmToken")  String fcmToken) {
+        return registrationService.register(clientId, fcmToken);
     }
 
     @DeleteMapping("/{id}")

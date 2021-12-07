@@ -36,7 +36,7 @@ public class DefaultRegistrationService implements RegistrationService {
     private final RulesEngine rulesEngine;
 
 
-    public void register(UUID clientId, String fcmToken) {
+    public RegistrationDto register(UUID clientId, String fcmToken) {
         final Registration registration = Registration.builder()
                 .clientId(clientId)
                 .fcmToken(fcmToken)
@@ -44,6 +44,7 @@ public class DefaultRegistrationService implements RegistrationService {
         validateRegistration(registration);
         registrationRepository.save(registration);
         log.info("Created or Updated Registration: {}", registration);
+        return createRegistrationDto(registration);
     }
 
     public void unregister(UUID clientId) {
