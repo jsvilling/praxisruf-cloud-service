@@ -4,10 +4,10 @@ import ch.fhnw.ip6.praxisruf.commons.dto.configuration.CallTypeDto;
 import ch.fhnw.ip6.praxisruf.commons.exception.ErrorCode;
 import ch.fhnw.ip6.praxisruf.commons.exception.PraxisIntercomException;
 import ch.fhnw.ip6.praxisruf.configuration.api.CallTypeService;
-import ch.fhnw.ip6.praxisruf.configuration.domain.CallGroup;
 import ch.fhnw.ip6.praxisruf.configuration.domain.CallType;
-import ch.fhnw.ip6.praxisruf.configuration.persistence.CallGroupRepository;
+import ch.fhnw.ip6.praxisruf.configuration.domain.Client;
 import ch.fhnw.ip6.praxisruf.configuration.persistence.CallTypeRepository;
+import ch.fhnw.ip6.praxisruf.configuration.persistence.ClientRepository;
 import ch.fhnw.ip6.praxisruf.configuration.service.mapper.CallTypeMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,16 +21,15 @@ import java.util.*;
 public class DefaultCallTypeService implements CallTypeService {
 
     private final CallTypeRepository callTypeRepository;
-    private final CallGroupRepository callGroupRepository;
+    private final ClientRepository clientRepository;
 
     @Override
     public CallTypeDto create(CallTypeDto dto) {
-        final CallGroup callGroup = callGroupRepository.findById(dto.getCallGroup())
-                .orElseThrow(() -> new PraxisIntercomException(ErrorCode.CALL_GROUP_NOT_FOUND));
+        List<Client> participants = clientRepository.findAllById(dto.getParticipants());
 
         CallType callType = CallType.builder()
                 .displayText(dto.getDisplayText())
-                .callGroup(callGroup)
+                .participants(participants)
                 .clientConfigurations(Collections.emptySet())
                 .build();
         callType = callTypeRepository.save(callType);
@@ -53,10 +52,9 @@ public class DefaultCallTypeService implements CallTypeService {
     @Override
     public CallTypeDto update(CallTypeDto dto) {
         final CallType callType = findExisting(dto.getId());
-        final CallGroup callGroup = callGroupRepository.findById(dto.getCallGroup())
-                .orElseThrow(() -> new PraxisIntercomException(ErrorCode.CALL_GROUP_NOT_FOUND));
+        final List<Client> participants = clientRepository.findAllById(dto.getParticipants());
 
-        callType.setCallGroup(callGroup);
+        callType.setParticipants(participants);
         callType.setDisplayText(dto.getDisplayText());
 
         return CallTypeMapper.toCallTypeDto(callType);

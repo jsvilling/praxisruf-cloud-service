@@ -3,6 +3,7 @@ package ch.fhnw.ip6.praxisruf.commons.dto.configuration;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Builder
@@ -13,6 +14,6 @@ public class CallTypeDto {
 
     private String displayText;
 
-    private UUID callGroup;
+    private Set<UUID> participants;
 
 }

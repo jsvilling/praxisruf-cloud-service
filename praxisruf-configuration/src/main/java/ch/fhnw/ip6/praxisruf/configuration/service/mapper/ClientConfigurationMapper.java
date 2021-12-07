@@ -4,6 +4,7 @@ import ch.fhnw.ip6.praxisruf.commons.dto.configuration.CallTypeDto;
 import ch.fhnw.ip6.praxisruf.commons.dto.configuration.ClientConfigurationDto;
 import ch.fhnw.ip6.praxisruf.commons.dto.configuration.DisplayClientConfigurationDto;
 import ch.fhnw.ip6.praxisruf.configuration.domain.CallType;
+import ch.fhnw.ip6.praxisruf.configuration.domain.Client;
 import ch.fhnw.ip6.praxisruf.configuration.domain.ClientConfiguration;
 import ch.fhnw.ip6.praxisruf.configuration.domain.NotificationType;
 
@@ -41,7 +42,7 @@ public class ClientConfigurationMapper {
         return CallTypeDto.builder()
                 .id(callType.getId())
                 .displayText(callType.getDisplayText())
-                .callGroup(callType.getCallGroup().getId())
+                .participants(callType.getParticipants().stream().map(Client::getId).collect(Collectors.toSet()))
                 .build();
     }
 }

@@ -2,6 +2,7 @@ package ch.fhnw.ip6.praxisruf.configuration.service.mapper;
 
 import ch.fhnw.ip6.praxisruf.commons.dto.configuration.CallTypeDto;
 import ch.fhnw.ip6.praxisruf.configuration.domain.CallType;
+import ch.fhnw.ip6.praxisruf.configuration.domain.Client;
 import lombok.experimental.UtilityClass;
 
 import java.util.Collection;
@@ -15,7 +16,7 @@ public class CallTypeMapper {
         return CallTypeDto.builder()
                 .id(callType.getId())
                 .displayText(callType.getDisplayText())
-                .callGroup(callType.getCallGroup().getId())
+                .participants(callType.getParticipants().stream().map(Client::getId).collect(Collectors.toSet()))
                 .build();
     }
 

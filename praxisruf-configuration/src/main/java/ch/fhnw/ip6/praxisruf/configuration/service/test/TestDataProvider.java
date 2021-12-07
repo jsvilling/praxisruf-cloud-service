@@ -25,7 +25,6 @@ public class TestDataProvider {
     private final NotificationTypeRepository notificationTypeRepository;
     private final RuleParametersRepository ruleParametersRepository;
     private final CallTypeRepository callTypeRepository;
-    private final CallGroupRepository callGroupRepository;
 
     @PostConstruct
     public void createTestData() {
@@ -53,7 +52,6 @@ public class TestDataProvider {
 
     private void reset() {
         callTypeRepository.deleteAll();
-        callGroupRepository.deleteAll();
         notificationTypeRepository.deleteAll();
         clientConfigurationRepository.deleteAll();
         clientRepository.deleteAll();
