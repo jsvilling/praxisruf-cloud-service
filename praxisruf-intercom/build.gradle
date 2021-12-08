@@ -15,7 +15,7 @@ repositories {
 dependencies {
     // Spring
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket:2.4.0'
 
     // Testing
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
