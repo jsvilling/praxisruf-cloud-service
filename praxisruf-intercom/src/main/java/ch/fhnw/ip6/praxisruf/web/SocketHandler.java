@@ -1,6 +1,5 @@
 package ch.fhnw.ip6.praxisruf.web;
 
-import com.google.gson.Gson;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -9,7 +8,6 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /***
@@ -21,8 +19,6 @@ public class SocketHandler extends TextWebSocketHandler {
 
     final List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
 
-    final boolean sendToAllSesions = true;
-
     /***
      * This method gets called when a message is received from a client
      * @param session The actual websocket session that triggers this method
@@ -30,17 +26,11 @@ public class SocketHandler extends TextWebSocketHandler {
      */
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
-        Map<String, String> value = (Map<String, String>)new Gson().fromJson(message.getPayload(), Map.class);
-        String name = value.get("name");
+        String name = message.getPayload();
         TextMessage responseMessage = new TextMessage("Hello " + name + " !");
-        if (sendToAllSesions) {
-            //Send response to all connected sessions
-            for (WebSocketSession webSocketSession : sessions) {
-                webSocketSession.sendMessage(responseMessage);
-            }
-        } else {
-            //Send response to current session only
-            session.sendMessage(responseMessage);
+        //Send response to all connected sessions
+        for (WebSocketSession webSocketSession : sessions) {
+            webSocketSession.sendMessage(responseMessage);
         }
     }
 
