@@ -38,7 +38,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
                     ServerHttpResponse response, WebSocketHandler wsHandler,
                     Map<String, Object> attributes) throws Exception {
 
-                request.getHeaders().forEach((t, v) -> log.info(t));
+                request.getHeaders().forEach((t, v) -> log.info("{} : {}", t, v));
 
                 log.info("I have intercepted before handshake");
                 return true;
