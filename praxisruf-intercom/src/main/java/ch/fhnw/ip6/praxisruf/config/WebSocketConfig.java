@@ -37,6 +37,9 @@ public class WebSocketConfig implements WebSocketConfigurer {
             public boolean beforeHandshake(ServerHttpRequest request,
                     ServerHttpResponse response, WebSocketHandler wsHandler,
                     Map<String, Object> attributes) throws Exception {
+
+                request.getHeaders().forEach((t, v) -> log.info(t));
+
                 log.info("I have intercepted before handshake");
                 return true;
             }
