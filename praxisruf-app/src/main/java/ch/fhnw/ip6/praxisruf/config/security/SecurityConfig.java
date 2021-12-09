@@ -27,17 +27,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-        .cors().configurationSource(request -> {
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and().cors().configurationSource(request -> {
             CorsConfiguration config = new CorsConfiguration();
-            config.setAllowedOrigins(List.of(adminOrigin));
+            config.setAllowedOrigins(List.of(adminOrigin, "http://localhost:63342"));
             config.setAllowedMethods(Collections.singletonList("*"));
             config.setAllowCredentials(true);
             config.setAllowedHeaders(Collections.singletonList("*"));
             config.setExposedHeaders(Collections.singletonList("Authorization"));
             config.setMaxAge(3600L);
             return config;
-        }).and().csrf().disable() //handled by jwt
+        })
+        .and().csrf().disable() //handled by jwt
             .addFilterBefore(new JWTTokenValidatorFilter(jwtProperties()), BasicAuthenticationFilter.class)
             .addFilterAfter(new JWTTokenGeneratorFilter(jwtProperties()), BasicAuthenticationFilter.class)
                 .authorizeRequests()
