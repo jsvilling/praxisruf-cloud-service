@@ -1,5 +1,7 @@
 package ch.fhnw.ip6.praxisruf.web;
 
+import ch.fhnw.ip6.praxisruf.domain.ClientConnection;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -15,9 +17,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * for binary messages extend from BinaryWebSocketHandler instead
  */
 @Component
+@Slf4j
 public class SocketHandler extends TextWebSocketHandler {
 
-    final List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
+    final List<ClientConnection> sessions = new CopyOnWriteArrayList<>();
 
     /***
      * This method gets called when a message is received from a client
@@ -28,9 +31,11 @@ public class SocketHandler extends TextWebSocketHandler {
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
         String name = message.getPayload();
         TextMessage responseMessage = new TextMessage("Hello " + name + " !");
-        //Send response to all connected sessions
-        for (WebSocketSession webSocketSession : sessions) {
-            webSocketSession.sendMessage(responseMessage);
+        //Send response to all other connected sessions
+        for (ClientConnection connection : sessions) {
+            if (session.getId() != connection.getSession().getId()) {
+                connection.getSession().sendMessage(responseMessage);
+            }
         }
     }
 
@@ -42,7 +47,8 @@ public class SocketHandler extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         super.afterConnectionEstablished(session);
         //Add to the list of connected sessions.
-        sessions.add(session);
+        String id = session.getUri().getQuery().split("=")[1];
+        sessions.add(new ClientConnection(id, session));
     }
 
     /***
@@ -53,7 +59,7 @@ public class SocketHandler extends TextWebSocketHandler {
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         super.afterConnectionClosed(session, status);
         //Remove to the list of connected sessions.
-        sessions.remove(session);
+        sessions.removeIf(c -> c.getSession() == session);
         session.close();
     }
 }
