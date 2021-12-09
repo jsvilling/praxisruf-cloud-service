@@ -30,11 +30,10 @@ public class SocketHandler extends TextWebSocketHandler {
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
         String name = message.getPayload();
-        TextMessage responseMessage = new TextMessage("Hello " + name + " !");
         //Send response to all other connected sessions
         for (ClientConnection connection : sessions) {
             if (session.getId() != connection.getSession().getId()) {
-                connection.getSession().sendMessage(responseMessage);
+                connection.getSession().sendMessage(message);
             }
         }
     }
