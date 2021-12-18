@@ -24,8 +24,9 @@ public class SocketHandler extends TextWebSocketHandler {
     @Override
     public void handleTextMessage(@NonNull WebSocketSession session, TextMessage message) throws IOException {
         final Signal signal = new Gson().fromJson(message.getPayload(), Signal.class);
+        log.info("Received signal {} for {}", signal.getType(), signal.getRecipient());
         for (ClientConnection connection : sessions) {
-            if (!session.getId().equals(connection.getSession().getId()) && connection.getId().equals(signal.getRecipient()) ) {
+            if (connection.getId().equalsIgnoreCase(signal.getRecipient()) && !session.getId().equalsIgnoreCase(connection.getSession().getId())) {
                 connection.getSession().sendMessage(message);
             }
         }
@@ -35,7 +36,7 @@ public class SocketHandler extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         super.afterConnectionEstablished(session);
         String id = session.getUri().getQuery().split("=")[1];
-        log.debug("Connection established for clientId {}", id);
+        log.info("Connection established for clientId {}", id);
         sessions.add(new ClientConnection(id, session));
     }
 
