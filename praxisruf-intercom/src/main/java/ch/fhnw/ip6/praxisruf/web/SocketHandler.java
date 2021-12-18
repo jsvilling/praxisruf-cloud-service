@@ -1,6 +1,9 @@
 package ch.fhnw.ip6.praxisruf.web;
 
 import ch.fhnw.ip6.praxisruf.domain.ClientConnection;
+import ch.fhnw.ip6.praxisruf.domain.Signal;
+import com.google.gson.Gson;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -19,9 +22,10 @@ public class SocketHandler extends TextWebSocketHandler {
     final List<ClientConnection> sessions = new CopyOnWriteArrayList<>();
 
     @Override
-    public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
+    public void handleTextMessage(@NonNull WebSocketSession session, TextMessage message) throws IOException {
+        final Signal signal = new Gson().fromJson(message.getPayload(), Signal.class);
         for (ClientConnection connection : sessions) {
-            if (session.getId() != connection.getSession().getId()) {
+            if (!session.getId().equals(connection.getSession().getId()) && connection.getId().equals(signal.getRecipient()) ) {
                 connection.getSession().sendMessage(message);
             }
         }
@@ -31,6 +35,7 @@ public class SocketHandler extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         super.afterConnectionEstablished(session);
         String id = session.getUri().getQuery().split("=")[1];
+        log.debug("Connection established for clientId {}", id);
         sessions.add(new ClientConnection(id, session));
     }
 
