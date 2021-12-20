@@ -1,10 +1,12 @@
-package ch.fhnw.ip6.praxisruf.config.security.filter;
+package ch.fhnw.ip6.praxisruf.commons.config.security.filter;
 
-import ch.fhnw.ip6.praxisruf.config.security.JWTProperties;
+import ch.fhnw.ip6.praxisruf.commons.config.security.JWTProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.AllArgsConstructor;
+import org.springframework.http.server.ServerHttpRequest;
+import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -25,10 +27,20 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
 
     private final JWTProperties jwtProperties;
 
+    public void doFilterInternal(ServerHttpRequest request, ServerHttpResponse response) throws ServletException, IOException {
+        final String jwt = request.getHeaders().get("Authorization").get(0);
+        checkAuth(jwt);
+    }
+
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        String jwt = request.getHeader("Authorization");
+        final String jwt = request.getHeader("Authorization");
+        checkAuth(jwt);
+        chain.doFilter(request, response);
+    }
+
+    private void checkAuth(String jwt) {
         if (null != jwt) {
             if(jwt.contains("Bearer ")){jwt = jwt.replace("Bearer ", "");}
             try {
@@ -36,10 +48,10 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
                         jwtProperties.getKey().getBytes(StandardCharsets.UTF_8));
 
                 Claims claims = Jwts.parserBuilder()
-                                    .setSigningKey(key)
-                                    .build()
-                                    .parseClaimsJws(jwt)
-                                    .getBody();
+                        .setSigningKey(key)
+                        .build()
+                        .parseClaimsJws(jwt)
+                        .getBody();
                 String username = String.valueOf(claims.get("username"));
                 String authorities = (String) claims.get("authorities");
                 UUID userId = UUID.fromString(String.valueOf(claims.get("userId")));
@@ -50,11 +62,8 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
             } catch (Exception e) {
                 throw new BadCredentialsException("Invalid Token received!");
             }
-
         }
-        chain.doFilter(request, response);
     }
-
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {

@@ -1,8 +1,11 @@
 package ch.fhnw.ip6.praxisruf.config;
 
+import ch.fhnw.ip6.praxisruf.commons.config.security.JWTProperties;
+import ch.fhnw.ip6.praxisruf.commons.config.security.filter.JWTTokenValidatorFilter;
 import ch.fhnw.ip6.praxisruf.web.SocketHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -11,7 +14,6 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
-import reactor.util.annotation.Nullable;
 
 import java.util.Map;
 
@@ -19,6 +21,8 @@ import java.util.Map;
 @EnableWebSocket
 @Slf4j
 public class WebSocketConfig implements WebSocketConfigurer {
+
+    private final JWTTokenValidatorFilter jwtTokenValidatorFilter = new JWTTokenValidatorFilter(jwtProperties());
 
     @Autowired
     private SocketHandler socketHandler;
@@ -32,22 +36,28 @@ public class WebSocketConfig implements WebSocketConfigurer {
             @Override
             public void afterHandshake(ServerHttpRequest request,
                     ServerHttpResponse response, WebSocketHandler wsHandler,
-                    @Nullable Exception ex) {
-                log.info("I have intercepted after handshake");
+                    Exception ex) {
                 super.afterHandshake(request, response, wsHandler, ex);
             }
 
             @Override
             public boolean beforeHandshake(ServerHttpRequest request,
                     ServerHttpResponse response, WebSocketHandler wsHandler,
-                    Map<String, Object> attributes) throws Exception {
-
-                request.getHeaders().forEach((t, v) -> log.info("{} : {}", t, v));
-
-                log.info("I have intercepted before handshake");
-                return true;
+                    Map<String, Object> attributes)  {
+                try {
+                    jwtTokenValidatorFilter.doFilterInternal(request, response);
+                    return true;
+                } catch (Exception e) {
+                    log.error("Bad Credentials.");
+                    return false;
+                }
             }
         });
 	}
+
+    @Bean
+    JWTProperties jwtProperties() {
+        return new JWTProperties();
+    }
 
 }

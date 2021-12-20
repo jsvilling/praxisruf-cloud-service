@@ -1,6 +1,6 @@
 package ch.fhnw.ip6.praxisruf;
 
-import ch.fhnw.ip6.praxisruf.config.security.JWTProperties;
+import ch.fhnw.ip6.praxisruf.commons.config.security.JWTProperties;
 import ch.fhnw.ip6.praxisruf.notification.config.FirebaseProperties;
 import ch.fhnw.ip6.praxisruf.speechsynthesis.config.AwsConfiguration;
 import org.springframework.boot.SpringApplication;

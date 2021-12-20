@@ -17,6 +17,7 @@ dependencies {
     implementation project(':praxisruf-commons')
 
     // Spring
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-websocket:2.4.0'
 
     // Gson

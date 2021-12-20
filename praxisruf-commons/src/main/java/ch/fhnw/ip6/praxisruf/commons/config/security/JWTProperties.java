@@ -1,4 +1,4 @@
-package ch.fhnw.ip6.praxisruf.config.security;
+package ch.fhnw.ip6.praxisruf.commons.config.security;
 
 import lombok.Getter;
 import lombok.Setter;

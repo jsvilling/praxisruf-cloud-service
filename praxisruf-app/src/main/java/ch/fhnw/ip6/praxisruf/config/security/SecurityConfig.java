@@ -1,7 +1,8 @@
 package ch.fhnw.ip6.praxisruf.config.security;
 
-import ch.fhnw.ip6.praxisruf.config.security.filter.JWTTokenGeneratorFilter;
-import ch.fhnw.ip6.praxisruf.config.security.filter.JWTTokenValidatorFilter;
+import ch.fhnw.ip6.praxisruf.commons.config.security.JWTProperties;
+import ch.fhnw.ip6.praxisruf.commons.config.security.filter.JWTTokenGeneratorFilter;
+import ch.fhnw.ip6.praxisruf.commons.config.security.filter.JWTTokenValidatorFilter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;

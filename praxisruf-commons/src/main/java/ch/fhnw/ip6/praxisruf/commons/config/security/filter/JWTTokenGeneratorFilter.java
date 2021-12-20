@@ -1,6 +1,6 @@
-package ch.fhnw.ip6.praxisruf.config.security.filter;
+package ch.fhnw.ip6.praxisruf.commons.config.security.filter;
 
-import ch.fhnw.ip6.praxisruf.config.security.JWTProperties;
+import ch.fhnw.ip6.praxisruf.commons.config.security.JWTProperties;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.AllArgsConstructor;
