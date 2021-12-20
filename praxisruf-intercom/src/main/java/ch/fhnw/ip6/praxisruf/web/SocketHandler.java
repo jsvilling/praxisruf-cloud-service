@@ -1,9 +1,8 @@
 package ch.fhnw.ip6.praxisruf.web;
 
-import ch.fhnw.ip6.praxisruf.domain.ClientConnection;
-import ch.fhnw.ip6.praxisruf.domain.Signal;
-import com.google.gson.Gson;
+import ch.fhnw.ip6.praxisruf.api.ClientConnector;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -11,39 +10,27 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class SocketHandler extends TextWebSocketHandler {
 
-    final List<ClientConnection> sessions = new CopyOnWriteArrayList<>();
+    final ClientConnector<WebSocketSession, TextMessage> connector;
 
     @Override
-    public void handleTextMessage(@NonNull WebSocketSession session, TextMessage message) throws IOException {
-        final Signal signal = new Gson().fromJson(message.getPayload(), Signal.class);
-        log.info("Received signal {} for {}", signal.getType(), signal.getRecipient());
-        for (ClientConnection connection : sessions) {
-            if (connection.getId().equalsIgnoreCase(signal.getRecipient()) && !session.getId().equalsIgnoreCase(connection.getSession().getId())) {
-                connection.getSession().sendMessage(message);
-            }
-        }
+    public void handleTextMessage(@NonNull WebSocketSession session, TextMessage message) throws Exception {
+        connector.handleMessage(message);
     }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         super.afterConnectionEstablished(session);
-        String id = session.getUri().getQuery().split("=")[1];
-        log.info("Connection established for clientId {}", id);
-        sessions.add(new ClientConnection(id, session));
+        connector.afterConnectionEstablished(session);
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         super.afterConnectionClosed(session, status);
-        sessions.removeIf(c -> c.getSession() == session);
-        session.close();
+        connector.afterConnectionClosed(session);
     }
 }
