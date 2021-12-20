@@ -2,6 +2,7 @@ package ch.fhnw.ip6.praxisruf.config;
 
 import ch.fhnw.ip6.praxisruf.web.SocketHandler;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -19,9 +20,12 @@ import java.util.Map;
 @Slf4j
 public class WebSocketConfig implements WebSocketConfigurer {
 
+    @Autowired
+    private SocketHandler socketHandler;
+
     @Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(new SocketHandler(), "/signaling")
+		registry.addHandler(socketHandler, "/signaling")
 				.setAllowedOrigins("*")
                 .addInterceptors(new HttpSessionHandshakeInterceptor() {
 
