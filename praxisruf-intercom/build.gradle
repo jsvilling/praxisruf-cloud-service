@@ -13,27 +13,14 @@ repositories {
 }
 
 dependencies {
-    // WS Tst
-    implementation 'org.springframework.boot:spring-boot-starter'
-    implementation 'org.springframework.boot:spring-boot-starter-websocket'
-    implementation 'com.google.code.gson:gson'
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
-        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    }
-
+    // Internal
+    implementation project(':praxisruf-commons')
 
     // Spring
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-webflux'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.security:spring-security-messaging'
     implementation 'org.springframework.boot:spring-boot-starter-websocket:2.4.0'
 
-    // Swagger
-    implementation 'io.springfox:springfox-boot-starter:3.0.0'
-    implementation 'io.springfox:springfox-swagger-ui:2.9.2'
-
+    // Gson
+    implementation 'com.google.code.gson:gson'
 
     // Testing
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
