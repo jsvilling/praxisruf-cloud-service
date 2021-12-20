@@ -12,12 +12,14 @@ import ch.fhnw.ip6.praxisruf.configuration.service.mapper.CallTypeMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 @Service
 @Slf4j
 @AllArgsConstructor
+@Transactional
 public class DefaultCallTypeService implements CallTypeService {
 
     private final CallTypeRepository callTypeRepository;
@@ -38,12 +40,14 @@ public class DefaultCallTypeService implements CallTypeService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public CallTypeDto findById(UUID id) {
         final CallType callType = findExisting(id);
         return CallTypeMapper.toCallTypeDto(callType);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Set<CallTypeDto> findAll() {
         final List<CallType> callTypes = callTypeRepository.findAll();
         return CallTypeMapper.toCalLTypeDtos(callTypes);

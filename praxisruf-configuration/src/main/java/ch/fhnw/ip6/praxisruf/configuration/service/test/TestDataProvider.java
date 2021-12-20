@@ -5,6 +5,7 @@ import ch.fhnw.ip6.praxisruf.configuration.persistence.*;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.Collections;
@@ -17,6 +18,7 @@ import static java.util.UUID.randomUUID;
 @Service
 @AllArgsConstructor
 @Profile("init-test-data")
+@Transactional
 public class TestDataProvider {
 
     private static final UUID USER_ID = UUID.fromString("3b5587f3-9dbb-4a9c-b3a3-375607ca13a5");
