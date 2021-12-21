@@ -28,11 +28,11 @@ public class ConnectionRegistry {
      * @return boolean - whether the registration is unregistered
      */
     public boolean unregister(String id) {
-        registry.removeIf(c -> c.getId().equals(id));
+        registry.removeIf(c -> c.getId().equalsIgnoreCase(id));
         return true;
     }
 
     public ClientConnection find(String id) {
-        return registry.stream().filter(c -> c.getId().equals(id)).findFirst().orElseThrow();
+        return registry.stream().filter(c -> c.getId().equalsIgnoreCase(id)).findFirst().orElseThrow();
     }
 }

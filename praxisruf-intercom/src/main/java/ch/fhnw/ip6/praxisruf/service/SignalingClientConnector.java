@@ -35,6 +35,7 @@ public class SignalingClientConnector implements ClientConnector<WebSocketSessio
     public void afterConnectionEstablished(WebSocketSession session) {
         final String id = extractClientId(session);
         registry.register(new ClientConnection(id, session));
+        log.info("Established connection for {}", id);
     }
 
     @Override
@@ -42,6 +43,7 @@ public class SignalingClientConnector implements ClientConnector<WebSocketSessio
         final String id = extractClientId(session);
         registry.unregister(id);
         session.close();
+        log.info("Closed connection for {}", id);
     }
 
     private String extractClientId(WebSocketSession session) {
