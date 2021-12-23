@@ -80,7 +80,7 @@ public class SignalingClientConnector implements ClientConnector<WebSocketSessio
                 .sender(originalRecipient)
                 .recipient(originalSender)
                 .type("UNAVAILABLE")
-                .payload("Client is not connected to signaling service")
+                .payload("")
                 .build();
         final String payload = new Gson().toJson(signal);
         return new TextMessage(payload);
