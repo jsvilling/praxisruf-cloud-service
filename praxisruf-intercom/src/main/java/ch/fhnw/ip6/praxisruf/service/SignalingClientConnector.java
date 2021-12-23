@@ -24,13 +24,15 @@ public class SignalingClientConnector implements ClientConnector<WebSocketSessio
     final ConnectionRegistry registry;
 
     @Override
-    public void handleMessage(TextMessage message) throws Exception {
+    public void handleMessage(TextMessage message) {
         final Signal signal = new Gson().fromJson(message.getPayload(), Signal.class);
-        if (!signal.getSender().equals(signal.getRecipient())) {
-            final Optional<ClientConnection> connection = registry.find(signal.getRecipient());
-            if (connection.isPresent()) {
-                connection.get().getSession().sendMessage(message);
-            }
+        final String originalSender = signal.getSender();
+        final String originalRecipient = signal.getRecipient();
+
+        boolean success = send(message, originalRecipient);
+        if (!success) {
+            final TextMessage unavailable = createUnavailableMessage(originalSender, originalRecipient);
+            send(unavailable, originalSender);
         }
     }
 
@@ -49,6 +51,21 @@ public class SignalingClientConnector implements ClientConnector<WebSocketSessio
         log.info("Closed connection for {}", id);
     }
 
+    private boolean send(TextMessage message, String recipient) {
+        try {
+            log.info("Sending signal {} to {}", message.getPayload(), recipient);
+            final Optional<ClientConnection> connection = registry.find(recipient);
+            final boolean success = connection.isPresent();
+            if (success) {
+                connection.get().getSession().sendMessage(message);
+            }
+            return success;
+        } catch (Exception e) {
+            log.error("Error when forwarding signal to {}", recipient, e);
+            return false;
+        }
+    }
+
     private String extractClientId(WebSocketSession session) {
         final URI uri = session.getUri();
         if (uri != null) {
@@ -58,4 +75,14 @@ public class SignalingClientConnector implements ClientConnector<WebSocketSessio
         throw new PraxisIntercomException(CONNECTION_UNKNOWN);
     }
 
+    private TextMessage createUnavailableMessage(String originalSender, String originalRecipient) {
+        final Signal signal = Signal.builder()
+                .sender(originalRecipient)
+                .recipient(originalSender)
+                .type("UNAVAILABLE")
+                .payload("Client is not connected to signaling service")
+                .build();
+        final String payload = new Gson().toJson(signal);
+        return new TextMessage(payload);
+    }
 }
