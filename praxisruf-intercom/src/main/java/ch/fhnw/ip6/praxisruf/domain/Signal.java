@@ -12,4 +12,5 @@ public class Signal {
     private String recipient;
     private String type;
     private String payload;
+    private String description;
 }

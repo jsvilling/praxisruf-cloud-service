@@ -81,6 +81,7 @@ public class SignalingClientConnector implements ClientConnector<WebSocketSessio
                 .recipient(originalSender)
                 .type("UNAVAILABLE")
                 .payload("")
+                .description("")
                 .build();
         final String payload = new Gson().toJson(signal);
         return new TextMessage(payload);
