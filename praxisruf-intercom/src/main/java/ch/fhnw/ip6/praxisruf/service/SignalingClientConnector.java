@@ -12,6 +12,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.net.URI;
+import java.util.Optional;
 
 import static ch.fhnw.ip6.praxisruf.commons.exception.ErrorCode.CONNECTION_UNKNOWN;
 
@@ -26,8 +27,10 @@ public class SignalingClientConnector implements ClientConnector<WebSocketSessio
     public void handleMessage(TextMessage message) throws Exception {
         final Signal signal = new Gson().fromJson(message.getPayload(), Signal.class);
         if (!signal.getSender().equals(signal.getRecipient())) {
-            final ClientConnection connection = registry.find(signal.getRecipient());
-            connection.getSession().sendMessage(message);
+            final Optional<ClientConnection> connection = registry.find(signal.getRecipient());
+            if (connection.isPresent()) {
+                connection.get().getSession().sendMessage(message);
+            }
         }
     }
 

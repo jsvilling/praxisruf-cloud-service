@@ -4,6 +4,7 @@ import ch.fhnw.ip6.praxisruf.domain.ClientConnection;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -32,7 +33,7 @@ public class ConnectionRegistry {
         return true;
     }
 
-    public ClientConnection find(String id) {
-        return registry.stream().filter(c -> c.getId().equalsIgnoreCase(id)).findFirst().orElseThrow();
+    public Optional<ClientConnection> find(String id) {
+        return registry.stream().filter(c -> c.getId().equalsIgnoreCase(id)).findFirst();
     }
 }
