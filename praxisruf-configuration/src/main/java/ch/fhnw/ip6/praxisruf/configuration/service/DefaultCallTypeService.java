@@ -1,6 +1,7 @@
 package ch.fhnw.ip6.praxisruf.configuration.service;
 
 import ch.fhnw.ip6.praxisruf.commons.dto.configuration.CallTypeDto;
+import ch.fhnw.ip6.praxisruf.commons.dto.configuration.MinimalClientDto;
 import ch.fhnw.ip6.praxisruf.commons.exception.ErrorCode;
 import ch.fhnw.ip6.praxisruf.commons.exception.PraxisIntercomException;
 import ch.fhnw.ip6.praxisruf.configuration.api.CallTypeService;
@@ -9,6 +10,7 @@ import ch.fhnw.ip6.praxisruf.configuration.domain.Client;
 import ch.fhnw.ip6.praxisruf.configuration.persistence.CallTypeRepository;
 import ch.fhnw.ip6.praxisruf.configuration.persistence.ClientRepository;
 import ch.fhnw.ip6.praxisruf.configuration.service.mapper.CallTypeMapper;
+import ch.fhnw.ip6.praxisruf.configuration.service.mapper.ClientMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -76,6 +78,12 @@ public class DefaultCallTypeService implements CallTypeService {
     @Override
     public void deleteAllById(Collection<UUID> ids) {
         ids.forEach(this::deleteById);
+    }
+
+    @Override
+    public Set<MinimalClientDto> findParticipants(UUID callTypeId) {
+        CallType callType = findExisting(callTypeId);
+        return ClientMapper.toMinimalClientDtos(callType.getParticipants());
     }
 
     private CallType findExisting(UUID id) {

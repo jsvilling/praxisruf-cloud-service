@@ -1,6 +1,7 @@
 package ch.fhnw.ip6.praxisruf.configuration.web.controller;
 
 import ch.fhnw.ip6.praxisruf.commons.dto.configuration.CallTypeDto;
+import ch.fhnw.ip6.praxisruf.commons.dto.configuration.MinimalClientDto;
 import ch.fhnw.ip6.praxisruf.configuration.api.CallTypeService;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,6 +28,11 @@ public class CallTypeController {
     @GetMapping
     public Set<CallTypeDto> findAll(){
         return callTypeService.findAll();
+    }
+
+    @GetMapping("/{id}/participants")
+    public Set<MinimalClientDto> findAllParticipants(@PathVariable("id") UUID callTypeId) {
+        return callTypeService.findParticipants(callTypeId);
     }
 
     @PostMapping
