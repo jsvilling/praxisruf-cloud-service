@@ -57,6 +57,14 @@ public class FirebaseNotificationService implements NotificationService {
     }
 
     @Override
+    public SendPraxisNotificationResponseDto send(SendPraxisNotificationDto notification, UUID recipient) {
+        final NotificationTypeDto notificationType = findExistingNotificationTypeDto(notification.getNotificationTypeId());
+        final PraxisNotification praxisNotification = createPraxisNotification(notification);
+        final RegistrationDto registration = configurationWebClient.getRegistrationForClient(recipient);
+        return send(List.of(registration), notificationType, praxisNotification);
+    }
+
+    @Override
     public SendPraxisNotificationResponseDto retry(UUID notificationId) {
         final PraxisNotification praxisNotification = findExistingNotification(notificationId);
         final NotificationTypeDto notificationType = findExistingNotificationTypeDto(praxisNotification.getNotificationTypeId());

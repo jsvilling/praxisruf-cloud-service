@@ -21,6 +21,16 @@ public interface NotificationService {
     SendPraxisNotificationResponseDto send(SendPraxisNotificationDto notification);
 
     /**
+     * Sends the given {@link SendPraxisNotificationResponseDto} to the given recipient.
+     * This can be used for targeted notifications when the target is not determined by the configuration
+     * e.g. when notifying for a missed intercom signal.
+     *
+     * @param notification
+     * @return SendPraxisNotificationResponseDto
+     */
+    SendPraxisNotificationResponseDto send(SendPraxisNotificationDto notification, UUID recipient);
+
+    /**
      * Finds the {@link PraxisNotification} with the given notificationId and
      * retries all previously failed send processes.
      *

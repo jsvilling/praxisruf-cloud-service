@@ -33,6 +33,7 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
         ERROR_CODE_HTTP_STATUS_MAP.put(ErrorCode.NOTIFICATION_TYPE_ALREADY_EXISTS, HttpStatus.BAD_REQUEST);
         ERROR_CODE_HTTP_STATUS_MAP.put(ErrorCode.NOTIFICATION_TYPE_NOT_FOUND, HttpStatus.NOT_FOUND);
         ERROR_CODE_HTTP_STATUS_MAP.put(ErrorCode.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
+        ERROR_CODE_HTTP_STATUS_MAP.put(ErrorCode.REGISTRATION_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
 
 

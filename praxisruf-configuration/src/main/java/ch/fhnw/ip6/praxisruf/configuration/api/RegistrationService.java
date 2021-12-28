@@ -13,6 +13,8 @@ import java.util.UUID;
  */
 public interface RegistrationService {
 
+    RegistrationDto findById(UUID id);
+
     /**
      * Creates or Updates a Registration for the given clientId.
      *

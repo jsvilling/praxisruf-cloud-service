@@ -18,6 +18,11 @@ public class RegistrationsController {
 
     private final RegistrationService registrationService;
 
+    @GetMapping("/{id}")
+    public RegistrationDto findRegistration(@PathVariable("id") UUID id) {
+        return registrationService.findById(id);
+    }
+
     @PostMapping("/tokens")
     public Set<RegistrationDto> findRelevantRegistrations(@RequestBody SendPraxisNotificationDto notification) {
         return registrationService.findAllRelevantRegistrations(notification);

@@ -40,7 +40,8 @@ public class SignalingService implements ClientConnector<WebSocketSession, TextM
         if (!success) {
             final TextMessage unavailable = createUnavailableMessage(originalSender, originalRecipient);
             send(unavailable, originalSender);
-        } else if (signal.isNotificationOnFailedDelivery()) {
+        }
+        if (!success && signal.isNotificationOnFailedDelivery()) {
             log.info("Sending notification for failed signal {}", signal.getType());
             sendNotificationToUnavailable(signal);
         }
@@ -103,7 +104,7 @@ public class SignalingService implements ClientConnector<WebSocketSession, TextM
                 .sender(UUID.fromString(signal.getSender()))
                 .build();
 
-        final SendPraxisNotificationResponseDto sendResult = notificationWebClient.send(notification);
+        final SendPraxisNotificationResponseDto sendResult = notificationWebClient.send(notification, signal.getRecipient());
         if (!sendResult.isAllSuccess()) {
             log.error("Could not notify unavailable client");
         }

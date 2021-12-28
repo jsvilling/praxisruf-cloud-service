@@ -35,7 +35,14 @@ public class DefaultRegistrationService implements RegistrationService {
     private final ClientRepository clientRepository;
     private final RulesEngine rulesEngine;
 
+    @Override
+    public RegistrationDto findById(UUID id) {
+        return registrationRepository.findById(id)
+                .map(this::toRegistrationDto)
+                .orElseThrow(() -> new PraxisIntercomException(ErrorCode.REGISTRATION_NOT_FOUND));
+    }
 
+    @Override
     public RegistrationDto register(UUID clientId, String fcmToken) {
         final Registration registration = Registration.builder()
                 .clientId(clientId)
@@ -44,9 +51,10 @@ public class DefaultRegistrationService implements RegistrationService {
         validateRegistration(registration);
         registrationRepository.save(registration);
         log.info("Created or Updated Registration: {}", registration);
-        return createRegistrationDto(registration);
+        return toRegistrationDto(registration);
     }
 
+    @Override
     public void unregister(UUID clientId) {
         try {
             registrationRepository.deleteById(clientId);
@@ -56,6 +64,7 @@ public class DefaultRegistrationService implements RegistrationService {
         }
     }
 
+    @Override
     @Transactional(readOnly = true)
     public Set<String> getAllKnownTokens() {
         return registrationRepository.findAll()
@@ -64,6 +73,7 @@ public class DefaultRegistrationService implements RegistrationService {
                 .collect(Collectors.toSet());
     }
 
+    @Override
     @Transactional(readOnly = true)
     public Set<RegistrationDto> findAllRelevantRegistrations(SendPraxisNotificationDto notification) {
         return clientConfigurationRepository.findAll()
@@ -72,7 +82,7 @@ public class DefaultRegistrationService implements RegistrationService {
                 .map(Client::getId)
                 .map(registrationRepository::findByClientId)
                 .flatMap(Optional::stream)
-                .map(this::createRegistrationDto)
+                .map(this::toRegistrationDto)
                 .collect(Collectors.toSet());
     }
 
@@ -83,7 +93,7 @@ public class DefaultRegistrationService implements RegistrationService {
         }
     }
 
-    private RegistrationDto createRegistrationDto(Registration registration) {
+    private RegistrationDto toRegistrationDto(Registration registration) {
         final String clientName = clientRepository.findById(registration.getClientId())
                 .map(Client::getName)
                 .orElse(UNKNOWN_CLIENT_NAME);

@@ -37,6 +37,14 @@ public class ConfigurationWebClient {
                 .block();
     }
 
+    public RegistrationDto getRegistrationForClient(UUID recipientId) {
+        return webClient.post()
+                .uri(uriBuilder -> uriBuilder.path("/registrations/" + recipientId.toString()).build())
+                .retrieve()
+                .bodyToMono(RegistrationDto.class)
+                .block();
+    }
+
     public NotificationTypeDto findExistingNotificationType(UUID notificationTypeId) {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder.path("/notificationtypes/" + notificationTypeId).build())
