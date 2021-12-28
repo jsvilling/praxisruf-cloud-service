@@ -25,10 +25,10 @@ import static ch.fhnw.ip6.praxisruf.commons.exception.ErrorCode.CONNECTION_UNKNO
 @AllArgsConstructor
 public class SignalingService implements ClientConnector<WebSocketSession, TextMessage> {
 
-    private static final UUID UNAVAILABLE_NOTIFICATION_ID = UUID.fromString("e6e6149c-7057-40a9-b937-0dbddb1fa879");
+    private static final UUID UNAVAILABLE_NOTIFICATION_ID = UUID.fromString("63d530ab-48af-4597-a9fd-2fb4c9700c55");
 
-    final ConnectionRegistry registry;
-    final NotificationWebClient notificationWebClient;
+    private final ConnectionRegistry registry;
+    private final NotificationWebClient notificationWebClient;
 
     @Override
     public void handleMessage(TextMessage message) {
