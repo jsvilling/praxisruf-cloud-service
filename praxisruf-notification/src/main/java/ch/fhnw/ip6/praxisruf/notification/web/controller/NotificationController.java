@@ -25,16 +25,16 @@ public class NotificationController {
 
     private final NotificationService notificationService;
 
+    @PostMapping
+    @Operation(description = "Send the given Notification to all relevant clients")
+    public SendPraxisNotificationResponseDto sendNotification(@RequestBody SendPraxisNotificationDto notification) {
+        return notificationService.send(notification);
+    }
+
     @PostMapping(path = "/targeted", params = "recipient")
     @Operation(description = "Send the given Notification to all relevant clients")
     public SendPraxisNotificationResponseDto sendNotification(@RequestParam(value = "recipient", required = true) UUID recipient, @RequestBody SendPraxisNotificationDto notification) {
         return notificationService.send(notification, recipient);
-    }
-
-    @PostMapping(params = "recipient")
-    @Operation(description = "Send the given Notification to all relevant clients")
-    public SendPraxisNotificationResponseDto sendNotification(@RequestBody SendPraxisNotificationDto notification) {
-        return notificationService.send(notification);
     }
 
     @PostMapping(params = "notificationId")
