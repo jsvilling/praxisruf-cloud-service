@@ -28,7 +28,7 @@ public class NotificationControllerTest {
         final SendPraxisNotificationDto sendNotificationDto = DefaultTestData.createSendNotificationDto();
 
         // When
-        notificationController.sendNotification(null, sendNotificationDto);
+        notificationController.sendNotification(sendNotificationDto);
 
         // Then
         Mockito.verify(firebaseNotificationService, Mockito.times(1)).send(sendNotificationDto);
