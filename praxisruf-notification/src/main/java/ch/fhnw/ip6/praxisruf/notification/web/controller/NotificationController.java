@@ -33,7 +33,7 @@ public class NotificationController {
 
     @PostMapping(path = "/targeted", params = "recipient")
     @Operation(description = "Send the given Notification to all relevant clients")
-    public SendPraxisNotificationResponseDto sendNotification(@RequestParam(value = "recipient", required = true) UUID recipient, @RequestBody SendPraxisNotificationDto notification) {
+    public SendPraxisNotificationResponseDto sendNotification(@RequestParam(value = "recipient") UUID recipient, @RequestBody SendPraxisNotificationDto notification) {
         return notificationService.send(notification, recipient);
     }
 
