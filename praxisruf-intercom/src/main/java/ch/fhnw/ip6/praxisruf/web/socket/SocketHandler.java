@@ -1,4 +1,4 @@
-package ch.fhnw.ip6.praxisruf.web;
+package ch.fhnw.ip6.praxisruf.web.socket;
 
 import ch.fhnw.ip6.praxisruf.api.ClientConnector;
 import lombok.NonNull;

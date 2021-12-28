@@ -3,9 +3,7 @@ package ch.fhnw.ip6.praxisruf.notification.domain;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -26,6 +24,9 @@ public class PraxisNotification {
     private UUID notificationTypeId;
 
     private UUID sender;
+
+    @Enumerated(value = EnumType.STRING)
+    private NotificationContext context = NotificationContext.USER;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

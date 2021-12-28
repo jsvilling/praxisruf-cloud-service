@@ -1,6 +1,6 @@
 package ch.fhnw.ip6.praxisruf.config;
 
-import ch.fhnw.ip6.praxisruf.web.SocketHandler;
+import ch.fhnw.ip6.praxisruf.web.socket.SocketHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

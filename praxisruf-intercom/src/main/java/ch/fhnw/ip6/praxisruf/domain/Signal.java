@@ -13,4 +13,5 @@ public class Signal {
     private String type;
     private String payload;
     private String description;
+    private boolean notificationOnFailedDelivery;
 }

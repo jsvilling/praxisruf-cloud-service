@@ -1,9 +1,12 @@
 package ch.fhnw.ip6.praxisruf.service;
 
 import ch.fhnw.ip6.praxisruf.api.ClientConnector;
+import ch.fhnw.ip6.praxisruf.commons.dto.notification.SendPraxisNotificationDto;
+import ch.fhnw.ip6.praxisruf.commons.dto.notification.SendPraxisNotificationResponseDto;
 import ch.fhnw.ip6.praxisruf.commons.exception.PraxisIntercomException;
 import ch.fhnw.ip6.praxisruf.domain.ClientConnection;
 import ch.fhnw.ip6.praxisruf.domain.Signal;
+import ch.fhnw.ip6.praxisruf.web.client.NotificationWebClient;
 import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,15 +16,19 @@ import org.springframework.web.socket.WebSocketSession;
 
 import java.net.URI;
 import java.util.Optional;
+import java.util.UUID;
 
 import static ch.fhnw.ip6.praxisruf.commons.exception.ErrorCode.CONNECTION_UNKNOWN;
 
 @Service
 @Slf4j
 @AllArgsConstructor
-public class SignalingClientConnector implements ClientConnector<WebSocketSession, TextMessage> {
+public class SignalingService implements ClientConnector<WebSocketSession, TextMessage> {
+
+    private static final UUID UNAVAILABLE_NOTIFICATION_ID = UUID.fromString("e6e6149c-7057-40a9-b937-0dbddb1fa879");
 
     final ConnectionRegistry registry;
+    final NotificationWebClient notificationWebClient;
 
     @Override
     public void handleMessage(TextMessage message) {
@@ -33,6 +40,9 @@ public class SignalingClientConnector implements ClientConnector<WebSocketSessio
         if (!success) {
             final TextMessage unavailable = createUnavailableMessage(originalSender, originalRecipient);
             send(unavailable, originalSender);
+        } else if (signal.isNotificationOnFailedDelivery()) {
+            log.info("Sending notification for failed signal {}", signal.getType());
+            sendNotificationToUnavailable(signal);
         }
     }
 
@@ -85,5 +95,17 @@ public class SignalingClientConnector implements ClientConnector<WebSocketSessio
                 .build();
         final String payload = new Gson().toJson(signal);
         return new TextMessage(payload);
+    }
+
+    private void sendNotificationToUnavailable(Signal signal) {
+        final SendPraxisNotificationDto notification = SendPraxisNotificationDto.builder()
+                .notificationTypeId(UNAVAILABLE_NOTIFICATION_ID)
+                .sender(UUID.fromString(signal.getSender()))
+                .build();
+
+        final SendPraxisNotificationResponseDto sendResult = notificationWebClient.send(notification);
+        if (!sendResult.isAllSuccess()) {
+            log.error("Could not notify unavailable client");
+        }
     }
 }
