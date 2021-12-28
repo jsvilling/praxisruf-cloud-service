@@ -31,7 +31,7 @@ public class NotificationController {
         if (recipient == null) {
             return notificationService.send(notification);
         }
-        return notificationService.send(notification);
+        return notificationService.send(notification, recipient);
     }
 
     @PostMapping(params = "notificationId")

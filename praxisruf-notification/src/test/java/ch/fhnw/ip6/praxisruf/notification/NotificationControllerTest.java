@@ -28,10 +28,23 @@ public class NotificationControllerTest {
         final SendPraxisNotificationDto sendNotificationDto = DefaultTestData.createSendNotificationDto();
 
         // When
-        notificationController.sendNotification(sendNotificationDto);
+        notificationController.sendNotification(null, sendNotificationDto);
 
         // Then
         Mockito.verify(firebaseNotificationService, Mockito.times(1)).send(sendNotificationDto);
+    }
+
+    @Test
+    void send_targeted() {
+        // Given
+        final UUID id = UUID.randomUUID();
+        final SendPraxisNotificationDto sendNotificationDto = DefaultTestData.createSendNotificationDto();
+
+        // When
+        notificationController.sendNotification(id, sendNotificationDto);
+
+        // Then
+        Mockito.verify(firebaseNotificationService, Mockito.times(1)).send(sendNotificationDto, id);
     }
 
     @Test
