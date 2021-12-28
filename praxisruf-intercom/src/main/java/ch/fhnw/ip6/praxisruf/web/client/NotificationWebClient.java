@@ -12,7 +12,7 @@ public class NotificationWebClient {
 
     public SendPraxisNotificationResponseDto send(SendPraxisNotificationDto notification, String recipientId) {
         return webClient.post()
-                .uri(uriBuilder -> uriBuilder.path("/notifications?recipientId=" + recipientId).build())
+                .uri(uriBuilder -> uriBuilder.path("/notifications/targeted?recipientId=" + recipientId).build())
                 .bodyValue(notification)
                 .retrieve()
                 .bodyToMono(SendPraxisNotificationResponseDto.class)
