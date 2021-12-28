@@ -1,4 +1,4 @@
-package ch.fhnw.ip6.praxisruf.configuration.service.test;
+package ch.fhnw.ip6.praxisruf.configuration.service.data;
 
 import ch.fhnw.ip6.praxisruf.configuration.domain.*;
 import ch.fhnw.ip6.praxisruf.configuration.persistence.*;
