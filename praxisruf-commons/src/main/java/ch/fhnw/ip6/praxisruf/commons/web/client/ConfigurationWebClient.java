@@ -38,7 +38,7 @@ public class ConfigurationWebClient {
     }
 
     public RegistrationDto getRegistrationForClient(UUID recipientId) {
-        return webClient.post()
+        return webClient.get()
                 .uri(uriBuilder -> uriBuilder.path("/registrations/" + recipientId.toString()).build())
                 .retrieve()
                 .bodyToMono(RegistrationDto.class)
