@@ -1,6 +1,5 @@
 package ch.fhnw.ip6.praxisruf.domain;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.web.socket.WebSocketSession;

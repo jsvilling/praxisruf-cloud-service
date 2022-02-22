@@ -22,7 +22,7 @@ public class SpeechSynthesisController {
     private final SpeechSynthesisService speechSynthesisService;
 
     @GetMapping(path = "/{id}", produces = "audio/mp3")
-    public ResponseEntity synthesizeTestAudio(@PathVariable("id") UUID id) {
+    public ResponseEntity synthesizeNotificationType(@PathVariable("id") UUID id) {
         InputStreamResource inputStreamResource = speechSynthesisService.synthesize(id);
         return new ResponseEntity(inputStreamResource, HttpStatus.OK);
     }
