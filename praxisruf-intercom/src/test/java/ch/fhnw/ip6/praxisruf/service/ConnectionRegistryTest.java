@@ -161,4 +161,54 @@ class ConnectionRegistryTest {
 
     }
 
+    @Nested
+    class Unregister {
+
+        @Test
+        void unregister_success() {
+            // Given
+            final String id = UUID.randomUUID().toString();
+            final WebSocketSession session = Mockito.mock(WebSocketSession.class);
+            final ClientConnection connection = new ClientConnection(id, session);
+            connectionRegistry.register(connection);
+            assertThat(connectionRegistry.find(id)).isNotEmpty();
+
+            // When
+            final boolean result = connectionRegistry.unregister(id);
+
+            // Then
+            assertThat(result).isTrue();
+            assertThat(connectionRegistry.find(id)).isEmpty();
+        }
+
+        @Test
+        void unregister_nullId() {
+            // When
+            final boolean result = connectionRegistry.unregister(null);
+
+            // Then
+            assertThat(result).isFalse();
+        }
+
+        @Test
+        void unregister_unknownId() {
+            // Given
+            final String id = UUID.randomUUID().toString();
+            final String unknownId = UUID.randomUUID().toString();
+            final WebSocketSession session = Mockito.mock(WebSocketSession.class);
+            final ClientConnection connection = new ClientConnection(id, session);
+            connectionRegistry.register(connection);
+            assertThat(connectionRegistry.find(id)).isNotEmpty();
+
+            // When
+            final boolean result = connectionRegistry.unregister(unknownId);
+
+            // Then
+            assertThat(result).isTrue();
+            assertThat(connectionRegistry.find(id)).isNotEmpty();
+            assertThat(connectionRegistry.find(unknownId)).isEmpty();
+        }
+
+    }
+
 }
