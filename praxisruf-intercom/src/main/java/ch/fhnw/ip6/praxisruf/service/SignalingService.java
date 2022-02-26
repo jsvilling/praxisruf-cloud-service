@@ -18,13 +18,15 @@ import java.net.URI;
 import java.util.Optional;
 import java.util.UUID;
 
-import static ch.fhnw.ip6.praxisruf.commons.exception.ErrorCode.CONNECTION_UNKNOWN;
+import static ch.fhnw.ip6.praxisruf.commons.exception.ErrorCode.CONNECTION_URI_INVALID;
 
 @Service
 @Slf4j
 @AllArgsConstructor
 public class SignalingService implements ClientConnector<WebSocketSession, TextMessage> {
 
+    private static final String QUERY_PARAM_DELIMITER = "&";
+    private static final String CLIENT_ID_KEY = "clientId";
     private static final UUID UNAVAILABLE_NOTIFICATION_ID = UUID.fromString("63d530ab-48af-4597-a9fd-2fb4c9700c55");
 
     private final ConnectionRegistry registry;
@@ -78,12 +80,20 @@ public class SignalingService implements ClientConnector<WebSocketSession, TextM
     }
 
     private String extractClientId(WebSocketSession session) {
-        final URI uri = session.getUri();
-        if (uri != null) {
-            String[] parameters = uri.getQuery().split("=");
-            return parameters[1];
+        try {
+            final URI uri = session.getUri();
+            final String[] parameters = uri.getQuery().split(QUERY_PARAM_DELIMITER);
+            for (String parameter : parameters) {
+                if (parameter.startsWith(CLIENT_ID_KEY)) {
+                    return parameter.substring(CLIENT_ID_KEY.length() + 1);
+                }
+            }
+        } catch (Exception e) {
+            log.error("Encountered Error when extracting client Id from session", e);
+            throw new PraxisIntercomException(CONNECTION_URI_INVALID, e);
         }
-        throw new PraxisIntercomException(CONNECTION_UNKNOWN);
+        log.error("Session does contain no client id");
+        throw new PraxisIntercomException(CONNECTION_URI_INVALID);
     }
 
     private TextMessage createUnavailableMessage(String originalSender, String originalRecipient) {
