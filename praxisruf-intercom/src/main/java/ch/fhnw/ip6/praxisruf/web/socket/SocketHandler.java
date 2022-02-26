@@ -23,13 +23,13 @@ public class SocketHandler extends TextWebSocketHandler {
     }
 
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+    public void afterConnectionEstablished(@NonNull WebSocketSession session) throws Exception {
         super.afterConnectionEstablished(session);
         connector.afterConnectionEstablished(session);
     }
 
     @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+    public void afterConnectionClosed(@NonNull WebSocketSession session, CloseStatus status) throws Exception {
         super.afterConnectionClosed(session, status);
         connector.afterConnectionClosed(session);
     }
