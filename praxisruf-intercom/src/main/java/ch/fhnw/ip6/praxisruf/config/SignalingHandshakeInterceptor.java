@@ -12,7 +12,8 @@ import java.util.Map;
 public class SignalingHandshakeInterceptor extends HttpSessionHandshakeInterceptor {
     @Override
     public boolean beforeHandshake(ServerHttpRequest request,
-                                   ServerHttpResponse response, WebSocketHandler wsHandler,
+                                   ServerHttpResponse response,
+                                   WebSocketHandler wsHandler,
                                    Map<String, Object> attributes) throws Exception {
 
         final UsernamePasswordAuthenticationToken principal = (UsernamePasswordAuthenticationToken) request.getPrincipal();
