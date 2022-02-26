@@ -1,14 +1,16 @@
 package ch.fhnw.ip6.praxisruf.service;
 
 import ch.fhnw.ip6.praxisruf.domain.ClientConnection;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.util.Optional;
 import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ConnectionRegistryTest {
 
@@ -19,36 +21,144 @@ class ConnectionRegistryTest {
         connectionRegistry = new ConnectionRegistry();
     }
 
-    @Test
-    void add_simple() {
-        // Given
-        final String id = UUID.randomUUID().toString();
-        final WebSocketSession session = Mockito.mock(WebSocketSession.class);
-        ClientConnection connection = new ClientConnection(id, session);
+    @Nested
+    class Register {
 
-        // When
-        connectionRegistry.register(connection);
-        final Optional<ClientConnection> result = connectionRegistry.find(id);
+        @Test
+        void register_singleValid() {
+            // Given
+            final String id = UUID.randomUUID().toString();
+            final WebSocketSession session = Mockito.mock(WebSocketSession.class);
+            final ClientConnection connection = new ClientConnection(id, session);
 
-        // Then
-        Assertions.assertThat(result).isNotEmpty().get().isSameAs(connection);
+            // When
+            final boolean result = connectionRegistry.register(connection);
+
+            // Then
+            assertThat(result).isTrue();
+        }
+
+        @Test
+        void register_multipleValid() {
+            // Given
+            final String firstId = UUID.randomUUID().toString();
+            final WebSocketSession firstSession = Mockito.mock(WebSocketSession.class);
+            final ClientConnection firstConnection = new ClientConnection(firstId, firstSession);
+            connectionRegistry.register(firstConnection);
+
+            final String secondId = UUID.randomUUID().toString();
+            final WebSocketSession secondSession = Mockito.mock(WebSocketSession.class);
+            final ClientConnection secondConnection = new ClientConnection(secondId, secondSession);
+
+            // When
+            final boolean result = connectionRegistry.register(secondConnection);
+
+            // Then
+            assertThat(result).isTrue();
+        }
+
+        @Test
+        void register_forExistingId() {
+            // Given
+            final String id = UUID.randomUUID().toString();
+            final WebSocketSession firstSession = Mockito.mock(WebSocketSession.class);
+            final ClientConnection firstConnection = new ClientConnection(id, firstSession);
+            connectionRegistry.register(firstConnection);
+
+            final WebSocketSession secondSession = Mockito.mock(WebSocketSession.class);
+            final ClientConnection secondConnection = new ClientConnection(id, secondSession);
+
+            // When
+            final boolean result = connectionRegistry.register(secondConnection);
+
+            // Then
+            assertThat(result).isTrue();
+        }
+
+        @Test
+        void register_null() {
+            // Given
+            // When
+            final boolean result = connectionRegistry.register(null);
+
+            // Then
+            assertThat(result).isFalse();
+        }
+
+        @Test
+        void register_nullId() {
+            // Given
+            final WebSocketSession session = Mockito.mock(WebSocketSession.class);
+            final ClientConnection connection = new ClientConnection(null, session);
+
+            // When
+            final boolean result = connectionRegistry.register(connection);
+
+            // Then
+            assertThat(result).isFalse();
+        }
+
+        @Test
+        void register_nullSession() {
+            // Given
+            final String id = UUID.randomUUID().toString();
+            final ClientConnection connection = new ClientConnection(id, null);
+
+            // When
+            final boolean result = connectionRegistry.register(connection);
+
+            // Then
+            assertThat(result).isFalse();
+        }
     }
 
-    @Test
-    void add_withExistingId() {
-        // Given
-        final String id = UUID.randomUUID().toString();
-        final WebSocketSession session = Mockito.mock(WebSocketSession.class);
-        final ClientConnection firstConnection = new ClientConnection(id, session);
-        final ClientConnection secondConnection = new ClientConnection(id, session);
+    @Nested
+    class Find {
 
-        // When
-        connectionRegistry.register(firstConnection);
-        connectionRegistry.register(secondConnection);
-        final Optional<ClientConnection> result = connectionRegistry.find(id);
+        @Test
+        void find_connectionWasRegisteredOnce() {
+            // Given
+            final String id = UUID.randomUUID().toString();
+            final WebSocketSession session = Mockito.mock(WebSocketSession.class);
+            final ClientConnection connection = new ClientConnection(id, session);
+            connectionRegistry.register(connection);
 
-        // Then
-        Assertions.assertThat(result).isNotEmpty().get().isSameAs(secondConnection);
+            // When
+            final Optional<ClientConnection> result = connectionRegistry.find(id);
+
+            // Then
+            assertThat(result).isNotEmpty().get().isSameAs(connection);
+        }
+
+        @Test
+        void findRegistered_connectionWasRegisteredMultiple() {
+            // Given
+            final String id = UUID.randomUUID().toString();
+            final WebSocketSession session = Mockito.mock(WebSocketSession.class);
+            final ClientConnection firstConnection = new ClientConnection(id, session);
+            final ClientConnection secondConnection = new ClientConnection(id, session);
+            connectionRegistry.register(firstConnection);
+            connectionRegistry.register(secondConnection);
+
+            // When
+            final Optional<ClientConnection> result = connectionRegistry.find(id);
+
+            // Then
+            assertThat(result).isNotEmpty().get().isSameAs(secondConnection);
+        }
+
+        @Test
+        void find_notFound() {
+            // Given
+            final String id = UUID.randomUUID().toString();
+
+            // When
+            final Optional<ClientConnection> result = connectionRegistry.find(id);
+
+            // Then
+            assertThat(result).isEmpty();
+        }
+
     }
 
 }

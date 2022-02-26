@@ -9,7 +9,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Contracts for managing connections created by ClientConnector.
- * @param <T> Type of the connections
  */
 @Component
 public class ConnectionRegistry {
@@ -21,7 +20,14 @@ public class ConnectionRegistry {
      * @return boolean - whether the registration is registered
      */
     public boolean register(ClientConnection connection) {
+        if (isInvalidConnection(connection)) {
+            return false;
+        }
+        registry.removeIf(c -> c.getId().equalsIgnoreCase(connection.getId()));
         return registry.add(connection);
+    }
+    private boolean isInvalidConnection(ClientConnection connection) {
+        return connection == null || connection.getId() == null || connection.getSession() == null;
     }
 
     /**
@@ -29,6 +35,9 @@ public class ConnectionRegistry {
      * @return boolean - whether the registration is unregistered
      */
     public boolean unregister(String id) {
+        if (id == null) {
+            return false;
+        }
         registry.removeIf(c -> c.getId().equalsIgnoreCase(id));
         return true;
     }
