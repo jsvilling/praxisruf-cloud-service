@@ -39,7 +39,7 @@ class SocketHandlerTest {
             socketHandler.handleTextMessage(session, message);
 
             // Then
-            Mockito.verify(connector).handleMessage(captor.capture());
+            Mockito.verify(connector).handleSignal(captor.capture());
             Assertions.assertThat(captor.getValue()).isSameAs(message);
         }
 
@@ -49,7 +49,7 @@ class SocketHandlerTest {
             final WebSocketSession session = Mockito.mock(WebSocketSession.class);
             final TextMessage message = new TextMessage("PAYLOAD");
             final var e = new PraxisIntercomException(CONNECTION_UNKNOWN);
-            Mockito.doThrow(e).when(connector).handleMessage(message);
+            Mockito.doThrow(e).when(connector).handleSignal(message);
 
             // When
             // Then
