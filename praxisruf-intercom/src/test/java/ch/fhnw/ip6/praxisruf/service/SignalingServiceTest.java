@@ -210,7 +210,7 @@ class SignalingServiceTest {
             when(registry.find(ORIGINAL_RECIPIENT)).thenReturn(Optional.of(recipientConnection));
 
             // When
-            signalingService.handleMessage(message);
+            signalingService.handleSignal(message);
 
             // Then
             verify(recipientSession).sendMessage(message);
@@ -232,7 +232,7 @@ class SignalingServiceTest {
             when(notificationWebClient.send(any(), any())).thenReturn(notificationResponse);
 
             // When
-            signalingService.handleMessage(message);
+            signalingService.handleSignal(message);
 
             // Then
             verify(senderSession).sendMessage(any());
@@ -256,7 +256,7 @@ class SignalingServiceTest {
             when(notificationWebClient.send(any(), any())).thenReturn(notificationResponse);
 
             // When
-            signalingService.handleMessage(message);
+            signalingService.handleSignal(message);
 
             // Then
             verify(senderSession).sendMessage(any());
@@ -278,7 +278,7 @@ class SignalingServiceTest {
             when(notificationWebClient.send(any(), any())).thenReturn(notificationResponse);
 
             // When
-            signalingService.handleMessage(message);
+            signalingService.handleSignal(message);
 
             // Then
             verify(senderSession).sendMessage(any());

@@ -33,7 +33,7 @@ public class SignalingService implements ClientConnector<WebSocketSession, TextM
     private final NotificationWebClient notificationWebClient;
 
     @Override
-    public void handleMessage(TextMessage message) {
+    public void handleSignal(TextMessage message) {
         final Signal signal = new Gson().fromJson(message.getPayload(), Signal.class);
         final String originalSender = signal.getSender();
         final String originalRecipient = signal.getRecipient();
