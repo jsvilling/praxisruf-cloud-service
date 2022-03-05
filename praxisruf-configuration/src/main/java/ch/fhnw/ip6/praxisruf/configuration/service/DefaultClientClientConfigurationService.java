@@ -35,7 +35,7 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
 
     @Override
     public ClientConfigurationDto create(ClientConfigurationDto configurationDto) {
-        if (clientConfigurationRepository.existsById(configurationDto.getId())) {
+        if (configurationDto.getId() != null && clientConfigurationRepository.existsById(configurationDto.getId())) {
             throw new PraxisIntercomException(ErrorCode.CLIENT_CONFIG_ALREADY_EXISTS);
         }
         return toClientConfigurationDto(createOrUpdate(configurationDto));
