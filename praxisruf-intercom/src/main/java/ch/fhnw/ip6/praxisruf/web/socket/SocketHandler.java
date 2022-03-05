@@ -19,7 +19,7 @@ public class SocketHandler extends TextWebSocketHandler {
 
     @Override
     public void handleTextMessage(@NonNull WebSocketSession session, TextMessage message) throws Exception {
-        connector.handleSignal(message);
+        connector.handleMessage(message);
     }
 
     @Override

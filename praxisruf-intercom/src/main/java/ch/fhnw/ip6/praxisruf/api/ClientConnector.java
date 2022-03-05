@@ -16,7 +16,7 @@ public interface ClientConnector<T, M> {
      * Receives a message and forwards it to all relevant registered connections.
      * M is expected to contain the key any relevant connection.
      */
-    void handleSignal(M message) throws Exception;
+    void handleMessage(M message) throws Exception;
 
     /**
      * Is called after a connection has been established. The established connection
