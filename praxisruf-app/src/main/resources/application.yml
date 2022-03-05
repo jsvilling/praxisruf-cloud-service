@@ -17,8 +17,6 @@ praxis-intercom:
   aws:
     accessKey: ${AWS_ACCESS_KEY}
     secretKey: ${AWS_SECRET_KEY}
-    region: eu-west-1
-    language: German
   fcm:
     credentials: ${FCM_CREDENTIALS}
   jwt:

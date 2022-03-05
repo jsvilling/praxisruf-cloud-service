@@ -23,14 +23,12 @@ public class AwsConfiguration {
 
     private String accessKey;
     private String secretKey;
-    private String region;
-    private String language;
 
     @Bean
     public AmazonPollyClient amazonPollyClient() {
         final AWSStaticCredentialsProvider credentialsProvider = awsStaticCredentialsProvider();
         final AmazonPollyClient polly = new AmazonPollyClient(credentialsProvider, new ClientConfiguration());
-        polly.setRegion(Region.getRegion(Regions.fromName(region)));
+        polly.setRegion(Region.getRegion(Regions.EU_WEST_1));
         return polly;
     }
 
@@ -38,7 +36,7 @@ public class AwsConfiguration {
     public Voice voice(AmazonPollyClient polly) {
         DescribeVoicesRequest describeVoicesRequest = new DescribeVoicesRequest();
         DescribeVoicesResult describeVoicesResult = polly.describeVoices(describeVoicesRequest);
-        return describeVoicesResult.getVoices().stream().filter(v -> v.getLanguageName().equals(language)).findFirst().get();
+        return describeVoicesResult.getVoices().stream().filter(v -> v.getLanguageName().equals("German")).findFirst().get();
     }
 
     private AWSStaticCredentialsProvider awsStaticCredentialsProvider() {
