@@ -97,8 +97,8 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
     private ClientConfiguration createOrUpdate(ClientConfigurationDto configurationDto) {
         final Client client = findExistingClient(configurationDto.getClientId());
         final Set<RuleParameters> ruleParameters = RulesParametersMapper.toRuleParameters(configurationDto.getRuleParameters());
-        final List<NotificationType> notificationTypes = notificationTypeRepository.findAllById(configurationDto.getNotificationTypes());
-        final List<CallType> callTypes = callTypeRepository.findAllById(configurationDto.getCallTypes());
+        final List<NotificationType> notificationTypes = findNotificationTypes(configurationDto);
+        final List<CallType> callTypes = findCallTypes(configurationDto);
 
         final ClientConfiguration updatedClientConfiguration = ClientConfiguration.builder()
                 .id(configurationDto.getId())
@@ -114,6 +114,21 @@ public class DefaultClientClientConfigurationService implements ClientConfigurat
         notificationTypeRepository.saveAll(notificationTypes);
         return clientConfigurationRepository.saveAndFlush(updatedClientConfiguration);
     }
+
+    private List<NotificationType> findNotificationTypes(ClientConfigurationDto clientConfigurationDto) {
+        if (clientConfigurationDto.getNotificationTypes() == null) {
+            return Collections.emptyList();
+        }
+        return notificationTypeRepository.findAllById(clientConfigurationDto.getNotificationTypes());
+    }
+
+    private List<CallType> findCallTypes(ClientConfigurationDto clientConfigurationDto) {
+        if (clientConfigurationDto.getCallTypes() == null) {
+            return Collections.emptyList();
+        }
+        return callTypeRepository.findAllById(clientConfigurationDto.getCallTypes());
+    }
+
 
     private void removeClientConfigurationFromRelatedNotificationType(ClientConfiguration configuration){
         configuration.getNotificationTypes().forEach(n -> n.removeClientConfiguration(configuration));
