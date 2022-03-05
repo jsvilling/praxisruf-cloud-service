@@ -34,7 +34,7 @@ public class AwsPollySpeechSynthesisService implements SpeechSynthesisService {
     @Override
     public InputStreamResource synthesize(String content) {
         final SynthesizeSpeechRequest synthReq = new SynthesizeSpeechRequest()
-                .withText(content)
+                .withText(content + " von Behandlungszimmer 1")
                 .withVoiceId(voice.getId())
                 .withOutputFormat(OutputFormat.Mp3);
 
