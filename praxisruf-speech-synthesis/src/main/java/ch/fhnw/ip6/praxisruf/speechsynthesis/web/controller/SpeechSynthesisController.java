@@ -19,7 +19,7 @@ public class SpeechSynthesisController {
     private final SpeechSynthesisService speechSynthesisService;
 
     @GetMapping(path = "/{id}", produces = "audio/mp3")
-    public ResponseEntity synthesizeNotificationType(@PathVariable("id") UUID notificationTypeId, @RequestParam(value = "sender") UUID senderId) {
+    public ResponseEntity synthesizeNotificationType(@PathVariable("id") UUID notificationTypeId, @RequestParam(value = "sender", required = false) UUID senderId) {
         final InputStreamResource inputStreamResource = speechSynthesisService.synthesize(notificationTypeId, senderId);
         return new ResponseEntity(inputStreamResource, HttpStatus.OK);
     }
