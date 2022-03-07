@@ -55,16 +55,14 @@ public class AwsPollySpeechSynthesisService implements SpeechSynthesisService {
 
     private InputStreamResource synthesize(String notificationTitle, String sender) {
         try {
-            final String content = new StringBuilder()
-                    .append(notificationTitle)
-                    .append(" von ")
-                    .append(sender)
-                    .toString();
-
+            final StringBuilder content = new StringBuilder(notificationTitle);
+            if (sender != null && sender != "") {
+                content.append(", ");
+                content.append(sender);
+            }
             log.debug("Request speech synthesis for content {}", content);
-
             final SynthesizeSpeechRequest synthReq = new SynthesizeSpeechRequest()
-                    .withText(content)
+                    .withText(content.toString())
                     .withVoiceId(voice.getId())
                     .withOutputFormat(OutputFormat.Mp3);
             final SynthesizeSpeechResult synthRes = polly.synthesizeSpeech(synthReq);
