@@ -1,6 +1,7 @@
 package ch.fhnw.ip6.praxisruf.speechsynthesis.service;
 
 import ch.fhnw.ip6.praxisruf.commons.dto.configuration.NotificationTypeDto;
+import ch.fhnw.ip6.praxisruf.commons.exception.PraxisIntercomException;
 import ch.fhnw.ip6.praxisruf.commons.web.client.ConfigurationWebClient;
 import ch.fhnw.ip6.praxisruf.speechsynthesis.api.SpeechSynthesisService;
 import com.amazonaws.services.polly.AmazonPollyClient;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.util.UUID;
+
+import static ch.fhnw.ip6.praxisruf.commons.exception.ErrorCode.SPEECH_SYNTHESIS_ERROR;
 
 @Service
 @Slf4j
@@ -51,23 +54,29 @@ public class AwsPollySpeechSynthesisService implements SpeechSynthesisService {
     }
 
     private InputStreamResource synthesize(String notificationTitle, String sender) {
-        final String content = new StringBuilder()
-                .append("<speak>")
-                .append(notificationTitle)
-                .append("<break time=0.5s>")
-                .append(sender)
-                .append("</sender>")
-                .toString();
+        try {
+            final String content = new StringBuilder()
+                    .append(notificationTitle)
+                    .append(", ")
+                    .append(sender)
+                    .toString();
 
-        final SynthesizeSpeechRequest synthReq = new SynthesizeSpeechRequest()
-                .withText(content)
-                .withVoiceId(voice.getId())
-                .withOutputFormat(OutputFormat.Mp3);
+            log.debug("Request speech synthesis for content {}", content);
 
-        final SynthesizeSpeechResult synthRes = polly.synthesizeSpeech(synthReq);
-        final InputStream inputStream = synthRes.getAudioStream();
+            final SynthesizeSpeechRequest synthReq = new SynthesizeSpeechRequest()
+                    .withText(content)
+                    .withVoiceId(voice.getId())
+                    .withOutputFormat(OutputFormat.Mp3);
+            final SynthesizeSpeechResult synthRes = polly.synthesizeSpeech(synthReq);
+            final InputStream inputStream = synthRes.getAudioStream();
 
-        return new InputStreamResource(inputStream);
+            log.debug("Speech synthesis for content {} successful", content);
+
+            return new InputStreamResource(inputStream);
+        } catch (Exception e) {
+            log.error("Speech Synthesis request failed.", e);
+            throw new PraxisIntercomException(SPEECH_SYNTHESIS_ERROR, e);
+        }
     }
 
 }
