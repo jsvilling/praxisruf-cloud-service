@@ -4,6 +4,7 @@ import ch.fhnw.ip6.praxisruf.api.ClientConnector;
 import ch.fhnw.ip6.praxisruf.commons.dto.notification.SendPraxisNotificationDto;
 import ch.fhnw.ip6.praxisruf.commons.dto.notification.SendPraxisNotificationResponseDto;
 import ch.fhnw.ip6.praxisruf.commons.exception.PraxisIntercomException;
+import ch.fhnw.ip6.praxisruf.config.SignalingProperties;
 import ch.fhnw.ip6.praxisruf.domain.ClientConnection;
 import ch.fhnw.ip6.praxisruf.domain.Signal;
 import ch.fhnw.ip6.praxisruf.web.client.NotificationWebClient;
@@ -27,10 +28,10 @@ public class SignalingService implements ClientConnector<WebSocketSession, TextM
 
     private static final String QUERY_PARAM_DELIMITER = "&";
     private static final String CLIENT_ID_KEY = "clientId";
-    private static final UUID UNAVAILABLE_NOTIFICATION_ID = UUID.fromString("63d530ab-48af-4597-a9fd-2fb4c9700c55");
 
     private final ConnectionRegistry registry;
     private final NotificationWebClient notificationWebClient;
+    private final SignalingProperties signalingProperties;
 
     @Override
     public void handleSignal(TextMessage message) {
@@ -109,8 +110,9 @@ public class SignalingService implements ClientConnector<WebSocketSession, TextM
     }
 
     private void sendNotificationToUnavailable(Signal signal) {
+        final UUID unavailableNotificationTypeId = UUID.fromString(signalingProperties.getNotificationTypeForUnavailable());
         final SendPraxisNotificationDto notification = SendPraxisNotificationDto.builder()
-                .notificationTypeId(UNAVAILABLE_NOTIFICATION_ID)
+                .notificationTypeId(unavailableNotificationTypeId)
                 .sender(UUID.fromString(signal.getSender()))
                 .build();
 

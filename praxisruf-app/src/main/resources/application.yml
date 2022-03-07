@@ -21,6 +21,8 @@ praxis-intercom:
     language: German
   fcm:
     credentials: ${FCM_CREDENTIALS}
+  signaling:
+    notification-type-for-unavailable: ${NOTIFICATION_TYPE_FOR_UNAVAILABLE}
   jwt:
     key: ${JWT_SECRET_KEY}
   api:

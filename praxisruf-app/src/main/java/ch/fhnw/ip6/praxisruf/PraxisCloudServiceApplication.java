@@ -1,5 +1,6 @@
 package ch.fhnw.ip6.praxisruf;
 
+import ch.fhnw.ip6.praxisruf.config.SignalingProperties;
 import ch.fhnw.ip6.praxisruf.config.security.JWTProperties;
 import ch.fhnw.ip6.praxisruf.notification.config.FirebaseProperties;
 import ch.fhnw.ip6.praxisruf.speechsynthesis.config.AwsConfiguration;
@@ -9,7 +10,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 @SpringBootApplication
-@EnableConfigurationProperties({AwsConfiguration.class, FirebaseProperties.class, JWTProperties.class})
+@EnableConfigurationProperties({AwsConfiguration.class, FirebaseProperties.class, SignalingProperties.class, JWTProperties.class})
 @EnableWebSecurity
 public class PraxisCloudServiceApplication {
 
