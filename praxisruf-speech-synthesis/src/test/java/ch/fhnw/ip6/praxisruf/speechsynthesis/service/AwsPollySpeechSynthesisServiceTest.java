@@ -26,8 +26,9 @@ import static org.mockito.Mockito.when;
 public class AwsPollySpeechSynthesisServiceTest {
 
     private static final String CONTENT = "content";
-    private static final String VOIDE_ID = UUID.randomUUID().toString();
     private static final UUID NOTIFICATION_TYPE_ID = UUID.randomUUID();
+    private static final UUID SENDER_ID = UUID.randomUUID();
+    private static final String VOICE_ID = UUID.randomUUID().toString();
 
     @Mock
     private SynthesizeSpeechResult synthesizeSpeechResult;
@@ -50,7 +51,7 @@ public class AwsPollySpeechSynthesisServiceTest {
     @Test
     void synthesize_text() throws IOException {
         // Given
-        when(voice.getId()).thenReturn(VOIDE_ID);
+        when(voice.getId()).thenReturn(VOICE_ID);
         when(polly.synthesizeSpeech(any())).thenReturn(synthesizeSpeechResult);
         when(synthesizeSpeechResult.getAudioStream()).thenReturn(inputStream);
 
@@ -68,12 +69,12 @@ public class AwsPollySpeechSynthesisServiceTest {
         // Given
         final NotificationTypeDto notificationTypeDto = createNotificationTypeDto();
         when(configurationWebClient.findExistingNotificationType(NOTIFICATION_TYPE_ID)).thenReturn(notificationTypeDto);
-        when(voice.getId()).thenReturn(VOIDE_ID);
+        when(voice.getId()).thenReturn(VOICE_ID);
         when(polly.synthesizeSpeech(any())).thenReturn(synthesizeSpeechResult);
         when(synthesizeSpeechResult.getAudioStream()).thenReturn(inputStream);
 
         // When
-        final InputStreamResource result = service.synthesize(NOTIFICATION_TYPE_ID);
+        final InputStreamResource result = service.synthesize(NOTIFICATION_TYPE_ID, SENDER_ID);
 
         // Then
         verify(polly).synthesizeSpeech(any());

@@ -6,10 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -22,8 +19,8 @@ public class SpeechSynthesisController {
     private final SpeechSynthesisService speechSynthesisService;
 
     @GetMapping(path = "/{id}", produces = "audio/mp3")
-    public ResponseEntity synthesizeNotificationType(@PathVariable("id") UUID id) {
-        InputStreamResource inputStreamResource = speechSynthesisService.synthesize(id);
+    public ResponseEntity synthesizeNotificationType(@PathVariable("id") UUID notificationTypeId, @RequestParam(value = "sender") UUID senderId) {
+        final InputStreamResource inputStreamResource = speechSynthesisService.synthesize(notificationTypeId, senderId);
         return new ResponseEntity(inputStreamResource, HttpStatus.OK);
     }
 

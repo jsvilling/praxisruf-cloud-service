@@ -8,6 +8,6 @@ public interface SpeechSynthesisService {
 
     InputStreamResource synthesize(String message);
 
-    InputStreamResource synthesize(UUID notificationTypeId);
+    InputStreamResource synthesize(UUID notificationTypeId, UUID senderId);
 
 }

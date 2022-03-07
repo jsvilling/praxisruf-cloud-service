@@ -23,6 +23,7 @@ import static org.mockito.Mockito.when;
 public class SpeechSynthesisControllerTest {
 
     private static final UUID NOTIFICATION_TYPE_ID = UUID.randomUUID();
+    private static final UUID SENDER_ID = UUID.randomUUID();
 
     @Mock
     private SpeechSynthesisService speechSynthesisService;
@@ -34,10 +35,10 @@ public class SpeechSynthesisControllerTest {
     void synthesize_isDelegatedToService_success() {
         // Given
         final InputStreamResource speechData = Mockito.mock(InputStreamResource.class);
-        when(speechSynthesisService.synthesize(NOTIFICATION_TYPE_ID)).thenReturn(speechData);
+        when(speechSynthesisService.synthesize(NOTIFICATION_TYPE_ID, SENDER_ID)).thenReturn(speechData);
 
         // When
-        final ResponseEntity response = speechSynthesisController.synthesizeNotificationType(NOTIFICATION_TYPE_ID);
+        final ResponseEntity response = speechSynthesisController.synthesizeNotificationType(NOTIFICATION_TYPE_ID, SENDER_ID);
 
         // Then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -47,11 +48,11 @@ public class SpeechSynthesisControllerTest {
     @Test
     void synthesize_isExceptionRethrown() {
         // Given
-        when(speechSynthesisService.synthesize(NOTIFICATION_TYPE_ID)).thenThrow(new PraxisIntercomException(ErrorCode.SPEECH_SYNTHESIS_ERROR));
+        when(speechSynthesisService.synthesize(NOTIFICATION_TYPE_ID, SENDER_ID)).thenThrow(new PraxisIntercomException(ErrorCode.SPEECH_SYNTHESIS_ERROR));
 
         // When
         // Then
-        assertThatThrownBy(() -> speechSynthesisController.synthesizeNotificationType(NOTIFICATION_TYPE_ID))
+        assertThatThrownBy(() -> speechSynthesisController.synthesizeNotificationType(NOTIFICATION_TYPE_ID, SENDER_ID))
                 .isInstanceOf(PraxisIntercomException.class);
     }
 

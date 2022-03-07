@@ -1,5 +1,6 @@
 package ch.fhnw.ip6.praxisruf.notification.service;
 
+import ch.fhnw.ip6.praxisruf.commons.dto.configuration.ClientDto;
 import ch.fhnw.ip6.praxisruf.commons.dto.configuration.NotificationTypeDto;
 import ch.fhnw.ip6.praxisruf.commons.dto.configuration.RegistrationDto;
 import ch.fhnw.ip6.praxisruf.commons.dto.notification.SendPraxisNotificationDto;
@@ -33,6 +34,7 @@ import java.util.UUID;
 public class FirebaseNotificationService implements NotificationService {
 
     private static final String SENDER_NAME = "senderName";
+    private static final String SENDER_ID = "senderId";
     private static final String TEXT_TO_SPEECH_FLAG = "isTextToSpeech";
     private static final String VERSION = "version";
     private static final String NOTIFICATION_TYPE = "notificationType";
@@ -103,9 +105,9 @@ public class FirebaseNotificationService implements NotificationService {
     private SendPraxisNotificationResponseDto send(List<RegistrationDto> registrations, NotificationTypeDto notificationType, PraxisNotification praxisNotification) {
         boolean allSuccess = true;
         final Notification firebaseNotification = createFirebaseNotification(notificationType);
-        final String senderName = findSenderName(praxisNotification);
+        final ClientDto sender = findSender(praxisNotification);
         for (RegistrationDto registration : registrations) {
-            final Message message = createFirebaseMessage(firebaseNotification, registration, senderName, notificationType);
+            final Message message = createFirebaseMessage(firebaseNotification, registration, sender, notificationType);
             final boolean success = send(message);
             notificationSendProcessService.createNotificationSendLogEntry(praxisNotification.getId(), success, registration);
             allSuccess = allSuccess && success;
@@ -114,6 +116,14 @@ public class FirebaseNotificationService implements NotificationService {
                 .notificationId(praxisNotification.getId())
                 .allSuccess(allSuccess)
                 .build();
+    }
+
+    private ClientDto findSender(PraxisNotification praxisNotification) {
+        try {
+            return configurationWebClient.findExistingClient(praxisNotification.getSender());
+        } catch (Exception e) {
+            throw new PraxisIntercomException(ErrorCode.CLIENT_NOT_FOUND, e);
+        }
     }
 
     private String findSenderName(PraxisNotification praxisNotification) {
@@ -134,7 +144,7 @@ public class FirebaseNotificationService implements NotificationService {
         }
     }
 
-    private Message createFirebaseMessage(Notification firebaseNotification, RegistrationDto registration, String senderName, NotificationTypeDto notificationTypeDto) {
+    private Message createFirebaseMessage(Notification firebaseNotification, RegistrationDto registration, ClientDto sender, NotificationTypeDto notificationTypeDto) {
         // for iOS
         Aps aps = Aps.builder()
                 .setSound("default")
@@ -157,7 +167,8 @@ public class FirebaseNotificationService implements NotificationService {
         return Message.builder()
                 .setToken(registration.getFcmToken())
                 .setNotification(firebaseNotification)
-                .putData(SENDER_NAME, senderName)
+                .putData(SENDER_NAME, sender.getName())
+                .putData(SENDER_ID, sender.getId().toString())
                 .putData(TEXT_TO_SPEECH_FLAG, notificationTypeDto.getTextToSpeech().toString())
                 .putData(VERSION, notificationTypeDto.getVersion().toString())
                 .putData(NOTIFICATION_TYPE, notificationTypeDto.getId().toString())
