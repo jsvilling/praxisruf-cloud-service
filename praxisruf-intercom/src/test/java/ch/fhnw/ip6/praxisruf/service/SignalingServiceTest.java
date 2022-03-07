@@ -2,10 +2,12 @@ package ch.fhnw.ip6.praxisruf.service;
 
 import ch.fhnw.ip6.praxisruf.commons.dto.notification.SendPraxisNotificationResponseDto;
 import ch.fhnw.ip6.praxisruf.commons.exception.PraxisIntercomException;
+import ch.fhnw.ip6.praxisruf.config.SignalingProperties;
 import ch.fhnw.ip6.praxisruf.domain.ClientConnection;
 import ch.fhnw.ip6.praxisruf.domain.Signal;
 import ch.fhnw.ip6.praxisruf.web.client.NotificationWebClient;
 import com.google.gson.Gson;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,6 +35,9 @@ class SignalingServiceTest {
     private ArgumentCaptor<ClientConnection> connectionArgumentCaptor;
 
     @Mock
+    private SignalingProperties signalingProperties;
+
+    @Mock
     private ConnectionRegistry registry;
 
     @Mock
@@ -40,6 +45,11 @@ class SignalingServiceTest {
 
     @InjectMocks
     private SignalingService signalingService;
+
+    @BeforeEach
+    public void beforeEach() {
+        lenient().when(signalingProperties.getNotificationTypeForUnavailable()).thenReturn(UUID.randomUUID().toString());
+    }
 
     @Nested
     class ConnectionEstablished {
