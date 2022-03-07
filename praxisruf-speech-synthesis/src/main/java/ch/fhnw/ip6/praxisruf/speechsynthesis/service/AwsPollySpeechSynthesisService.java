@@ -57,7 +57,7 @@ public class AwsPollySpeechSynthesisService implements SpeechSynthesisService {
         try {
             final String content = new StringBuilder()
                     .append(notificationTitle)
-                    .append(", ")
+                    .append(" von ")
                     .append(sender)
                     .toString();
 
