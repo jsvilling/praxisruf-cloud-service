@@ -44,7 +44,7 @@ public class SignalingService implements ClientConnector<WebSocketSession, TextM
             send(unavailable, originalSender);
         }
         if (!success && signal.isNotificationOnFailedDelivery()) {
-            log.info("Sending notification for failed signal {}", signal.getType());
+            log.debug("Sending notification for failed signal {}", signal.getType());
             sendNotificationToUnavailable(signal);
         }
     }
@@ -53,7 +53,7 @@ public class SignalingService implements ClientConnector<WebSocketSession, TextM
     public void afterConnectionEstablished(WebSocketSession session) {
         final String id = extractClientId(session);
         registry.register(new ClientConnection(id, session));
-        log.info("Established connection for {}", id);
+        log.debug("Established connection for {}", id);
     }
 
     @Override
@@ -61,12 +61,12 @@ public class SignalingService implements ClientConnector<WebSocketSession, TextM
         final String id = extractClientId(session);
         registry.unregister(id);
         session.close();
-        log.info("Closed connection for {}", id);
+        log.debug("Closed connection for {}", id);
     }
 
     private boolean send(TextMessage message, String recipient) {
         try {
-            log.info("Sending signal {} to {}", message.getPayload(), recipient);
+            log.debug("Sending signal {} to {}", message.getPayload(), recipient);
             final Optional<ClientConnection> connection = registry.find(recipient);
             final boolean success = connection.isPresent();
             if (success) {
