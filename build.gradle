@@ -18,7 +18,7 @@ dependencies {
     // Internal
     implementation project(':praxisruf-commons')
     implementation project(':praxisruf-configuration')
-    implementation project(':praxisruf-intercom')
+    implementation project(':praxisruf-signaling')
     implementation project(':praxisruf-notification')
     implementation project(':praxisruf-speech-synthesis')
     implementation project(':praxisruf-app')

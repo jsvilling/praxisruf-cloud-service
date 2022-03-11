@@ -4,6 +4,6 @@ include 'praxisruf-commons'
 include 'praxisruf-configuration'
 include 'praxisruf-notification'
 include 'praxisruf-speech-synthesis'
-include 'praxisruf-intercom'
+include 'praxisruf-signaling'
 include 'praxisruf-app'
 

@@ -27,7 +27,7 @@ dependencies {
     implementation runtimeOnly(project(':praxisruf-configuration'))
     implementation runtimeOnly(project(':praxisruf-notification'))
     implementation runtimeOnly(project(':praxisruf-speech-synthesis'))
-    implementation runtimeOnly(project(':praxisruf-intercom'))
+    implementation runtimeOnly(project(':praxisruf-signaling'))
 
     // Spring
     implementation 'org.springframework.boot:spring-boot-starter-web'
