@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -127,14 +128,6 @@ public class FirebaseNotificationService implements NotificationService {
         }
     }
 
-    private String findSenderName(PraxisNotification praxisNotification) {
-        try {
-            return configurationWebClient.findExistingClient(praxisNotification.getSender()).getName();
-        } catch (Exception e) {
-            throw new PraxisIntercomException(ErrorCode.CLIENT_NOT_FOUND, e);
-        }
-    }
-
     private boolean send(Message message) {
         try {
             fcmIntegrationService.send(message);
@@ -168,12 +161,12 @@ public class FirebaseNotificationService implements NotificationService {
         return Message.builder()
                 .setToken(registration.getFcmToken())
                 .setNotification(firebaseNotification)
-                .putData(SENDER_NAME, sender.getName())
-                .putData(SENDER_ID, sender.getId().toString())
-                .putData(TEXT_TO_SPEECH_FLAG, notificationTypeDto.getTextToSpeech().toString())
-                .putData(VERSION, notificationTypeDto.getVersion().toString())
-                .putData(NOTIFICATION_TYPE, notificationTypeDto.getId().toString())
-                .putData(BODY, notificationTypeDto.getBody())
+                .putData(SENDER_NAME, Objects.toString(sender.getName()))
+                .putData(SENDER_ID, Objects.toString(sender.getId()))
+                .putData(TEXT_TO_SPEECH_FLAG, Objects.toString(notificationTypeDto.getTextToSpeech()))
+                .putData(VERSION, Objects.toString(notificationTypeDto.getVersion()))
+                .putData(NOTIFICATION_TYPE, Objects.toString(notificationTypeDto.getId()))
+                .putData(BODY, Objects.toString(notificationTypeDto.getBody(), ""))
                 .setApnsConfig(apnsConfig)
                 .setAndroidConfig(androidConfig)
                 .build();

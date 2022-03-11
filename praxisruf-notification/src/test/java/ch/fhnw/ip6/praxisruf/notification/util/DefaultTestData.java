@@ -33,6 +33,18 @@ public class DefaultTestData {
                 .build();
     }
 
+    public static NotificationTypeDto createNotificationTypeDtoWithoutBody() {
+        return NotificationTypeDto.builder()
+                .id(randomUUID())
+                .description("")
+                .body(null)
+                .title("")
+                .displayText("")
+                .version(VERSION)
+                .textToSpeech(T2S_ENABLED)
+                .build();
+    }
+
     public static PraxisNotification createNotification() {
         return PraxisNotification.builder()
                 .id(randomUUID())

@@ -124,6 +124,27 @@ public class FirebaseNotificationServiceTest {
         }
 
         @Test
+        void testSend_emptyBody() {
+            // Given
+            final SendPraxisNotificationDto notification = DefaultTestData.createSendNotificationDto();
+            final NotificationTypeDto notificationType = DefaultTestData.createNotificationTypeDtoWithoutBody();
+            final ClientDto clientDto = DefaultTestData.createClientDto();
+            when(configurationWebClient.findExistingClient(any())).thenReturn(clientDto);
+            when(configurationWebClient.findExistingNotificationType(any())).thenReturn(notificationType);
+            when(configurationWebClient.getAllRelevantRegistrations(any())).thenReturn(List.of(registration));
+            when(fcmIntegrationService.send(any(Message.class))).thenReturn(DefaultTestData.MESSAGE_ID);
+            mockSaveNotificationWithGenerateId();
+
+            // When
+            firebaseNotificationService.send(notification);
+
+            // Then
+            verify(fcmIntegrationService, times(1)).send(any(Message.class));
+            verify(notificationSendProcessService, times(1)).createNotificationSendLogEntry(any(UUID.class), eq(true), eq(registration));
+        }
+
+
+        @Test
         void testSend_SendError() {
             // Given
             final SendPraxisNotificationDto notification = DefaultTestData.createSendNotificationDto();
