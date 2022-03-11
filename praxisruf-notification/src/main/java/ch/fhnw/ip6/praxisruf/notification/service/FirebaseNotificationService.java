@@ -95,17 +95,17 @@ public class FirebaseNotificationService implements NotificationService {
         return notificationRepository.save(notification);
     }
 
-    private Notification createFirebaseNotification(NotificationTypeDto notificationType) {
+    private Notification createFirebaseNotification(NotificationTypeDto notificationType, ClientDto recipient) {
         return Notification.builder()
-                .setTitle(notificationType.getTitle())
-                .setBody(notificationType.getBody())
+                .setTitle(recipient.getName())
+                .setBody(notificationType.getTitle())
                 .build();
     }
 
     private SendPraxisNotificationResponseDto send(List<RegistrationDto> registrations, NotificationTypeDto notificationType, PraxisNotification praxisNotification) {
         boolean allSuccess = true;
-        final Notification firebaseNotification = createFirebaseNotification(notificationType);
         final ClientDto sender = findSender(praxisNotification);
+        final Notification firebaseNotification = createFirebaseNotification(notificationType, sender);
         for (RegistrationDto registration : registrations) {
             final Message message = createFirebaseMessage(firebaseNotification, registration, sender, notificationType);
             final boolean success = send(message);
