@@ -57,7 +57,7 @@ class SignalingHandshakeInterceptorTest {
 
     private Principal createPrincipal(boolean isAuthenticated) {
         if (isAuthenticated) {
-            SimpleGrantedAuthority admin = new SimpleGrantedAuthority("ADMIN");
+            SimpleGrantedAuthority admin = new SimpleGrantedAuthority("ROLE_ADMIN");
             return new UsernamePasswordAuthenticationToken(null, null, Set.of(admin));
         }
         return new UsernamePasswordAuthenticationToken(null, null);
