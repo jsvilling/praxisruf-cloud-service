@@ -4,9 +4,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
+import java.util.Collection;
 import java.util.Map;
 
 public class SignalingHandshakeInterceptor extends HttpSessionHandshakeInterceptor {
@@ -21,6 +23,8 @@ public class SignalingHandshakeInterceptor extends HttpSessionHandshakeIntercept
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
             return false;
         }
-        return super.beforeHandshake(request, response, wsHandler, attributes);
+        Collection<GrantedAuthority> authorities = principal.getAuthorities();
+        boolean hasRole = authorities != null && (authorities.contains("ADMIN") || authorities.contains("USER"));
+        return hasRole && super.beforeHandshake(request, response, wsHandler, attributes);
     }
 }
