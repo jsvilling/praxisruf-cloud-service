@@ -5,6 +5,7 @@ import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
@@ -23,8 +24,16 @@ public class SignalingHandshakeInterceptor extends HttpSessionHandshakeIntercept
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
             return false;
         }
-        Collection<GrantedAuthority> authorities = principal.getAuthorities();
-        boolean hasRole = authorities != null && (authorities.contains("ADMIN") || authorities.contains("USER"));
-        return hasRole && super.beforeHandshake(request, response, wsHandler, attributes);
+
+        return hasAllowedRole(principal) && super.beforeHandshake(request, response, wsHandler, attributes);
+    }
+
+    private boolean hasAllowedRole(UsernamePasswordAuthenticationToken principal) {
+        final Collection<GrantedAuthority> authorities = principal.getAuthorities();
+        return authorities != null
+                && authorities.stream()
+                    .map(a -> (SimpleGrantedAuthority) a)
+                    .map(SimpleGrantedAuthority::getAuthority)
+                    .anyMatch(a -> "ADMIN".equals(a) || "USER".equals(a));
     }
 }
