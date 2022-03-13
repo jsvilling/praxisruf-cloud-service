@@ -34,6 +34,6 @@ public class SignalingHandshakeInterceptor extends HttpSessionHandshakeIntercept
                 && authorities.stream()
                     .map(a -> (SimpleGrantedAuthority) a)
                     .map(SimpleGrantedAuthority::getAuthority)
-                    .anyMatch(a -> "ADMIN".equals(a) || "USER".equals(a));
+                    .anyMatch(a -> "ROLE_ADMIN".equals(a) || "ROLE_USER".equals(a));
     }
 }
