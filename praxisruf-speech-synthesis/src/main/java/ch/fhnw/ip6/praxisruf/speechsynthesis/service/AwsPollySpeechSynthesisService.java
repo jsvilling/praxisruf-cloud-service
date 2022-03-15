@@ -19,6 +19,13 @@ import java.util.UUID;
 
 import static ch.fhnw.ip6.praxisruf.commons.exception.ErrorCode.SPEECH_SYNTHESIS_ERROR;
 
+/**
+ * This service implements the {@link SpeechSynthesisService} interface for Amazon Polly.
+ *
+ * Credentials, language, region and all relevant AWS components are configured in {@link ch.fhnw.ip6.praxisruf.speechsynthesis.config.AwsConfiguration}
+ *
+ * @author J. Villing
+ */
 @Service
 @Slf4j
 @AllArgsConstructor
@@ -30,7 +37,17 @@ public class AwsPollySpeechSynthesisService implements SpeechSynthesisService {
     private final Voice voice;
     private final ConfigurationWebClient configurationWebClient;
 
-
+    /**
+     * Finds the relevant notificationType and client in the configuration domain and synthesizes speech data from it.
+     *
+     * The content that is synthesized will be put together as "notificationType.title, client.name" if a senderId is provided.
+     * If no senderId is provided the content will be put togehter as "notificationType.title".
+     *
+     * @param notificationTypeId - Id of the relevant notificationType
+     * @param senderId - Id of the relevant client
+     *
+     * @return InputStreamResource with the synthesized audio data.
+     */
     @Override
     public InputStreamResource synthesize(UUID notificationTypeId, UUID senderId) {
         final NotificationTypeDto notificationType = configurationWebClient.findExistingNotificationType(notificationTypeId);

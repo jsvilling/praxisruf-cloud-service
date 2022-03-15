@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controller for testing the integration of a speech synthesis provider.
+ *
+ * This controller can be active in a testing environment by starting the application with the profile "test".
+ */
 @RestController
 @RequestMapping("/api/speechsynthesis")
 @Api(tags = "Test")

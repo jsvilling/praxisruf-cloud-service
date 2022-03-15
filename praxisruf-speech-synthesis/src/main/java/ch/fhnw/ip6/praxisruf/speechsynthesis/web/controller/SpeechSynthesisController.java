@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+/**
+ * Controller for synthesizing speech data from NotificationTypes.
+ *
+ * This endpoint can be used by client devices convert the content of received notifications into audio speech data.
+ */
 @RestController
 @RequestMapping("/api/speech")
 @Api(tags = "Speech Synthesis")

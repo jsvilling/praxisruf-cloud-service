@@ -15,6 +15,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * This configuration initializes the Components needed for the integration of Amazon Polly.
+ *
+ * The configured instances are used in {@link ch.fhnw.ip6.praxisruf.speechsynthesis.service.AwsPollySpeechSynthesisService}
+ */
 @Getter
 @Setter
 @Configuration
