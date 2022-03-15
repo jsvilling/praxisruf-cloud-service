@@ -31,8 +31,6 @@ import static ch.fhnw.ip6.praxisruf.commons.exception.ErrorCode.SPEECH_SYNTHESIS
 @AllArgsConstructor
 public class AwsPollySpeechSynthesisService implements SpeechSynthesisService {
 
-    private static final String SAMPLE_TITLE = "Benachrichtigung";
-    private static final String SAMPLE_SENDER = "Sender X";
     private final AmazonPollyClient polly;
     private final Voice voice;
     private final ConfigurationWebClient configurationWebClient;
@@ -58,7 +56,7 @@ public class AwsPollySpeechSynthesisService implements SpeechSynthesisService {
 
     @Override
     public InputStreamResource synthesize(String notificationTitle) {
-        return synthesize(SAMPLE_TITLE, SAMPLE_SENDER);
+        return synthesize(notificationTitle, null);
     }
 
     private String findSenderName(UUID senderId) {
@@ -73,7 +71,7 @@ public class AwsPollySpeechSynthesisService implements SpeechSynthesisService {
     private InputStreamResource synthesize(String notificationTitle, String sender) {
         try {
             final StringBuilder content = new StringBuilder(notificationTitle);
-            if (sender != null && sender != "") {
+            if (sender != null && !"".equals(sender)) {
                 content.append(", ");
                 content.append(sender);
             }
@@ -84,9 +82,7 @@ public class AwsPollySpeechSynthesisService implements SpeechSynthesisService {
                     .withOutputFormat(OutputFormat.Mp3);
             final SynthesizeSpeechResult synthRes = polly.synthesizeSpeech(synthReq);
             final InputStream inputStream = synthRes.getAudioStream();
-
             log.debug("Speech synthesis for content {} successful", content);
-
             return new InputStreamResource(inputStream);
         } catch (Exception e) {
             log.error("Speech Synthesis request failed.", e);

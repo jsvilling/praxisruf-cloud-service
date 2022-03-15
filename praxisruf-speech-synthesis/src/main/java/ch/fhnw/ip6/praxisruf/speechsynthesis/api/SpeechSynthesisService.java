@@ -9,6 +9,8 @@ import java.util.UUID;
  *
  *  Any implementation must allow it, to synthesize the content of a notificationType along with the name of a given clientId.
  *  For testing purposes it must also be possible to synthesize a given String message.
+ *
+ * @author J. Villing
  */
 public interface SpeechSynthesisService {
 

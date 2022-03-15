@@ -12,6 +12,8 @@ import static javazoom.jl.player.FactoryRegistry.systemRegistry;
 
 /**
  * This is a UtilityClass used for testing and verifying audio content locally and manually.
+ *
+ * @author J. Villing
  */
 @UtilityClass
 public class AudioPlayer {
