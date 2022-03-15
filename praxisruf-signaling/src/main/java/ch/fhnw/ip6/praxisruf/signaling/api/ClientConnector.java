@@ -1,14 +1,16 @@
 package ch.fhnw.ip6.praxisruf.signaling.api;
 
 /**
- * Contracts for clients to register an intercom connection in Praxisruf
+ * Contracts for clients to register an intercom connection in Praxisruf and exchange signaling messages
  *
  * Once a connection is established it can be used, to negotiate messages between
- * registered clients. This enables signaling server functionality for when
+ * registered clients. This enables signaling instance functionality to
  * establishing Peer To Peer Connections between clients.
  *
  * @param <T> Type of the connection
  * @param <M> Type of messages that will be exchanged
+ *
+ * @author J. Villing
  */
 public interface ClientConnector<T, M> {
 

@@ -8,7 +8,12 @@ import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * Contracts for managing connections created by ClientConnector.
+ * Registry to manage known {@link ClientConnection}s.
+ *
+ * The ConnectionRegistry has an internal Collection of known {@link ClientConnection}s and enables
+ * {@link SignalingService} to register, unregister and find connections for a specific client.
+ *
+ * @author J. Villing
  */
 @Component
 public class ConnectionRegistry {
@@ -26,6 +31,7 @@ public class ConnectionRegistry {
         registry.removeIf(c -> c.getId().equalsIgnoreCase(connection.getId()));
         return registry.add(connection);
     }
+
     private boolean isInvalidConnection(ClientConnection connection) {
         return connection == null || connection.getId() == null || connection.getSession() == null;
     }

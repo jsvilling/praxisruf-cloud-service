@@ -7,6 +7,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
 
+/**
+ * Configures the NotificationWebClient
+ *
+ * The configured client is used in {@link ch.fhnw.ip6.praxisruf.signaling.service.SignalingService} to notify clients
+ * for signals that could not be delivered.
+ *
+ * @author J. Villing
+ */
 @Configuration
 @ConfigurationProperties(prefix = "praxis-intercom.web")
 @Setter

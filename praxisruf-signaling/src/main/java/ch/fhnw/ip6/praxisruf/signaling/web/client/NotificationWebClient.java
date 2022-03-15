@@ -5,6 +5,14 @@ import ch.fhnw.ip6.praxisruf.commons.dto.notification.SendPraxisNotificationResp
 import lombok.AllArgsConstructor;
 import org.springframework.web.reactive.function.client.WebClient;
 
+/**
+ * Client to call the API of the notification module.
+ *
+ * The NotificationWebClient is used in {@link ch.fhnw.ip6.praxisruf.signaling.service.SignalingService} to notify clients
+ * for signals that could not be delivered.
+ *
+ * @author J. Villing
+ */
 @AllArgsConstructor
 public class NotificationWebClient {
 

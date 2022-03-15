@@ -21,6 +21,23 @@ import java.util.UUID;
 
 import static ch.fhnw.ip6.praxisruf.commons.exception.ErrorCode.CONNECTION_URI_INVALID;
 
+/**
+ * Implements the {@link ClientConnector<WebSocketSession, TextMessage>}
+ *
+ * The SingalingSerivce allow registering and unregistering Websocket connections for signaling exchange in the {@link ConnectionRegistry}.
+ * Every opened connection is expected to specify its associated clientId in a query parameter with said name.
+ * If a connection has specified a clientId, the WebsocketSession will be stored in the {@link ConnectionRegistry} with that id.
+ * After the WebsocketSession is closed, it will be removed from the registry.
+ *
+ * Signals can be exchanged over opened connections.
+ * Every received TextMessage is expected to contain a valid JSON String representation of a {@link Signal}.
+ * The recipient field in this signal is used to find the corresponding connection in the {@link ConnectionRegistry}.
+ * The signal is then sent over the found connection.
+ * If no connection is found or delivery fails, the flag notificationOnFailedDelivery ot the signal is evaluated.
+ * If the flag is true, a notification will be sent to the given clientId via the Notification domain.
+ *
+ * @author J. Villing
+ */
 @Service
 @Slf4j
 @AllArgsConstructor
@@ -33,6 +50,17 @@ public class SignalingService implements ClientConnector<WebSocketSession, TextM
     private final NotificationWebClient notificationWebClient;
     private final SignalingProperties signalingProperties;
 
+    /**
+     *  Accepts text messages, converts them to a {@link Signal} and forwards it to the recipient.
+     *
+     *  Every received TextMessage is expected to contain a valid JSON String representation of a {@link Signal}.
+     *  The recipient field in this signal is used to find the corresponding connection in the {@link ConnectionRegistry}.
+     *  The signal is then sent over the found connection.
+     *  If no connection is found or delivery fails, the flag notificationOnFailedDelivery ot the signal is evaluated.
+     *  If the falg is true, a notification will be sent to the given clientId via the Notification domain.
+     *
+     *  @param message - TextMessage containing a JSON String representation of a {@link Signal}
+     */
     @Override
     public void handleSignal(TextMessage message) {
         final Signal signal = new Gson().fromJson(message.getPayload(), Signal.class);
@@ -50,6 +78,16 @@ public class SignalingService implements ClientConnector<WebSocketSession, TextM
         }
     }
 
+    /**
+     * Adds an opened WebsocketSession to the {@link ConnectionRegistry}.
+     * The URL of the opened connection is expected to define a clientId in a query parameter of said name.
+     * If a connection has specified a clientId, the WebsocketSession will be stored in the {@link ConnectionRegistry} with that id.
+     * Otherwise an error is thrown.
+     *
+     * There can always be only one connection associated with a clientId.
+     * If multiple connections are registered for the same id, the last used connection will be added to the registry.
+     * All previousely registered instances will be removed.
+     */
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
         final String id = extractClientId(session);
@@ -57,6 +95,9 @@ public class SignalingService implements ClientConnector<WebSocketSession, TextM
         log.debug("Established connection for {}", id);
     }
 
+    /**
+     * Removes the given connection from the {@link ConnectionRegistry}
+     */
     @Override
     public void afterConnectionClosed(WebSocketSession session) throws Exception {
         final String id = extractClientId(session);

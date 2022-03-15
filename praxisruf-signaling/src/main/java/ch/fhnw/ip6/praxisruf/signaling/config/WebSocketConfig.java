@@ -9,6 +9,11 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
+/**
+ * Configuration for the Websockethandler accepting signaling connections.
+ *
+ * @author J. Villing
+ */
 @Configuration
 @EnableWebSocket
 @Slf4j

@@ -12,7 +12,22 @@ import org.springframework.web.socket.server.support.HttpSessionHandshakeInterce
 import java.util.Collection;
 import java.util.Map;
 
+/**
+ * Configures an Interceptor to evaluate http handshake requests made to initialize Websocket connections.
+ * This allows to verify that a request to open Websockets is authenticated and that the user has been
+ * granted the appropriate roles.
+ *
+ * @author J. Villing
+ */
 public class SignalingHandshakeInterceptor extends HttpSessionHandshakeInterceptor {
+
+    /**
+     * Intercepts http handshake requests made to initialize Websockets.
+     *
+     * This method validates, that the request has been authenticated and contains any of the roles ADMIN or USER.
+     * If either condition is not met, the request will be denied and processing stops.
+     * In this case no Websocket connection will be established.
+     */
     @Override
     public boolean beforeHandshake(ServerHttpRequest request,
                                    ServerHttpResponse response,
