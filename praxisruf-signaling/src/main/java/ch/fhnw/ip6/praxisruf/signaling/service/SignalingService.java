@@ -151,14 +151,18 @@ public class SignalingService implements ClientConnector<WebSocketSession, TextM
     }
 
     private void sendNotificationToUnavailable(Signal signal) {
-        final UUID unavailableNotificationTypeId = UUID.fromString(signalingProperties.getNotificationTypeForUnavailable());
-        final SendPraxisNotificationDto notification = SendPraxisNotificationDto.builder()
-                .notificationTypeId(unavailableNotificationTypeId)
-                .sender(UUID.fromString(signal.getSender()))
-                .build();
+        try {
+            final UUID unavailableNotificationTypeId = UUID.fromString(signalingProperties.getNotificationTypeForUnavailable());
+            final SendPraxisNotificationDto notification = SendPraxisNotificationDto.builder()
+                    .notificationTypeId(unavailableNotificationTypeId)
+                    .sender(UUID.fromString(signal.getSender()))
+                    .build();
 
-        final SendPraxisNotificationResponseDto sendResult = notificationWebClient.send(notification, signal.getRecipient());
-        if (!sendResult.isAllSuccess()) {
+            final SendPraxisNotificationResponseDto sendResult = notificationWebClient.send(notification, signal.getRecipient());
+            if (!sendResult.isAllSuccess()) {
+                log.error("Could not notify unavailable client");
+            }
+        } catch (Exception e) {
             log.error("Could not notify unavailable client");
         }
     }
