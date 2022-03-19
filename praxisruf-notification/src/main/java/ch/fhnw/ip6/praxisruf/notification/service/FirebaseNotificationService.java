@@ -141,7 +141,7 @@ public class FirebaseNotificationService implements NotificationService {
     private Message createFirebaseMessage(Notification firebaseNotification, RegistrationDto registration, ClientDto sender, NotificationTypeDto notificationTypeDto) {
         // for iOS
         Aps aps = Aps.builder()
-                .setSound("default")
+                .setSound("app_assets_signal.mp3")
                 .setContentAvailable(true)
                 .build();
 
