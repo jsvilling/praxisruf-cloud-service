@@ -20,7 +20,7 @@ public class NotificationTypesMapper {
                 .id(notificationType.getId())
                 .body(notificationType.getBody())
                 .title(notificationType.getTitle())
-                .description(notificationType.getTitle())
+                .description(notificationType.getType())
                 .displayText(notificationType.getDisplayText())
                 .version(notificationType.getVersion())
                 .textToSpeech(notificationType.isTextToSpeech())
