@@ -23,6 +23,7 @@ More detailed information on the system can be found in the project reports [Clo
   * FCM_CREDENTIALS: `Base64 Encoded Firebase Configuration`. 
   * JWT_SECRET_KEY: `Random 64Bit String`  
   * SPRING_PROFILES_ACTIVE: `local`
+  * ADMIN_ORIGIN: `Url for the Admin UI`
   * AWS_ACCESS KEY: `AWS Acces Key Id for Amazon Polly`  
   * AWS_SECRET_KEY: `AWS Acces Key Secret for Amazon Polly`
   * NOTIFICATION_TYPE_FOR_UNAVAILABLE: `NotificationTypeId for notification sent on unavailable signaling connection`
