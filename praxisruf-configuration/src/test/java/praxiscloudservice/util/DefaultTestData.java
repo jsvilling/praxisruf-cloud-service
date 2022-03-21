@@ -82,9 +82,13 @@ public class DefaultTestData {
     }
 
     public static SendPraxisNotificationDto createSendNotificationDto() {
+        return createSendNotificationDto(CLIENT_ID);
+    }
+
+    public static SendPraxisNotificationDto createSendNotificationDto(UUID clientId) {
         return SendPraxisNotificationDto.builder()
                 .notificationTypeId(randomUUID())
-                .sender(CLIENT_ID)
+                .sender(clientId)
                 .build();
     }
 

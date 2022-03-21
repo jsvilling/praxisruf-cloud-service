@@ -154,7 +154,7 @@ public class DefaultRegistrationServiceTest {
         void getAllRelevantTokens_ruleRelevant() {
             // Given
             final Registration registration = createRegistration();
-            final SendPraxisNotificationDto notification = createSendNotificationDto();
+            final SendPraxisNotificationDto notification = createSendNotificationDto(UUID.randomUUID());
             final ClientConfiguration clientConfiguration = createClientConfiguration();
             final Client client = clientConfiguration.getClient();
             when(clientRepository.findById(any())).thenReturn(Optional.of(createClient()));
@@ -167,6 +167,20 @@ public class DefaultRegistrationServiceTest {
 
             // Then
             assertThat(allKnownTokens).extracting(RegistrationDto::getFcmToken).containsExactly(registration.getFcmToken());
+        }
+
+        @Test
+        void getAllRelevantTokens_ruleRelevant_excludeSender() {
+            // Given
+            final SendPraxisNotificationDto notification = createSendNotificationDto();
+            final ClientConfiguration clientConfiguration = createClientConfiguration();
+            when(clientConfigurationRepository.findAll()).thenReturn(List.of(clientConfiguration));
+
+            // When
+            final Set<RegistrationDto> allKnownTokens = registrationService.findAllRelevantRegistrations(notification);
+
+            // Then
+            assertThat(allKnownTokens).isEmpty();
         }
 
         @Test
@@ -201,7 +215,7 @@ public class DefaultRegistrationServiceTest {
         @Test
         void getAllRelevantTokens_noRegistration() {
             // Given
-            final SendPraxisNotificationDto notification = createSendNotificationDto();
+            final SendPraxisNotificationDto notification = createSendNotificationDto(UUID.randomUUID());
             final ClientConfiguration clientConfiguration = createClientConfiguration();
             final Client client = clientConfiguration.getClient();
             when(clientConfigurationRepository.findAll()).thenReturn(List.of(clientConfiguration));
