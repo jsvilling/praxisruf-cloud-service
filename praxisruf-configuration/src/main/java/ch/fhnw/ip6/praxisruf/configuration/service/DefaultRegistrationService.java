@@ -77,9 +77,11 @@ public class DefaultRegistrationService implements RegistrationService {
     @Transactional(readOnly = true)
     public Set<RegistrationDto> findAllRelevantRegistrations(SendPraxisNotificationDto notification) {
         return clientConfigurationRepository.findAll()
-                .stream().filter(c -> rulesEngine.isAnyRelevant(c.getRules(), notification))
+                .stream()
+                .filter(c -> rulesEngine.isAnyRelevant(c.getRules(), notification))
                 .map(ClientConfiguration::getClient)
                 .map(Client::getId)
+                .filter(i -> !notification.getSender().equals(i))
                 .map(registrationRepository::findByClientId)
                 .flatMap(Optional::stream)
                 .map(this::toRegistrationDto)
