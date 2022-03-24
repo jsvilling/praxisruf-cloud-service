@@ -38,4 +38,4 @@ However, if you want to create a build manually, you can do it as follows:
 * Update the application.yml and application-local.yml file as needed. 
 * Open a terminal window in the root folder of this project
 * Run ./gradlew build
-* The application will be built a .jar file and can be found in the builds/lib directory under the project root.
+* The application will be built a .jar file and can be found in the praxisruf/app/builds/lib directory under the project root.
