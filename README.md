@@ -5,7 +5,7 @@
 This service is part of the Praxisruf system.
 The Cloud Service manages notifications and signaling for voice calls between [Mobile Clients](https://github.com/jsvilling/praxisruf-ios-mobile-client).
 It receives notifications from Mobile Clients and forwards them to the interested recipients.
-Likewise it receives signals for connection establishmet and forwards them to the relevant recipients.
+Likewise, it receives signals for connection establishment and forwards them to the relevant recipients.
 If a signal can not be delivered a pre-configured notification will be sent instead. 
 Clients and their configuration can be registered with the Cloud Service. 
 The Configuration can be managed via the [Admin UI](https://github.com/jsvilling/praxisruf-admin-ui).
@@ -32,6 +32,7 @@ More detailed information on the system can be found in the project reports [Clo
 
 ## Developmnet Build
 
+* Update the application.yml and application-local.yml file as needed. 
 * Open a terminal window in the root folder of this project
 * Run ./gradlew build
 * The application will be built a a .jar file and can be found in the builds/lib directory under the project root.  
