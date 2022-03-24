@@ -30,9 +30,12 @@ More detailed information on the system can be found in the project reports [Clo
 * If you need more information on how to determine the values of these properties, please consult the [Installation Manual](https://github.com/jsvilling/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/blob/master/out/p2p_sprachubertragung_in_praxisrufsystem.pdf) (Appendix D). 
 * Run `docker-compose up` in the docker directory under the project root
 
-## Build
+## Local Build
+
+For development it is preferable to use the Gradle-Integration of Intellij to run build. 
+However, if you want to create a build manually, you can do it as follows: 
 
 * Update the application.yml and application-local.yml file as needed. 
 * Open a terminal window in the root folder of this project
 * Run ./gradlew build
-* The application will be built a .jar file and can be found in the builds/lib directory under the project root.  
+* The application will be built a .jar file and can be found in the builds/lib directory under the project root.
