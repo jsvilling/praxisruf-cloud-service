@@ -17,7 +17,7 @@ More detailed information on the system can be found in the project reports [Clo
 
 * Import the project in IntelliJ
 * Create a Run Configuration for a Spring Boot Application
-* Use Main Class `ch.fhnw.ip5.praxiscloudservice.PraxisCloudServiceApplication`
+* Use Main Class `PraxisCloudServiceApplication`
 * Add the active profile `local`
 * Set the following environment variables: 
   * FCM_CREDENTIALS: `Base64 Encoded Firebase Configuration`. 
